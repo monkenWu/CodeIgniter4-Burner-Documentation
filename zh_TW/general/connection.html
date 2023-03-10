@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>外部連線</title>
+    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/assets/normalize.css?v=1678466772"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/doctave-style.css?v=1678466772"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/katex.css?v=1678466772" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/prism-ghcolors.css?v=1678466772"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1678466772";
+        var BASE_PATH = "/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <a href="/">
+                    <img src="/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                </a>
+                
+                <h2 class='project-name'>
+                    <a href="/">
+                        CodeIgniter4 Burner v1.0.0
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a href="/introduction">歡迎使用 Burner！</a></li>
+            
+        
+            <li><a href="/general">一般主題</a></li>
+            
+                <ul>
+    
+        <li><a href="/general/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/general/suggestion">開發建議</a></li>
+        
+    
+        <li><a href="/general/fileuploading">檔案上傳處理</a></li>
+        
+    
+        <li><a class="active" href="/general/connection">外部連線</a></li>
+        
+    
+        <li><a href="/general/docker">Docker 環境</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/openswoole/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/openswoole/commands">常用指令</a></li>
+        
+    
+        <li><a href="/openswoole/autoreload">自動重新載入</a></li>
+        
+    
+        <li><a href="/openswoole/fastcache">Swoole-Table 快取</a></li>
+        
+    
+        <li><a href="/openswoole/http">HTTP 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/openswoole/http/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/openswoole/http/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/openswoole/websocket">Websocket 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/openswoole/websocket/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/openswoole/websocket/tutorial">建立與處理連線</a></li>
+        
+    
+        <li><a href="/openswoole/websocket/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/openswoole/deploy">佈署建議</a></li>
+        
+    
+</ul>
+
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="外部連線">外部連線</h1>
+<p>不論你使用的驅動程式為何，我們都認為你應該以「單例」的方式管理專案所依賴的外部連線實體，比如：DB, Cache 或是任何需要長連線的外部系統。</p>
+<p>這是因為，每個 Worker 都會長時間地存活在記憶體中重複地處理 HTTP 請求，這使的我們降低了 PHP 重複編譯與載入的效能開銷。倘若外部連線實體會在每一個請求開始時重新連線，這將會大大地拖慢執行效能。</p>
+<p>Burner 將在伺服器啟動後接管 CodeIgniter4 的生命週期，在長連線管理中，我們只針對 Codeigniter4 內建的 <code>Database</code> 程式庫與 <code>Cache</code> 程式庫進行直接支援，並不保證 PHP 內建的方法是否能照常運作。</p>
+<p>對此，你應該避免使用內建的 PHP 方法，而是以 Codeigniter4 框架內建的程式庫為主。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>當然，若是你十分熟悉你所選擇的驅動程式與你需要長連線的目標系統，也可以自行處理連線，使其能長時間地留存在記憶體中。</p>
+</div><h2 id="資料庫與快取程式庫">資料庫與快取程式庫</h2>
+<p>在 Burner 的預設設定中， Worker 的資料庫與快取的連線是持久的，並會在連線失效時自動重新連線。所有進入 Worker 的請求都將使用同一個連線實體。</p>
+<p>如果你不想要這個預設設定，希望每個進入 Worker 的請求都使用重新連線的 DB 或 Cache 連線實體。請調整 Config/Burner.php 中的下列設定：</p>
+<pre><code class="language-php">public $dbAutoClose = true;
+public $cacheAutoClose = true;
+</code></pre>
+
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#外部連線'>外部連線</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#資料庫與快取程式庫'>資料庫與快取程式庫</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/katex.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/mermaid.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/elasticlunr.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/prism.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/doctave-app.js?v=1678466772"></script>
+
+    
+</body>
+
+</html>

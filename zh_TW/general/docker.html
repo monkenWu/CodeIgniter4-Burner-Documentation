@@ -1,0 +1,237 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Docker 環境</title>
+    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/assets/normalize.css?v=1678466772"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/doctave-style.css?v=1678466772"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/katex.css?v=1678466772" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/prism-ghcolors.css?v=1678466772"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1678466772";
+        var BASE_PATH = "/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <a href="/">
+                    <img src="/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                </a>
+                
+                <h2 class='project-name'>
+                    <a href="/">
+                        CodeIgniter4 Burner v1.0.0
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a href="/introduction">歡迎使用 Burner！</a></li>
+            
+        
+            <li><a href="/general">一般主題</a></li>
+            
+                <ul>
+    
+        <li><a href="/general/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/general/suggestion">開發建議</a></li>
+        
+    
+        <li><a href="/general/fileuploading">檔案上傳處理</a></li>
+        
+    
+        <li><a href="/general/connection">外部連線</a></li>
+        
+    
+        <li><a class="active" href="/general/docker">Docker 環境</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/openswoole/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/openswoole/commands">常用指令</a></li>
+        
+    
+        <li><a href="/openswoole/autoreload">自動重新載入</a></li>
+        
+    
+        <li><a href="/openswoole/fastcache">Swoole-Table 快取</a></li>
+        
+    
+        <li><a href="/openswoole/http">HTTP 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/openswoole/http/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/openswoole/http/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/openswoole/websocket">Websocket 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/openswoole/websocket/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/openswoole/websocket/tutorial">建立與處理連線</a></li>
+        
+    
+        <li><a href="/openswoole/websocket/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/openswoole/deploy">佈署建議</a></li>
+        
+    
+</ul>
+
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="docker-環境">Docker 環境</h1>
+<p>使用 Docker 建構你的開發與正式環境有助於你減輕對環境建置的負擔，不論你使用何種驅動程式都需要預裝或開啟一些特別的擴充外掛。同時，使用 Docker 建構的環境將能夠幫助你在 Windows 環境下使用 Workerman 與 OpenSwoole 驅動程式。</p>
+<p>你可以透過 <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> 儲存庫拉取到我們所推薦的 Docker 配置。</p>
+<h2 id="環境備註">環境備註</h2>
+<p>所有的推薦組態都基於 <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> 映像檔，這個映像檔囊括了常用的 PHP 擴充外掛，你可以透過<a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">這份文件</a>來調整更多細節，使你的環境更符合你的專案。</p>
+<p>同時 OpenSwoole 的 Dockerfile 環境安裝指令參考了 <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">OpenSwoole 官方 Dockerfile</a> 。 Workerman 的 Dockerfile 額外裝了 <code>php-event</code> 擴充外掛，這將使 Workerman 能夠獲得更好的執行效能。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>你可以依照你的專案需求在 Dockerfile 安裝你所需要的任何東西，你只需要記得它們都是基於 <a href="https://www.alpinelinux.org/">alpine linux</a> 的映像檔。</p>
+</div><h2 id="開始使用">開始使用</h2>
+<ul>
+<li>將你的 CodeIgniter4 專案置於 <code>app</code> 資料夾中</li>
+<li>使用 <code>docker-compose build</code> 將建構你的本地環境</li>
+<li>使用 <code>docker-compose up -d</code> 使容器運行在背景</li>
+<li>使用 <code>docker-compose exec app bash</code> 進入容器之中</li>
+<li>在預設的情況下，你將被定位在專案根目錄中，你可以開始安裝 Burner 以及選擇你所需要的驅動程式</li>
+<li>別忘了 <code>docker-compose down</code> 或 <code>docker-compose stop</code> 可以停止你的容器</li>
+</ul>
+<p><code>docker-compose.yml</code> 預設的連接埠映射為 <code>8080:8080</code> ，你可以依據自己的需求調整這個設定。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>如果你的 CodeIgniter4 並不包含 <code>vendor</code> 資料夾，記得使用 <code>composer install</code> 拉取專案所需的程式庫。</p>
+</div>
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#docker-環境'>Docker 環境</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#環境備註'>環境備註</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#開始使用'>開始使用</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/katex.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/mermaid.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/elasticlunr.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/prism.js?v=1678466772"></script>
+    <script type="text/javascript" src="/assets/doctave-app.js?v=1678466772"></script>
+
+    
+</body>
+
+</html>
