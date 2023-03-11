@@ -21,7 +21,7 @@ jobs:
           cd zh_TW 
           ../doctave-0.4.2-x86_64-unknown-linux-musl/doctave build --release 
           mv site ../build/zh_TW
-          cd en 
+          cd ../en 
           ../doctave-0.4.2-x86_64-unknown-linux-musl/doctave build --release 
           mv site ../build/en
 

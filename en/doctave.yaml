@@ -3,7 +3,7 @@ title: "CodeIgniter4 Burner v1.0.0"
 colors:
   main: "#DD4814"
 logo: "logo.png"
-base_path: /CodeIgniter4-Burner-Documentation/zh_TW
+base_path: /CodeIgniter4-Burner-Documentation/en
 navigation:
   - path: docs/introduction.md
   - path: docs/general
