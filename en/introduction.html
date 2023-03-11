@@ -1,0 +1,284 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>歡迎使用 Burner！</title>
+    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/CodeIgniter4-Burner-Documentation/en/assets/normalize.css?v=1678509093"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/CodeIgniter4-Burner-Documentation/en/assets/doctave-style.css?v=1678509093"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/CodeIgniter4-Burner-Documentation/en/assets/katex.css?v=1678509093" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/CodeIgniter4-Burner-Documentation/en/assets/prism-ghcolors.css?v=1678509093"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1678509093";
+        var BASE_PATH = "/CodeIgniter4-Burner-Documentation/en/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <a href="/CodeIgniter4-Burner-Documentation/en/">
+                    <img src="/CodeIgniter4-Burner-Documentation/en/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                </a>
+                
+                <h2 class='project-name'>
+                    <a href="/CodeIgniter4-Burner-Documentation/en/">
+                        CodeIgniter4 Burner v1.0.0
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a class="active" href="/CodeIgniter4-Burner-Documentation/en/introduction">歡迎使用 Burner！</a></li>
+            
+        
+            <li><a href="/CodeIgniter4-Burner-Documentation/en/general">一般主題</a></li>
+            
+                <ul>
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/general/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/general/suggestion">開發建議</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/general/fileuploading">檔案上傳處理</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/general/connection">外部連線</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/general/docker">Docker 環境</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/commands">常用指令</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/autoreload">自動重新載入</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/fastcache">Swoole-Table 快取</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/http">HTTP 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/http/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/http/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/websocket">Websocket 伺服器</a></li>
+        
+            <ul>
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/websocket/configuration">組態設定</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/websocket/suggestion">開發建議</a></li>
+        
+    
+</ul>
+
+        
+    
+        <li><a href="/CodeIgniter4-Burner-Documentation/en/openswoole/deploy">佈署建議</a></li>
+        
+    
+</ul>
+
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
+<p>Burner 是一款專屬於 CodeIgniter4 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
+<h2 id="系統需求">系統需求</h2>
+<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
+<h3 id="基本需求">基本需求</h3>
+<ol>
+<li>CodeIgniter Framework 4.3.0 以上</li>
+<li>Composer</li>
+<li>PHP8^</li>
+</ol>
+<h3 id="openswoole">OpenSwoole</h3>
+<ol>
+<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
+</ol>
+<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
+</div><h3 id="workerman">Workerman</h3>
+<ol>
+<li>開啟 <code>php-pcntl</code> 外掛</li>
+<li>開啟 <code>php-posix</code> 外掛</li>
+<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
+</ol>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
+</div><h3 id="roadrunner">RoadRunner</h3>
+<ol>
+<li>開啟 <code>php-curl</code> 外掛</li>
+<li>開啟 <code>php-zip</code> 外掛</li>
+<li>開啟 <code>php-sockets</code> 外掛</li>
+</ol>
+<h2 id="架構">架構</h2>
+<p>Burner 由數個程式庫組成，分別是：</p>
+<ul>
+<li>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
+</li>
+<li>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
+</li>
+<li>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
+</li>
+<li>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
+</li>
+</ul>
+<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
+<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
+<p>準備好開始探索 Burner 了嗎？</p>
+<p><a href="/CodeIgniter4-Burner-Documentation/en/general/quickstart">快速開始</a> </p>
+
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#系統需求'>系統需求</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#基本需求'>基本需求</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#openswoole'>OpenSwoole</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#workerman'>Workerman</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#roadrunner'>RoadRunner</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#架構'>架構</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/CodeIgniter4-Burner-Documentation/en/assets/katex.js?v=1678509093"></script>
+    <script type="text/javascript" src="/CodeIgniter4-Burner-Documentation/en/assets/mermaid.js?v=1678509093"></script>
+    <script type="text/javascript" src="/CodeIgniter4-Burner-Documentation/en/assets/elasticlunr.js?v=1678509093"></script>
+    <script type="text/javascript" src="/CodeIgniter4-Burner-Documentation/en/assets/prism.js?v=1678509093"></script>
+    <script type="text/javascript" src="/CodeIgniter4-Burner-Documentation/en/assets/doctave-app.js?v=1678509093"></script>
+
+    
+</body>
+
+</html>
