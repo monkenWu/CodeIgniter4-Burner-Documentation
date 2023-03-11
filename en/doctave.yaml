@@ -1,0 +1,38 @@
+---
+title: "CodeIgniter4 Burner v1.0.0"
+colors:
+  main: "#DD4814"
+logo: "logo.png"
+base_path: /CodeIgniter4-Burner-Documentation/zh_TW
+navigation:
+  - path: docs/introduction.md
+  - path: docs/general
+    children:
+      - path: docs/general/quickstart.md
+      - path: docs/general/suggestion.md
+      - path: docs/general/fileuploading.md
+      - path: docs/general/connection.md
+      - path: docs/general/docker.md
+  - path: docs/openswoole
+    children:
+      - path: docs/openswoole/quickstart.md
+      - path: docs/openswoole/commands.md
+      - path: docs/openswoole/autoreload.md
+      - path: docs/openswoole/fastcache.md
+      - path: docs/openswoole/http
+        children:
+          - path: docs/openswoole/http/configuration.md
+          - path: docs/openswoole/http/suggestion.md
+      - path: docs/openswoole/websocket
+        children:
+          - path: docs/openswoole/websocket/configuration.md
+          - path: docs/openswoole/websocket/tutorial.md
+          - path: docs/openswoole/websocket/suggestion.md
+      - path: docs/openswoole/deploy.md
+
+  # - path: docs/OpenSwoole
+  #   children: "*"
+  # - path: docs/RoadRunner
+  #   children: "*"
+  # - path: docs/Workerman
+  #   children: "*"
