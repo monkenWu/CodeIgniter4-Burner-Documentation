@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>HTTP 伺服器</title>
+    <title>OpenSwoole HTTP</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678512371" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678587991" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678587991"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678512371";
+        var DOCTAVE_TIMESTAMP = "1678587991";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,10 @@
         }
     </script>
 
+    
+    <script>
+    document.title = 'CodeIgniter Burner 使用說明-' + document.title;
+</script>
     
 </head>
 
@@ -103,50 +107,25 @@
             
                 <ul>
     
-        <li><a href="/zh_TW/openswoole/quickstart">快速開始</a></li>
+        <li><a class="active" href="/zh_TW/openswoole/http">OpenSwoole HTTP</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/commands">常用指令</a></li>
+        <li><a href="/zh_TW/openswoole/websocket">OpenSwoole Websocket</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/autoreload">自動重新載入</a></li>
+        <li><a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/autoreload">OpenSwoole 自動重載</a></li>
         
     
         <li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
         
     
-        <li><a class="active" href="/zh_TW/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/zh_TW/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/zh_TW/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/zh_TW/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/zh_TW/openswoole/deploy">OpenSwoole 佈署建議</a></li>
         
     
 </ul>
@@ -167,7 +146,27 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="http-伺服器">HTTP 伺服器</h1>
+                <h1 id="openswoole-http">OpenSwoole HTTP</h1>
+<p>Burner 為 OpenSwoole 的 HTTP 伺服器建立了如同基礎設施級別的支援。你若選用了 OpenSwoole-HTTP 作為你的伺服器解決方案，在開發上你應該很難察覺的 Burner 的存在。</p>
+<p>你可以在 <code>project_root/app/Config/OpenSwoole.php</code> 中的 <code>server</code> 方法中看到以下程式碼片段：</p>
+<pre><code class="language-php">$server-&gt;on('request', static function (Request $swooleRequest, Response $swooleResponse) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::httpProcesser($swooleRequest, $swooleResponse);
+});
+</code></pre>
+<p>所有的 HTTP 請求處理都從 <code>Worker::httpProcesser</code> 開始，當這個靜態方法被呼叫後，Burner 便會開始一系列的預處理，並通知 CodeIgniter4 處理你的連線。再接下來，就會進入 CodeIgniter4 的處理流程，如同你所熟知的那樣，一如往常地開發你的應用程式即可。</p>
+<p>如果你有一些特別的業務邏輯需要在 CodeIgniter4 處理請求之前先做一些處理，你只需要記得在一切完成後呼叫 <code>Worker::httpProcesser</code> 來處理你的請求。</p>
+<h2 id="事件">事件</h2>
+<p>CodeIgniter4 提供了<a href="https://codeigniter.tw/user_guide/extending/events.html">事件</a>的功能，當 CodeIgniter 執行時，它會遵循著一定的執行順序，然而在某些情況下，你可能會想在執行過程的特定階段執行一些動作。</p>
+<p>Burner 在 HTTP 中提供了以下事件給予開發者進行使用：</p>
+<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
+<p>這通常會用於在響應後的初始化，若你擁有某些需要在響應後清空的全域變數或某些通用的處理，都非常適合在這個事件中宣告。你可以透過宣告 <code>burnerAfterSendResponse</code> 事件，在每當 OpenSwoole 響應後將會執行你需要執行的邏輯：</p>
+<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+{
+    //Your logic
+});
+</code></pre>
+<p>事件的使用方式不單單只有回呼函數，請參考 <a href="https://codeigniter.tw/user_guide/extending/events.html#id3">CodeIgniter4 使用手冊</a>提到的方法來選擇最適合你的宣告方式。</p>
 
             </div>
             <div class='sidebar-right'>
@@ -176,7 +175,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#http-伺服器'>HTTP 伺服器</a>
+                            <a href='#openswoole-http'>OpenSwoole HTTP</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#事件'>事件</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
                         </li>
                         
                     </ul>
@@ -198,11 +205,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678512371"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678587991"></script>
 
     
 </body>

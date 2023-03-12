@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>開發建議</title>
+    <title>OpenSwoole 開發建議</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,17 +13,17 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678587991" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678587991"
         media="screen" />
 
     <script>
         var DOCTAVE_TIMESTAMP = "1678587991";
-        var BASE_PATH = "/en/";
+        var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
         if (color === 'dark') {
@@ -36,6 +36,10 @@
     </script>
 
     
+    <script>
+    document.title = 'CodeIgniter Burner 使用說明-' + document.title;
+</script>
+    
 </head>
 
 <body>
@@ -47,12 +51,12 @@
         <div class='header'>
             <div class='logo'>
                 
-                <a href="/en/">
-                    <img src="/en/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                <a href="/zh_TW/">
+                    <img src="/zh_TW/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
-                    <a href="/en/">
+                    <a href="/zh_TW/">
                         CodeIgniter4 Burner v1.0.0
                     </a>
                 </h2>
@@ -73,80 +77,55 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
-            
-                <ul>
-    
-        <li><a href="/en/general/quickstart">快速開始</a></li>
-        
-    
-        <li><a href="/en/general/suggestion">開發建議</a></li>
-        
-    
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a href="/en/general/docker">Docker 環境</a></li>
-        
-    
-</ul>
-
-            
-        
-            <li><a href="/en/openswoole">OpenSwoole</a></li>
+            <li><a href="/zh_TW/general">一般主題</a></li>
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/zh_TW/general/quickstart">快速開始</a></li>
         
     
-        <li><a href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/zh_TW/general/suggestion">開發建議</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
+        <li><a href="/zh_TW/general/fileuploading">檔案上傳處理</a></li>
         
     
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
+        <li><a href="/zh_TW/general/connection">外部連線</a></li>
         
     
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a class="active" href="/en/openswoole/http/suggestion">開發建議</a></li>
+        <li><a href="/zh_TW/general/docker">Docker 環境</a></li>
         
     
 </ul>
 
+            
+        
+            <li><a href="/zh_TW/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/zh_TW/openswoole/http">OpenSwoole HTTP</a></li>
         
     
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
+        <li><a href="/zh_TW/openswoole/websocket">OpenSwoole Websocket</a></li>
         
     
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
+        <li><a class="active" href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
         
     
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
+        <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
         
     
-</ul>
-
+        <li><a href="/zh_TW/openswoole/autoreload">OpenSwoole 自動重載</a></li>
         
     
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/deploy">OpenSwoole 佈署建議</a></li>
         
     
 </ul>
@@ -167,7 +146,7 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="http-開發建議">HTTP 開發建議</h1>
+                <h1 id="openswoole-開發建議">OpenSwoole 開發建議</h1>
 
             </div>
             <div class='sidebar-right'>
@@ -176,7 +155,7 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#http-開發建議'>HTTP 開發建議</a>
+                            <a href='#openswoole-開發建議'>OpenSwoole 開發建議</a>
                         </li>
                         
                     </ul>
@@ -198,11 +177,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678587991"></script>
 
     
 </body>

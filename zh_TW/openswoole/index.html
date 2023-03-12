@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678587991"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678512371" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678512371"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678587991" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678587991"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678512371";
+        var DOCTAVE_TIMESTAMP = "1678587991";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,10 @@
         }
     </script>
 
+    
+    <script>
+    document.title = 'CodeIgniter Burner 使用說明-' + document.title;
+</script>
     
 </head>
 
@@ -103,50 +107,25 @@
             
                 <ul>
     
-        <li><a href="/zh_TW/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/zh_TW/openswoole/http">OpenSwoole HTTP</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/commands">常用指令</a></li>
+        <li><a href="/zh_TW/openswoole/websocket">OpenSwoole Websocket</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/autoreload">自動重新載入</a></li>
+        <li><a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/autoreload">OpenSwoole 自動重載</a></li>
         
     
         <li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/zh_TW/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/zh_TW/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/zh_TW/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/zh_TW/openswoole/deploy">OpenSwoole 佈署建議</a></li>
         
     
 </ul>
@@ -168,30 +147,32 @@
             </div>
             <div class='doctave-content'>
                 <h1 id="openswoole">OpenSwoole</h1>
-<ul>
-<li><a href="/zh_TW/openswoole">OpenSwoole</a>
-<ul>
-<li><a href="/zh_TW/openswoole/quickstart">快速開始</a></li>
-<li><a href="/zh_TW/openswoole/commands">常用指令</a></li>
-<li><a href="/zh_TW/openswoole/autoreload">自動重新載入</a></li>
-<li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
-<li><a href="/zh_TW/openswoole/http">HTTP 伺服器</a>
-<ul>
-<li><a href="/zh_TW/openswoole/http/configuration">組態設定</a></li>
-<li><a href="/zh_TW/openswoole/http/suggestion">開發建議</a></li>
-</ul>
-</li>
-<li><a href="/zh_TW/openswoole/websocket">WebSocket 伺服器</a>
-<ul>
-<li><a href="/zh_TW/openswoole/websocket/configuration">組態設定</a></li>
-<li><a href="/zh_TW/openswoole/websocket/tutorial">建立與處理連線</a></li>
-<li><a href="/zh_TW/openswoole/websocket/suggestion">開發建議</a></li>
-</ul>
-</li>
-<li><a href="/zh_TW/openswoole/deploy">佈署建議</a></li>
-</ul>
-</li>
-</ul>
+<p>OpenSwoole 是從 Swoole 分叉出的新版本，它們有著相異的維護團隊。在 Burner 開發時 OpenSwoole 已迎來了 <code>22.0.0</code> 的更新，在這個版本中命名空間已從 <code>Swoole</code> 遷移至 <code>OpenSwoole</code> ，這意味著 Burner 將不支援在 <code>22.0.0</code> 以下的 <code>OpenSwoole</code> 下執行，也沒辦法相容於 <code>Swoole</code> 。</p>
+<h2 id="如何實現">如何實現</h2>
+<p>接收到 HTTP 請求時，OpenSwoole 驅動程式會將 OpenSwoole 請求物件轉換成 <code>PSR-7</code> 介面的請求物件，接著再將 <code>PSR-7</code> 請求物件傳遞給 <code>burner-core</code> 進行處理。 <code>burner-core</code> 接收到 <code>PSR-7</code> 請求物件時會將它轉換為 <code>CodeIgniter4</code> 專屬的請求物件，並包含一些框架所需的預處理。</p>
+<p>當 <code>CodeIgniter4</code> 將請求處理完畢後， <code>burner-core</code> 會將 <code>CodeIgniter4</code> 的響應物件轉換為 <code>PSR-7</code> 響應物件，再將其傳回給 OpenSwoole 驅動程式。</p>
+<h2 id="開始使用">開始使用</h2>
+<p>在使用 Burner 提供的 OpenSwoole 驅動程式之前，你得確保目前的系統環境已經擁有 <code>PHP8^</code> 與 <code>OpenSwoole</code> 擴充外掛。你可以參考 <a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a>，或者是使用我們推薦的 <a href="/zh_TW/general/docker">Docker 環境</a>。</p>
+<p>當處理好這些前置作業後，你可以在專案根目錄下執行以下指令取得 OpenSwoole 驅動程式：</p>
+<pre><code>composer require monken/codeigniter4-burner-openswoole
+</code></pre>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>如果在執行上述指令的當下你尚未安裝 CodeIgniter4-Burner 程式庫，Composer 將會自動拉取相關的依賴項目。</p>
+</div>
+<p>緊接著，你需要使用以下指令初始化 Burner 與 OpenSwoole 驅動程式：</p>
+<pre><code>php spark burner:init OpenSwoole [http or websocket]
+</code></pre>
+<p>你可以在指令後方自由選擇你的伺服器要使用 HTTP 或 Websocket 模式執行，這個參數在未傳入的情況下預設為 <code>http</code> 。 <code>http</code> 參數會產生一般的 HTTP 伺服器組態設定檔案，如果使用 <code>websocket</code> 參數，則會產生 WebSocket 專屬（包括 HTTP）的組態設定檔案。</p>
+<p>當指令執行成功後，你應該可以在 <code>project_root/app/Config</code> 資料夾中看到兩個被新增的檔案，分別是：<code>Burner.php</code> 與 <code>OpenSwoole.php</code>，你可以透過調整這兩個檔案來細緻地控制你的伺服器設定。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>如果你重複執行 <code>burner:init</code> 指令，已存在的組態設定檔案將會被重新命名而不是直接被覆蓋。</p>
+</div>
+<p>Bruner 已經為你預設了所有組態設定，你可以在需要時再去更動你的設定檔案。</p>
+<p>當一切準備就緒後，你可以直接執行以下指令開啟你的伺服器：</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>在預設的情況下，你的伺服器應該會執行在 <code>8080</code> 連接埠上頭，你可以立即透過 <code>localhost:8080</code> 來瀏覽你的專案頁面。</p>
+<p>順利的話，你的 CodeIgniter4 應該已經成功地運行在 OpenSwoole 上。</p>
 
             </div>
             <div class='sidebar-right'>
@@ -201,6 +182,14 @@
                         
                         <li class='page-nav-level-1'>
                             <a href='#openswoole'>OpenSwoole</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#如何實現'>如何實現</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#開始使用'>開始使用</a>
                         </li>
                         
                     </ul>
@@ -222,11 +211,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678512371"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678512371"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678587991"></script>
 
     
 </body>
