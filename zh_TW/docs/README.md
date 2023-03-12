@@ -1,3 +1,7 @@
+---
+title: CodeIgniter4 Burner 使用手冊
+---
+
 # CodeIgniter4 Burner 使用手冊
 
 * [歡迎使用 Burner](/introduction)
@@ -8,17 +12,10 @@
   * [外部連線](/general/connection)
   * [Docker 環境](/general/docker)
 * OpenSwoole
-  * 快速開始
-  * 常用指令
-  * 自動重新載入
+  * OpenSwoole HTTP
+  * OpenSwoole Websocket
+  * OpenSwoole 開發建議
+  * OpenSwoole 常用指令
+  * OpenSwoole 自動重載
   * Swoole-Table 快取
-  * HTTP 伺服器
-    * 簡介
-    * 組態設定
-  * WebSocket 伺服器
-    * 簡介
-    * 組態設定
-    * 建立與處理連線
-    * 推送訊息
-    * 聊天室：一個簡單的範例
-  * 正式環境建議
+  * OpenSwoole 佈署建議
