@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679822342"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679822342"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679820075" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679822342" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679822342"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1679820075";
+        var DOCTAVE_TIMESTAMP = "1679822342";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -281,8 +281,7 @@ Worker::pushAll(
 </code></pre>
 <h4 id="以-callback-推送並包含更多設定">以 Callback 推送並包含更多設定</h4>
 <p>你可以在回呼函數中回傳一個陣列，來包含更多的設定。</p>
-<pre><code class="language-php">
-use Monken\CIBurner\OpenSwoole\Worker;
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
 Worker::pushAll(
@@ -293,7 +292,7 @@ Worker::pushAll(
             // 要推送的訊息
             'message' =&gt; sprintf('hi! It\'s Burner Websocket! fd: %d', $fd),
             // 傳遞資料的類型
-            'opcode' =&gt; Server::WEBSOCKET_OPCODE_BINARY
+            'opcode' =&gt; Server::WEBSOCKET_OPCODE_TEXT
         ];
     },
     fds: [1, 2, 3]
@@ -302,8 +301,7 @@ Worker::pushAll(
 <h3 id="worker::getframe">Worker::getFrame</h3>
 <p>你可以在程式的任何地方，取得目前的 WebSocket Frame。</p>
 <h4 id="使用範例">使用範例</h4>
-<pre><code class="language-php">
-use Monken\CIBurner\OpenSwoole\Worker;
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 
 $frame = Worker::getFrame();
 </code></pre>
@@ -312,25 +310,21 @@ $frame = Worker::getFrame();
 <h3 id="burnerafterpushmessage">burnerAfterPushMessage</h3>
 <p>當 Burner 推送訊息給 WebSocket 連線者後，會觸發 <code>burnerAfterPushMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
 <p>你可以透過以下的方式來註冊 <code>burnerAfterPushMessage</code> 事件：</p>
-<pre><code class="language-php">
-Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
+<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
 {
     // $server 是 OpenSwoole 的 Server 實例
     // $fd 是目前正在推送的連線者的 fd
     // $pushResult 是推送訊息的結果
 });
-
 </code></pre>
 <h3 id="burnerafterpushallmessage">burnerAfterPushAllMessage</h3>
 <p>當 Burner 推送訊息給所有 WebSocket 連線者後，會觸發 <code>burnerAfterPushAllMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
 <p>你可以透過以下的方式來註冊 <code>burnerAfterPushAllMessage</code> 事件：</p>
-<pre><code class="language-php">
-Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
+<pre><code class="language-php">Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
 {
     // $server 是 OpenSwoole 的 Server 實例
     // $fds 已推送的連線者的 fd 陣列
 });
-
 </code></pre>
 
             </div>
@@ -438,11 +432,11 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679822342"></script>
 
     
 </body>
