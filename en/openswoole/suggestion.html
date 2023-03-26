@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>OpenSwoole 開發建議</title>
+    <title>OpenSwoole suggestions</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,17 +13,17 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679820075" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679820075"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
         var DOCTAVE_TIMESTAMP = "1679820075";
-        var BASE_PATH = "/zh_TW/";
+        var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
         if (color === 'dark') {
@@ -52,12 +52,12 @@
         <div class='header'>
             <div class='logo'>
                 
-                <a href="/zh_TW/">
-                    <img src="/zh_TW/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                <a href="/en/">
+                    <img src="/en/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
-                    <a href="/zh_TW/">
+                    <a href="/en/">
                         CodeIgniter4 Burner v1.0.0
                     </a>
                 </h2>
@@ -78,37 +78,37 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/zh_TW/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/zh_TW/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a href="/zh_TW/general/suggestion">開發建議</a></li>
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/zh_TW/general/docker">Docker 環境</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
 
             
         
-            <li><a href="/zh_TW/openswoole">OpenSwoole</a></li>
+            <li><a href="/en/openswoole">OpenSwoole</a></li>
             
                 <ul>
     
-        <li><a href="/zh_TW/openswoole/implement">OpenSwoole 實踐</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a class="active" href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
+        <li><a class="active" href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -129,10 +129,10 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="openswoole-開發建議">OpenSwoole 開發建議</h1>
+                <h1 id="openswoole-suggestions">OpenSwoole suggestions</h1>
 <h2 id="fast-cache">Fast Cache</h2>
-<p>OpenSwoole 提供了一個快速的 Cache 系統，可以在多個 Worker 間共享資料，並且可以在多個 Worker 間同步資料。我們支援 <a href="https://openswoole.com/docs/modules/swoole-table">Swoole-Table</a> 作為快取的儲存介面，你可以在你的專案中使用它，就像你熟悉的一樣！</p>
-<p>你可以在 <code>app/Config/OpenSwoole.php</code> 設定檔中，加入以下設定並重新啟動伺服器。</p>
+<p>OpenSwoole provides a fast cache system that can be shared between multiple workers and synchronized between multiple workers. We support <a href="https://openswoole.com/docs/modules/swoole-table">Swoole-Table</a> as the storage interface for the cache, which you can use in your project just like you are familiar with!</p>
+<p>You can add the following settings in the <code>app/Config/OpenSwoole.php</code> configuration file and restart the server.</p>
 <pre><code class="language-php">/**
  * Whether to open the Key/Value Cache provided by Burner.
  * Shared high-speed caching with Swoole-Table implementation.
@@ -155,19 +155,19 @@ public $fastCacheConfig = [
     'valueStringLength' =&gt; 1024
 ];
 </code></pre>
-<p>接著，你需要開啟 <code>app/Config/Cache</code> 並加入以下設定：</p>
+<p>Add the following settings to the <code>app/Config/Cache.php</code> configuration.</p>
 <pre><code class="language-php">public $validHandlers = [
     //hide
     'burner' =&gt; \Monken\CIBurner\BurnerCacheHandler::class
 ];
 </code></pre>
-<p>最後，你需要從 <code>Primary Handler</code> 切換到 <code>Burner</code>。</p>
+<p>Finally, you need to switch from <code>Primary Handler</code> to <code>Burner</code>.</p>
 <pre><code class="language-php">public $handler = 'burner';
 </code></pre>
-<p>現在你可以在 Burner 提供的 Swoole-Table Cache 中，以同樣的方式操作 <a href="https://www.codeigniter.com/user_guide/libraries/caching.html">Cache Library</a>。請注意，Swoole-Table 會因為伺服器重啟而失去所有資料，它只是一個資料在 Worker 之間共享的解決方案。</p>
-<h2 id="自動重新載入">自動重新載入</h2>
-<p>在預設的 OpenSwoole 狀況下，你必須在每次修改 PHP 檔案後，重新啟動伺服器，才能讓你的修改生效。這似乎不太友善。</p>
-<p>你可以修改 <code>app/Config/OpenSwoole.php</code> 設定檔，加入以下設定並重新啟動伺服器。</p>
+<p>Now you can operate the <a href="https://www.codeigniter.com/user_guide/libraries/caching.html">Cache Library</a> in the same way as the Burner provided Swoole-Table Cache. Please note that Swoole-Table will lose all data due to server restart, it is just a solution to share data between workers.</p>
+<h2 id="automatic-reload">Automatic reload</h2>
+<p>By default, in the OpenSwoole state, you must restart the server after each modification to the PHP file to make your changes effective. This does not seem very friendly.</p>
+<p>You can modify the <code>app/Config/OpenSwoole.php</code> configuration file and add the following settings and restart the server.</p>
 <pre><code class="language-php">/**
  * Auto-scan changed files
  *
@@ -182,18 +182,17 @@ public $autoReload = true;
  */
 public $autoReloadMode = 'restart';
 </code></pre>
-<p>Burner 提供了兩種重新載入的方式，你可以透過調整 <code>autoReloadMode</code> 來切換。</p>
+<p>Burner provides two ways to reload, you can switch by adjusting <code>autoReloadMode</code>.</p>
 <ul>
-<li><code>restart</code> 意味著每次檔案變更時，伺服器都會自動重新啟動。就好像你自己關閉了伺服器，然後又重新啟動了一樣，這樣可以確保所有的 php 檔案都重新載入。</li>
-<li><code>reload</code> 只會重新載入正在運行的 Worker，就像 <a href="https://openswoole.com/docs/modules/swoole-server-reload#hot-code-linux-signal-trigger">文件</a> 所說的那樣。請注意，這種方式可能無法處理所有情況，例如，你可能會透過 <code>composer require/update</code> 來產生專案核心的 php 檔案的變更。</li>
+<li><code>restart</code> means that the server will automatically restart every time the file is changed. Just like you turn off the server yourself and then restart it, this can ensure that all php files are reloaded.</li>
+<li><code>reload</code> will only reload the running Worker, just like the <a href="https://openswoole.com/docs/modules/swoole-server-reload#hot-code-linux-signal-trigger">document</a> says. Please note that this mode may not handle all cases. For example: When you make changes to the core PHP files of your project through <code>composer require/update</code>.</li>
 </ul>
-<div class="callout info"><p class="callout-title">備註</p>
-<p><code>Automatic reload</code> 方法非常耗費資源，請不要在正式環境中啟用此選項。</p>
-</div><h2 id="在只有一個-worker-的環境中開發和除錯">在只有一個 Worker 的環境中開發和除錯</h2>
-<p>由於 OpenSwoole 與其他伺服器軟體（如 Nginx、Apache）有根本上的差異，因此每個 Codeigniter4 將作為 Worker 的形式存在於 RAM 中，HTTP 請求將重用這些 Worker 來處理。因此，我們在只有一個 Worker 的環境中開發和測試穩定性，以證明它也可以在正式環境中的多個 Worker 中正常運行。</p>
-<p>你可以參考 <code>app/Config/OpenSwoole.php</code> 設定檔中以下的設定，將 Worker 的數量降到最低：</p>
-<pre><code class="language-php">
-public $config = [
+<div class="callout info"><p class="callout-title">Note</p>
+<p><code>Automatic reload</code> method is very resource-intensive, please do not enable this option in the production environment.</p>
+</div><h2 id="debugging-with-only-one-worker">Debugging with only one Worker</h2>
+<p>Since OpenSwoole is fundamentally different from other server software (such as Nginx, Apache), each Codeigniter4 exists as a Worker in RAM, and HTTP requests reuse these Workers to handle them. Therefore, we develop and test the stability in the environment with only one Worker to prove that it can also run normally in the formal environment with multiple Workers.</p>
+<p>You can refer to the following settings in the <code>app/Config/OpenSwoole.php</code> configuration file and reduce the number of Workers to the minimum:</p>
+<pre><code class="language-php">public $config = [
     'worker_num' =&gt; 1,
     /** hide */
 ];
@@ -206,7 +205,7 @@ public $config = [
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#openswoole-開發建議'>OpenSwoole 開發建議</a>
+                            <a href='#openswoole-suggestions'>OpenSwoole suggestions</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
@@ -214,11 +213,11 @@ public $config = [
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#自動重新載入'>自動重新載入</a>
+                            <a href='#automatic-reload'>Automatic reload</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#在只有一個-worker-的環境中開發和除錯'>在只有一個 Worker 的環境中開發和除錯</a>
+                            <a href='#debugging-with-only-one-worker'>Debugging with only one Worker</a>
                         </li>
                         
                     </ul>
@@ -240,11 +239,11 @@ public $config = [
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679820075"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

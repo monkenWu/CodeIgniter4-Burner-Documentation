@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Docker 環境</title>
+    <title>Docker Environment</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,11 @@
         }
     </script>
 
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
+</script>
     
 </head>
 
@@ -73,26 +78,20 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/en/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a href="/en/general/suggestion">開發建議</a></li>
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a class="active" href="/en/general/docker">Docker 環境</a></li>
+        <li><a class="active" href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -103,50 +102,13 @@
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-        
-    
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -167,26 +129,26 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="docker-環境">Docker 環境</h1>
-<p>使用 Docker 建構你的開發與正式環境有助於你減輕對環境建置的負擔，不論你使用何種驅動程式都需要預裝或開啟一些特別的擴充外掛。同時，使用 Docker 建構的環境將能夠幫助你在 Windows 環境下使用 Workerman 與 OpenSwoole 驅動程式。</p>
-<p>你可以透過 <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> 儲存庫拉取到我們所推薦的 Docker 配置。</p>
-<h2 id="環境備註">環境備註</h2>
-<p>所有的推薦組態都基於 <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> 映像檔，這個映像檔囊括了常用的 PHP 擴充外掛，你可以透過<a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">這份文件</a>來調整更多細節，使你的環境更符合你的專案。</p>
-<p>同時 OpenSwoole 的 Dockerfile 環境安裝指令參考了 <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">OpenSwoole 官方 Dockerfile</a> 。 Workerman 的 Dockerfile 額外裝了 <code>php-event</code> 擴充外掛，這將使 Workerman 能夠獲得更好的執行效能。</p>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>你可以依照你的專案需求在 Dockerfile 安裝你所需要的任何東西，你只需要記得它們都是基於 <a href="https://www.alpinelinux.org/">alpine linux</a> 的映像檔。</p>
-</div><h2 id="開始使用">開始使用</h2>
+                <h1 id="docker-environment">Docker Environment</h1>
+<p>Using Docker to build your development and production environments can help you reduce the burden of environment setup, regardless of which driver you use. You need to pre-install or enable some special extensions. At the same time, the environment built with Docker can help you use the Workerman and OpenSwoole drivers under the Windows environment.</p>
+<p>You can pull the Docker configuration we recommend from the <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> repository.</p>
+<h2 id="environment-notes">Environment notes</h2>
+<p>All recommended configurations are based on the <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> image, which includes common PHP extensions. You can adjust more details through <a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">this document</a> to make your environment more suitable for your project.</p>
+<p>At the same time, the Dockerfile environment installation instructions of OpenSwoole refer to the <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">official Dockerfile of OpenSwoole</a>. The Dockerfile of Workerman additionally installed php-event extension, which will make Workerman get better performance.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>You can install anything you need in the Dockerfile according to your project requirements. You just need to remember that they are all based on the <a href="https://www.alpinelinux.org/">alpine Linux</a>  image.</p>
+</div><h2 id="getting-started">Getting Started</h2>
 <ul>
-<li>將你的 CodeIgniter4 專案置於 <code>app</code> 資料夾中</li>
-<li>使用 <code>docker-compose build</code> 將建構你的本地環境</li>
-<li>使用 <code>docker-compose up -d</code> 使容器運行在背景</li>
-<li>使用 <code>docker-compose exec app bash</code> 進入容器之中</li>
-<li>在預設的情況下，你將被定位在專案根目錄中，你可以開始安裝 Burner 以及選擇你所需要的驅動程式</li>
-<li>別忘了 <code>docker-compose down</code> 或 <code>docker-compose stop</code> 可以停止你的容器</li>
+<li>Place your CodeIgniter4 project in the app folder</li>
+<li>Use <code>docker-compose build</code> to build your local environment</li>
+<li>Use <code>docker-compose up</code> -d to run the container in the background</li>
+<li>Use <code>docker-compose exec</code> app bash to enter the container</li>
+<li>By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need</li>
+<li>Don't forget that <code>docker-compose down</code> or <code>docker-compose stop</code> can stop your container</li>
+<li>The default port mapping of <code>docker-compose.yml</code> is <code>8080:8080</code>, you can adjust this setting according to your own needs.</li>
 </ul>
-<p><code>docker-compose.yml</code> 預設的連接埠映射為 <code>8080:8080</code> ，你可以依據自己的需求調整這個設定。</p>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>如果你的 CodeIgniter4 並不包含 <code>vendor</code> 資料夾，記得使用 <code>composer install</code> 拉取專案所需的程式庫。</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If your CodeIgniter4 does not contain the vendor folder, remember to use <code>composer install</code> to pull the libraries required by the project.</p>
 </div>
             </div>
             <div class='sidebar-right'>
@@ -195,15 +157,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#docker-環境'>Docker 環境</a>
+                            <a href='#docker-environment'>Docker Environment</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#環境備註'>環境備註</a>
+                            <a href='#environment-notes'>Environment notes</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#開始使用'>開始使用</a>
+                            <a href='#getting-started'>Getting Started</a>
                         </li>
                         
                     </ul>
@@ -225,11 +187,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

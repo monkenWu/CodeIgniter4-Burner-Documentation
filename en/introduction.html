@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>歡迎使用 Burner！</title>
+    <title>Welcome to Burner!</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,11 @@
         }
     </script>
 
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
+</script>
     
 </head>
 
@@ -73,26 +78,20 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a class="active" href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a class="active" href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/en/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a href="/en/general/suggestion">開發建議</a></li>
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a href="/en/general/docker">Docker 環境</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -103,50 +102,13 @@
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-        
-    
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -167,57 +129,57 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
-<p>Burner 是一款專屬於 CodeIgniter4 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
-<h2 id="系統需求">系統需求</h2>
-<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
-<h3 id="基本需求">基本需求</h3>
+                <h1 id="welcome-to-burner!">Welcome to Burner!</h1>
+<p>Burner is a out-of-box  library for CodeIgniter4 that supports <a href="https://roadrunner.dev/">RoadRunner</a> , <a href="https://github.com/walkor/workerman">Workerman</a> ，and <a href="https://openswoole.com/">OpenSwoole</a> . You only need to open some php extensions to greatly accelerate your CodeIgniter4 application, making it able to withstand higher loads and handle more connections at the same time.</p>
+<h2 id="system-requirements">System Requirements</h2>
+<p>The system requirements for Burner are different depending on the driver you choose.</p>
+<h3 id="basic-requirements">Basic Requirements</h3>
 <ol>
-<li>CodeIgniter Framework 4.3.0 以上</li>
+<li>CodeIgniter Framework 4.3.0 or later</li>
 <li>Composer</li>
 <li>PHP8^</li>
 </ol>
 <h3 id="openswoole">OpenSwoole</h3>
 <ol>
-<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
+<li>OpenSwoole 22^ or later, you can refer to the official document <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole Prerequisites</a></li>
 </ol>
-<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
+<p>We also recommend you to read: <a href="https://openswoole.com/docs/get-started/installation">How to install OpenSwoole</a></p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>OpenSwoole does not support native execution in the Windows environment. However, you can use OpenSwoole via WSL or Docker.</p>
 </div><h3 id="workerman">Workerman</h3>
 <ol>
-<li>開啟 <code>php-pcntl</code> 外掛</li>
-<li>開啟 <code>php-posix</code> 外掛</li>
-<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
+<li>Enable <code>php-pcntl</code> extension</li>
+<li>Enable <code>php-posix</code> extension</li>
+<li>Not required, but we recommend you to install <a href="https://www.php.net/manual/en/book.event.php">php-event</a> extension to get better performance</li>
 </ol>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>Workerman does not support Windows environment.But you can use Workerman via WSL or Docker.</p>
 </div><h3 id="roadrunner">RoadRunner</h3>
 <ol>
-<li>開啟 <code>php-curl</code> 外掛</li>
-<li>開啟 <code>php-zip</code> 外掛</li>
-<li>開啟 <code>php-sockets</code> 外掛</li>
+<li>Enable <code>php-curl</code> extension</li>
+<li>Enable <code>php-zip</code> extension</li>
+<li>Enable <code>php-sockets</code> extension</li>
 </ol>
-<h2 id="架構">架構</h2>
-<p>Burner 由數個程式庫組成，分別是：</p>
+<h2 id="architecture">Architecture</h2>
+<p>Burner is composed of several libraries, including:</p>
 <ul>
 <li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> is a simple <code>PSR7</code> and <code>CodeIgniter4</code> converter, and also includes some CodeIgniter4 commands; because Codeigniter4 does not implement the full <a href="https://www.php-fig.org/psr/psr-7/">HTTP message interface</a>, this library focuses on the synchronization of the <code>PSR-7</code> interface and the Codeigniter4 HTTP interface.</p>
 </li>
 <li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> uses this driver, your CodeIngiter4 will be able to run through OpenSwoole</p>
 </li>
 <li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> uses this driver, your CodeIngiter4 will be able to run through Workerman. In some <a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">test scenarios</a>, Workerman has shown excellent performance advantages.</p>
 </li>
 <li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
+<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> uses this driver, your CodeIngiter4 will be able to run through RoadRunner. Unlike other Drivers, it has a PHP server implemented in <code>Go</code>, in addition to the framework's own support, the official also provides many convenient plug-ins.</p>
 </li>
 </ul>
-<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
-<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
-<p>準備好開始探索 Burner 了嗎？</p>
-<p><a href="/en/general/quickstart">快速開始</a> </p>
+<p>You can choose the most suitable driver for your project, and there is no absolute good or bad. It depends on the project requirements and the familiarity of the developer with the technology.</p>
+<p>With the support of Burner, your project will be able to freely switch between different high-performance PHP servers, or run on two different servers at the same time on different ports. For example, through RoadRunner to handle general HTTP requests, while using OpenSwoole to handle WebSocket requests.</p>
+<p>Are you ready to explore Burner?</p>
+<p><a href="/en/general/quickstart">Quick Start</a></p>
 
             </div>
             <div class='sidebar-right'>
@@ -226,15 +188,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
+                            <a href='#welcome-to-burner!'>Welcome to Burner!</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#系統需求'>系統需求</a>
+                            <a href='#system-requirements'>System Requirements</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#基本需求'>基本需求</a>
+                            <a href='#basic-requirements'>Basic Requirements</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
@@ -250,7 +212,7 @@
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#架構'>架構</a>
+                            <a href='#architecture'>Architecture</a>
                         </li>
                         
                     </ul>
@@ -272,11 +234,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>開發建議</title>
+    <title>Development Suggestion</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,11 @@
         }
     </script>
 
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
+</script>
     
 </head>
 
@@ -73,26 +78,20 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/en/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a class="active" href="/en/general/suggestion">開發建議</a></li>
+        <li><a class="active" href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a href="/en/general/docker">Docker 環境</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -103,50 +102,13 @@
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-        
-    
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -167,13 +129,13 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="開發建議">開發建議</h1>
-<h2 id="codeigniter4-request-與-response-物件">Codeigniter4 Request 與 Response 物件</h2>
-<p>Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a>，所以這個程式庫著重於 <code>PSR-7 介面</code> 與 <code>Codeigniter4 HTTP 介面</code> 的同步。</p>
-<p>基於上述原因，在開發上，你應該使用 Codeigniter4 所提供的 <code>$this-&gt;request</code> 或是使用全域函數 <code>\Config\Services::('request')</code> 取得正確的 request 物件；使用 <code>$this-&gt;response</code> 或是 <code>\Config\Services::('response')</code> 取得正確的 response 物件。</p>
-<p>請注意，在建構給予使用者的響應時，不論是 <code>header</code> 或 <code>set-cookies</code> 應該避免使用 PHP 內建的方法進行設定。而是使用 <a href="https://codeigniter.tw/user_guide/outgoing/response.html">Codeigniter4 響應物件</a> 提供的 <code>setHeader()</code> 與 <code>setCookie()</code> 進行設定。 </p>
-<h2 id="以-return-結束控制器邏輯">以 return 結束控制器邏輯</h2>
-<p>在 Controller 中，盡量使用 return 結束程式邏輯，不論是視圖的響應或是 API 響應，減少使用 <code>echo</code> 輸出內容可以避免很多錯誤，就像這個樣子。</p>
+                <h1 id="development-suggestion">Development Suggestion</h1>
+<h2 id="using-codeigniter4-request-and-response-object">Using Codeigniter4 Request and Response object</h2>
+<p>Codeigniter4 does not implement the complete <a href="https://www.php-fig.org/psr/psr-7/">HTTP message interface</a>, hence this library focuses on the synchronize of <code>PSR-7 interface</code> and <code>Codeigniter4 HTTP interface</code>.</p>
+<p>Base on the reasons above, You should use <code>$this-&gt;request</code>, provided by Codeigniter4, or the global function <code>/Config/Services::('request')</code> to fetch the correct request object; Use <code>$this-&gt;response</code> or <code>/Config/Services::('response')</code> to fetch the correct response object.</p>
+<p>Please be noticed, while constructing response for the users during developing, you should prevent using PHP built-in methods to conduct <code>header</code> or <code>set-cookies</code> settings. Using the <code>setHeader()</code> and <code>setCookie()</code>, provided by the <a href="https://codeigniter.com/user_guide/outgoing/response.html">Codeigniter4 Response Object</a>, to conduct setting.</p>
+<h2 id="use-return-to-stop-controller-logic">Use return to stop controller logic</h2>
+<p>Inside the Controller, try using return to stop the controller logic. No matter the response of view or API, reduce the <code>echo</code> output usage can avoid lets of errors, just like this:</p>
 <pre><code class="language-php">&lt;?php
 
 namespace App\Controllers;
@@ -202,12 +164,82 @@ class Home extends BaseController
 
 }
 </code></pre>
-<h2 id="使用內建-session-程式庫">使用內建 Session 程式庫</h2>
-<p>我們只針對 Codeigniter4 內建 <a href="https://codeigniter.tw/user_guide/libraries/sessions.html">Session 程式庫</a> 進行支援，並不保證使用 <code>session_start()</code> 與 <code>$_SESSION</code> 是否能照常運作。所以，你應該避免使用 PHP 內建的 Session 方法，而是以 Codeigniter4 框架內建的程式庫為主。</p>
-<h2 id="worker-數量">Worker 數量</h2>
-<p>因為 RoadRunner、OpenSwoole 與 Workerman 與其他伺服器軟體（Nginx、Apache）有著根本上的不同，每個 Codeigniter4 將會以 Worker 的形式持久化於記憶體中，HTTP 的請求會重複利用到這些 Worker 進行處裡。所以，我們最好在只有單個 Worker 的情況下開發軟體並測試是否穩定，以證明在多個 Woker 的實際環境中能正常運作。 </p>
-<h2 id="處理變數拋出">處理變數拋出</h2>
-<p>如果你在開發環境中碰到了一些需要確認的變數、或物件內容，無論在程式的何處，你都可以使用全域函數 <code>dump()</code> 來將錯誤拋出到終端機上。</p>
+<h2 id="use-the-built-in-session-library">Use the built-in Session library</h2>
+<p>We only focus on supporting the Codeigniter4 built-in <a href="https://codeigniter.com/user_guide/libraries/sessions.html">Session library</a>, and do not guarantee if using <code>session_start()</code> and <code>$_SEEEION</code> can work as normal. So, you should avoid using the PHP built-in Session method, change to the Codeigniter4 framework built-in library.</p>
+<h2 id="external-connections">External Connections</h2>
+<p>No matter what driver you are using, we believe that you should manage the external connections in a singleton way, such as: DB, Cache or any other external systems that need long connections.</p>
+<p>This is because each Worker will live in memory for a long time to repeatedly process HTTP requests, which makes us reduce the performance overhead of PHP repeated compilation and loading. If the external connection instance will reconnect at the beginning of each request, this will greatly slow down the execution performance.</p>
+<p>Burner will take over the life cycle of CodeIgniter4 after the server starts, and in the long connection management, we only directly support the Codeigniter4 built-in <code>Database</code> library and <code>Cache</code> library, and do not guarantee that the built-in PHP method will work as normal.</p>
+<p>For this, you should avoid using the built-in PHP method, and use the Codeigniter4 framework built-in library as the main.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>Of course, if you are very familiar with the driver you choose and the target system you need to connect to, you can also handle the connection yourself to keep it in memory for a long time.</p>
+</div><h3 id="database-and-cache-library">Database and Cache Library</h3>
+<p>In the default settings of Burner, the connection of the Worker's database and cache is persistent, and will automatically reconnect when the connection is invalid. All requests that enter the Worker will use the same connection instance.</p>
+<p>If you do not want this default setting, and want each request that enters the Worker to use a DB or Cache connection instance that reconnects. Please adjust the following settings in Config/Burner.php:</p>
+<pre><code class="language-php">public $dbAutoClose = true;
+public $cacheAutoClose = true;
+</code></pre>
+<h2 id="file-upload">File Upload</h2>
+<p>No matter which driver you are using, there is a defect that cannot correctly pass the contents of <code>$_FILES</code>. So the <a href="https://codeigniter.com/user_guide/libraries/uploaded_files.html">File Upload Class</a> of Codeingiter4 will not work properly. For this, we provide a file upload class that meets the PSR-7 specification so that you can correctly handle file uploads in the heigh performance PHP server. Even if you switch your project to another server environment (spark serve, Apache, Nginx) to run, this class can still be used normally and does not require any code changes.</p>
+<p>You can use the following code snippet to get the files uploaded by the user in the controller (or anywhere).</p>
+<pre><code class="language-php">SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
+</code></pre>
+<p>This method will return an array of Uploaded File objects. The methods available on this object are the same as those specified in the <a href="https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface">PSR-7 Uploaded File Interface</a>.</p>
+<p>The following example will show the minimal way a standard CodeIgniter4 controller handles single file uploads as well as multiple file uploads.</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App\Controllers;
+
+use CodeIgniter\API\ResponseTrait;
+use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
+
+class FileUploadTest extends BaseController
+{
+    use ResponseTrait;
+
+    protected $format = "json";
+
+    /**
+     * form-data 
+     */
+    public function fileUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles();
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file-&gt;getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file-&gt;moveTo($newFilePath);
+            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this-&gt;respondCreated($data);
+    }
+
+    /**
+     * form-data multiple upload
+     */
+    public function fileMultipleUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file-&gt;getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file-&gt;moveTo($newFilePath);
+            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this-&gt;respondCreated($data);
+    }
+}
+</code></pre>
+<h2 id="worker-num">Worker-num</h2>
+<p>Because RoadRunner, OpenSwoole and Workerman are fundamentally different from other server software (Nginx, Apache), each Codeigniter4 will be persisted in memory in the form of a Worker, and the HTTP request will be repeatedly reused to handle these Workers. So, we should develop and test software in a single Worker environment to prove that it can work properly in a real environment with multiple Wokers.</p>
+<h2 id="handle-variable-dump">Handle variable dump</h2>
+<p>If you encountered some variables or object content that needed to be confirmed in <code>-d</code> development mode, you can use the global function <code>dump()</code> to throw errors onto the terminal no matter where the program is.</p>
 
             </div>
             <div class='sidebar-right'>
@@ -216,27 +248,39 @@ class Home extends BaseController
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#開發建議'>開發建議</a>
+                            <a href='#development-suggestion'>Development Suggestion</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#codeigniter4-request-與-response-物件'>Codeigniter4 Request 與 Response 物件</a>
+                            <a href='#using-codeigniter4-request-and-response-object'>Using Codeigniter4 Request and Response object</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#以-return-結束控制器邏輯'>以 return 結束控制器邏輯</a>
+                            <a href='#use-return-to-stop-controller-logic'>Use return to stop controller logic</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#使用內建-session-程式庫'>使用內建 Session 程式庫</a>
+                            <a href='#use-the-built-in-session-library'>Use the built-in Session library</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#worker-數量'>Worker 數量</a>
+                            <a href='#external-connections'>External Connections</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#database-and-cache-library'>Database and Cache Library</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#處理變數拋出'>處理變數拋出</a>
+                            <a href='#file-upload'>File Upload</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#worker-num'>Worker-num</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#handle-variable-dump'>Handle variable dump</a>
                         </li>
                         
                     </ul>
@@ -258,11 +302,11 @@ class Home extends BaseController
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

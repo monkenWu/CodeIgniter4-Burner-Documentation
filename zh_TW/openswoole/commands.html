@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -36,8 +36,9 @@
     </script>
 
     
-    <script>
-    document.title = 'CodeIgniter Burner 使用說明-' + document.title;
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
 </script>
     
 </head>
@@ -90,12 +91,6 @@
         <li><a href="/zh_TW/general/suggestion">開發建議</a></li>
         
     
-        <li><a href="/zh_TW/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/zh_TW/general/connection">外部連線</a></li>
-        
-    
         <li><a href="/zh_TW/general/docker">Docker 環境</a></li>
         
     
@@ -107,25 +102,13 @@
             
                 <ul>
     
-        <li><a href="/zh_TW/openswoole/http">OpenSwoole HTTP</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket">OpenSwoole Websocket</a></li>
+        <li><a href="/zh_TW/openswoole/implement">OpenSwoole 實踐</a></li>
         
     
         <li><a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
         
     
         <li><a class="active" href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/autoreload">OpenSwoole 自動重載</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/deploy">OpenSwoole 佈署建議</a></li>
         
     
 </ul>
@@ -147,6 +130,36 @@
             </div>
             <div class='doctave-content'>
                 <h1 id="openswoole-常用指令">OpenSwoole 常用指令</h1>
+<h3 id="啟用伺服器">啟用伺服器</h3>
+<pre><code>php spark burner:start
+</code></pre>
+<p>在預設的情況下，Burner 會讀取寫在 <code>app/Burner.php</code> 預設驅動程式。當然，你也可以強制在指令中指定 Burner 以 <code>OpenSwoole</code> 驅動程式啟動伺服器，就像這樣：</p>
+<pre><code>php spark burner:start --driver OpenSwoole
+</code></pre>
+<div class="callout info"><p class="callout-title">備註</p>
+<p><code>--driver OpenSwoole</code> 這個參數也適用於下面提到的所有指令。</p>
+</div><h3 id="長駐模式">長駐模式</h3>
+<p>讓 OpenSwoole 在背景工作。</p>
+<p>When you run the server with this option, Burner will ignore the Automatic reload setting.</p>
+<pre><code>php spark burner:start --daemon
+</code></pre>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>當你的伺服器執行在常駐模式時，Burner 將會無視你所開啟的自動重載。</p>
+</div><h3 id="stop-server">stop server</h3>
+<p>Burner 會使用 <code>SIGTERM</code> 訊號關閉程序，會等待當前的任務執行完畢後再停止伺服器，不會直接殺死程序。</p>
+<pre><code>php spark burner:stop
+</code></pre>
+<h3 id="reload-worker">reload worker</h3>
+<p>就像 <a href="https://openswoole.com/docs/modules/swoole-server-reload#hot-code-linux-signal-trigger">官方文件</a> 說的那樣，這個模式只會重新載入執行中的 Worker 。請注意，這個模式可能無法處理所有情況。例如：當你透過 <code>composer require/update</code> 對專案的核心 PHP 檔案產生改變時。</p>
+<pre><code>php spark burner:reload --mode worker
+</code></pre>
+<pre><code>php spark burner:reload --mode task_worker
+</code></pre>
+<h3 id="restart-worker">restart worker</h3>
+<p>Burner 會替你停止伺服器後再重新啟動伺服器。</p>
+<p>無論你的伺服器執行在長駐模式或開發模式下，都可以使用這個指令來重啟。</p>
+<pre><code>php spark burner:restart
+</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -156,6 +169,26 @@
                         
                         <li class='page-nav-level-1'>
                             <a href='#openswoole-常用指令'>OpenSwoole 常用指令</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#啟用伺服器'>啟用伺服器</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#長駐模式'>長駐模式</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#stop-server'>stop server</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#reload-worker'>reload worker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#restart-worker'>restart worker</a>
                         </li>
                         
                     </ul>
@@ -177,11 +210,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>常用指令</title>
+    <title>OpenSwoole Commands</title>
     <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,11 @@
         }
     </script>
 
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
+</script>
     
 </head>
 
@@ -73,26 +78,20 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/en/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a href="/en/general/suggestion">開發建議</a></li>
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a href="/en/general/docker">Docker 環境</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -103,50 +102,13 @@
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a class="active" href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-        
-    
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a class="active" href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -167,7 +129,36 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="常用指令">常用指令</h1>
+                <h1 id="openswoole-commands">OpenSwoole Commands</h1>
+<h3 id="start-server">Start Server</h3>
+<pre><code>php spark burner:start
+</code></pre>
+<p>By default, Burner will read the default driver from <code>app/Burner.php</code>. Of course, you can force the <code>OpenSwoole</code> driver to start the server in the command, like this:</p>
+<pre><code>php spark burner:start --driver OpenSwoole
+</code></pre>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>The <code>--driver OpenSwoole</code> parameter also applies to all the commands below.</p>
+</div><h3 id="daemon-mode">Daemon Mode</h3>
+<p>Run the server in the background.</p>
+<p>When you run the server with this option, Burner will ignore the Automatic reload setting.</p>
+<pre><code>php spark burner:start --daemon
+</code></pre>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>When your server is running in daemon mode, Burner will ignore the automatic reload you have enabled.</p>
+</div><h3 id="stop-server">Stop Server</h3>
+<p>Burner will use the <code>SIGTERM</code> signal to close the program, waiting for the current task to complete before stopping the server, and will not kill the program directly.</p>
+<pre><code>php spark burner:stop
+</code></pre>
+<h3 id="reload-worker">Reload Worker</h3>
+<p>As the <a href="https://openswoole.com/docs/modules/swoole-server-reload#hot-code-linux-signal-trigger">official document</a> says, this mode will only reload the running Worker. Please note that this mode may not handle all cases. For example: When you make changes to the core PHP files of your project through <code>composer require/update</code>.</p>
+<pre><code>php spark burner:reload --mode worker
+</code></pre>
+<pre><code>php spark burner:reload --mode task_worker
+</code></pre>
+<h3 id="restart-worker">Restart Worker</h3>
+<p>Burner will stop the server for you and then restart the server.</p>
+<p>Whether your server is running in daemon mode or development mode, you can use this command to restart.</p>
+<pre><code>php spark burner:restart</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -176,7 +167,27 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#常用指令'>常用指令</a>
+                            <a href='#openswoole-commands'>OpenSwoole Commands</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#start-server'>Start Server</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#daemon-mode'>Daemon Mode</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#stop-server'>Stop Server</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#reload-worker'>Reload Worker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#restart-worker'>Restart Worker</a>
                         </li>
                         
                     </ul>
@@ -198,11 +209,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

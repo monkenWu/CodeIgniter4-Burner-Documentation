@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -35,6 +35,11 @@
         }
     </script>
 
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
+</script>
     
 </head>
 
@@ -73,26 +78,20 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a href="/en/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
             
         
-            <li><a href="/en/general">一般主題</a></li>
+            <li><a href="/en/general">General</a></li>
             
                 <ul>
     
-        <li><a href="/en/general/quickstart">快速開始</a></li>
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
         
     
-        <li><a href="/en/general/suggestion">開發建議</a></li>
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a href="/en/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/en/general/connection">外部連線</a></li>
-        
-    
-        <li><a href="/en/general/docker">Docker 環境</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -103,50 +102,13 @@
             
                 <ul>
     
-        <li><a href="/en/openswoole/quickstart">快速開始</a></li>
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
         
     
-        <li><a href="/en/openswoole/commands">常用指令</a></li>
+        <li><a href="/en/openswoole/suggestion">OpenSwoole suggestions</a></li>
         
     
-        <li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-        
-    
-        <li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/en/openswoole/http">HTTP 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/websocket">Websocket 伺服器</a></li>
-        
-            <ul>
-    
-        <li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-        
-    
-        <li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-        
-    
-</ul>
-
-        
-    
-        <li><a href="/en/openswoole/deploy">佈署建議</a></li>
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
         
     
 </ul>
@@ -168,30 +130,32 @@
             </div>
             <div class='doctave-content'>
                 <h1 id="openswoole">OpenSwoole</h1>
-<ul>
-<li><a href="/en/openswoole">OpenSwoole</a>
-<ul>
-<li><a href="/en/openswoole/quickstart">快速開始</a></li>
-<li><a href="/en/openswoole/commands">常用指令</a></li>
-<li><a href="/en/openswoole/autoreload">自動重新載入</a></li>
-<li><a href="/en/openswoole/fastcache">Swoole-Table 快取</a></li>
-<li><a href="/en/openswoole/http">HTTP 伺服器</a>
-<ul>
-<li><a href="/en/openswoole/http/configuration">組態設定</a></li>
-<li><a href="/en/openswoole/http/suggestion">開發建議</a></li>
-</ul>
-</li>
-<li><a href="/en/openswoole/websocket">WebSocket 伺服器</a>
-<ul>
-<li><a href="/en/openswoole/websocket/configuration">組態設定</a></li>
-<li><a href="/en/openswoole/websocket/tutorial">建立與處理連線</a></li>
-<li><a href="/en/openswoole/websocket/suggestion">開發建議</a></li>
-</ul>
-</li>
-<li><a href="/en/openswoole/deploy">佈署建議</a></li>
-</ul>
-</li>
-</ul>
+<p>OpenSwoole is a new version forked from Swoole, and they have different maintenance teams. When Burner was developed, OpenSwoole had already reached version <code>22.0.0</code>, and in this version the namespace has been migrated from <code>Swoole</code> to <code>OpenSwoole</code>, which means that Burner will not support running under <code>OpenSwoole</code> below version <code>22.0.0</code>, and it is not compatible with <code>Swoole</code>.</p>
+<h2 id="how-to-implement">How to implement</h2>
+<p>When receiving an HTTP request, the OpenSwoole driver will convert the OpenSwoole request object to a request object that implements the <code>PSR-7</code> interface, and then pass the <code>PSR-7</code> request object to <code>burner-core</code> for processing. When <code>burner-core</code> receives the <code>PSR-7</code> request object, it will convert it to a request object that is exclusive to <code>CodeIgniter4</code>, and include some pre-processing required by the framework.</p>
+<p>When <code>CodeIgniter4</code> has finished processing the request, <code>burner-core</code> will convert the <code>CodeIgniter4</code> response object to a <code>PSR-7</code> response object, and then return it to the OpenSwoole driver.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Before using the OpenSwoole driver provided by Burner, you must ensure that your current system environment already has <code>PHP8^</code> and the <code>OpenSwoole</code> extension. You can refer to <a href="https://openswoole.com/docs/get-started/installation">How to install OpenSwoole</a>, or use our recommended <a href="/en/general/docker">Docker environment</a>.</p>
+<p>After completing these prerequisites, you can execute the following command to obtain the OpenSwoole driver in the project root directory:</p>
+<pre><code>composer require monken/codeigniter4-burner-openswoole
+</code></pre>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you do not have the CodeIgniter4-Burner library installed when you execute the above command, Composer will automatically pull the related dependencies."</p>
+</div>
+<p>Next, you need to use the following command to initialize the Burner and OpenSwoole driver:</p>
+<pre><code>php spark burner:init OpenSwoole [http or websocket]
+</code></pre>
+<p>You can freely choose whether your server uses HTTP or Websocket mode after the command, and the default parameter is <code>http</code>. The <code>http</code> parameter will generate a general HTTP server configuration file, and if you use the <code>websocket</code> parameter, it will generate a WebSocket-specific (including HTTP) configuration file.</p>
+<p>When the command is executed successfully, you should be able to see two new files added to the <code>project_root/app/Config</code> folder, which are: <code>Burner.php</code> and <code>OpenSwoole.php</code>, you can adjust these two files to finely control your server settings.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you repeatedly execute the <code>burner:init</code> command, the existing configuration file will be renamed instead of being overwritten.</p>
+</div>
+<p>Bruner has already set all the configuration settings, and you can change your configuration file when needed.</p>
+<p>When everything is ready, you can start your server directly by executing the following command:</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>By default, your server should run on port <code>8080</code>, and you can immediately browse your project page through <code>localhost:8080</code>.</p>
+<p>If everything goes well, your CodeIgniter4 should be successfully running on OpenSwoole.</p>
 
             </div>
             <div class='sidebar-right'>
@@ -201,6 +165,14 @@
                         
                         <li class='page-nav-level-1'>
                             <a href='#openswoole'>OpenSwoole</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#how-to-implement'>How to implement</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#getting-started'>Getting started</a>
                         </li>
                         
                     </ul>
@@ -222,11 +194,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>

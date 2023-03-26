@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679820075"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1678587991" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1678587991"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679820075" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679820075"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1678587991";
+        var DOCTAVE_TIMESTAMP = "1679820075";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -36,8 +36,9 @@
     </script>
 
     
-    <script>
-    document.title = 'CodeIgniter Burner 使用說明-' + document.title;
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter4 Burner - ' + document.title;
 </script>
     
 </head>
@@ -90,12 +91,6 @@
         <li><a class="active" href="/zh_TW/general/suggestion">開發建議</a></li>
         
     
-        <li><a href="/zh_TW/general/fileuploading">檔案上傳處理</a></li>
-        
-    
-        <li><a href="/zh_TW/general/connection">外部連線</a></li>
-        
-    
         <li><a href="/zh_TW/general/docker">Docker 環境</a></li>
         
     
@@ -107,25 +102,13 @@
             
                 <ul>
     
-        <li><a href="/zh_TW/openswoole/http">OpenSwoole HTTP</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/websocket">OpenSwoole Websocket</a></li>
+        <li><a href="/zh_TW/openswoole/implement">OpenSwoole 實踐</a></li>
         
     
         <li><a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
         
     
         <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/autoreload">OpenSwoole 自動重載</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/fastcache">Swoole-Table 快取</a></li>
-        
-    
-        <li><a href="/zh_TW/openswoole/deploy">OpenSwoole 佈署建議</a></li>
         
     
 </ul>
@@ -183,6 +166,76 @@ class Home extends BaseController
 </code></pre>
 <h2 id="使用內建-session-程式庫">使用內建 Session 程式庫</h2>
 <p>我們只針對 Codeigniter4 內建 <a href="https://codeigniter.tw/user_guide/libraries/sessions.html">Session 程式庫</a> 進行支援，並不保證使用 <code>session_start()</code> 與 <code>$_SESSION</code> 是否能照常運作。所以，你應該避免使用 PHP 內建的 Session 方法，而是以 Codeigniter4 框架內建的程式庫為主。</p>
+<h2 id="外部連線">外部連線</h2>
+<p>不論你使用的驅動程式為何，我們都認為你應該以「單例」的方式管理專案所依賴的外部連線實體，比如：DB, Cache 或是任何需要長連線的外部系統。</p>
+<p>這是因為，每個 Worker 都會長時間地存活在記憶體中重複地處理 HTTP 請求，這使的我們降低了 PHP 重複編譯與載入的效能開銷。倘若外部連線實體會在每一個請求開始時重新連線，這將會大大地拖慢執行效能。</p>
+<p>Burner 將在伺服器啟動後接管 CodeIgniter4 的生命週期，在長連線管理中，我們只針對 Codeigniter4 內建的 <code>Database</code> 程式庫與 <code>Cache</code> 程式庫進行直接支援，並不保證 PHP 內建的方法是否能照常運作。</p>
+<p>對此，你應該避免使用內建的 PHP 方法，而是以 Codeigniter4 框架內建的程式庫為主。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>當然，若是你十分熟悉你所選擇的驅動程式與你需要長連線的目標系統，也可以自行處理連線，使其能長時間地留存在記憶體中。</p>
+</div><h3 id="資料庫與快取程式庫">資料庫與快取程式庫</h3>
+<p>在 Burner 的預設設定中， Worker 的資料庫與快取的連線是持久的，並會在連線失效時自動重新連線。所有進入 Worker 的請求都將使用同一個連線實體。</p>
+<p>如果你不想要這個預設設定，希望每個進入 Worker 的請求都使用重新連線的 DB 或 Cache 連線實體。請調整 Config/Burner.php 中的下列設定：</p>
+<pre><code class="language-php">public $dbAutoClose = true;
+public $cacheAutoClose = true;
+</code></pre>
+<h2 id="檔案上傳處理">檔案上傳處理</h2>
+<p>無論你使用哪種驅動程式，都有著無法正確傳遞 <code>$_FILES</code> 內容的缺陷。所以 Codeingiter4 的 <a href="https://codeigniter.tw/user_guide/libraries/uploaded_files.html">檔案上傳類別</a> 將無法正確運作。對此，我們提供了符合 PSR-7 規範的檔案上傳類別，讓你可以正確地在 RoadRunner 中處理檔案上傳。就算你將專案切換到了其他伺服器環境（spark serve、Apache、Nginx）執行，這個類別依舊可以正常使用，並且不需要修改任何程式碼。</p>
+<p>你可以在控制器（或任何地方），使用下述程式碼片段取得使用者上傳的檔案。</p>
+<pre><code class="language-php">SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
+</code></pre>
+<p>這個方法將回傳以 Uploaded File 物件組成的陣列。此物件可用的方法與 <a href="https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface">PSR-7 Uploaded File Interface</a> 中規範的一樣。</p>
+<p>以下範例將展示一個標準的 CodeIgniter4 控制器處理單一檔案上傳以及多重檔案上傳的最簡方式。</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App\Controllers;
+
+use CodeIgniter\API\ResponseTrait;
+use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
+
+class FileUploadTest extends BaseController
+{
+    use ResponseTrait;
+
+    protected $format = "json";
+
+    /**
+     * form-data 
+     */
+    public function fileUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles();
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file-&gt;getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file-&gt;moveTo($newFilePath);
+            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this-&gt;respondCreated($data);
+    }
+
+    /**
+     * form-data multiple upload
+     */
+    public function fileMultipleUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file-&gt;getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file-&gt;moveTo($newFilePath);
+            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this-&gt;respondCreated($data);
+    }
+}
+</code></pre>
 <h2 id="worker-數量">Worker 數量</h2>
 <p>因為 RoadRunner、OpenSwoole 與 Workerman 與其他伺服器軟體（Nginx、Apache）有著根本上的不同，每個 Codeigniter4 將會以 Worker 的形式持久化於記憶體中，HTTP 的請求會重複利用到這些 Worker 進行處裡。所以，我們最好在只有單個 Worker 的情況下開發軟體並測試是否穩定，以證明在多個 Woker 的實際環境中能正常運作。 </p>
 <h2 id="處理變數拋出">處理變數拋出</h2>
@@ -208,6 +261,18 @@ class Home extends BaseController
                         
                         <li class='page-nav-level-2'>
                             <a href='#使用內建-session-程式庫'>使用內建 Session 程式庫</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#外部連線'>外部連線</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#資料庫與快取程式庫'>資料庫與快取程式庫</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#檔案上傳處理'>檔案上傳處理</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
@@ -237,11 +302,11 @@ class Home extends BaseController
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1678587991"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1678587991"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679820075"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679820075"></script>
 
     
 </body>
