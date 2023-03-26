@@ -1,0 +1,25 @@
+---
+title: "CodeIgniter4 Burner v1.0.0"
+colors:
+  main: "#DD4814"
+logo: "logo.png"
+base_path: /zh_TW
+navigation:
+  - path: docs/introduction.md
+  - path: docs/general
+    children:
+      - path: docs/general/quickstart.md
+      - path: docs/general/suggestion.md
+      - path: docs/general/docker.md
+  - path: docs/openswoole
+    children:
+      - path: docs/openswoole/implement.md
+      - path: docs/openswoole/suggestion.md
+      - path: docs/openswoole/commands.md
+
+  # - path: docs/OpenSwoole
+  #   children: "*"
+  # - path: docs/RoadRunner
+  #   children: "*"
+  # - path: docs/Workerman
+  #   children: "*"

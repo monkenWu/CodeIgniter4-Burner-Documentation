@@ -1,0 +1,54 @@
+name: Deploy User Guide
+
+on:
+  push:
+    branches: [ v1.0.0-doc ]
+
+jobs:
+  build:
+    name: Deploy to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Build the latest User Guide
+      - name: Build with Doctave
+        run: |
+          mkdir build
+          wget https://github.com/Doctave/doctave/releases/download/0.4.2/doctave-0.4.2-x86_64-unknown-linux-musl.tar.gz
+          tar xvf doctave-0.4.2-x86_64-unknown-linux-musl.tar.gz 
+          cp favicon.ico ./build/favicon.ico
+          cp index.html ./build/index.html
+          cd zh_TW 
+          ../doctave-0.4.2-x86_64-unknown-linux-musl/doctave build --release 
+          mv site ../build/zh_TW
+          cd ../en 
+          ../doctave-0.4.2-x86_64-unknown-linux-musl/doctave build --release 
+          mv site ../build/en
+
+      # Create an artifact of the html output
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML Documentation
+          path: ./build/
+
+      # Commit changes to the gh-pages branch
+      - name: Commit changes
+        run: |
+          git clone https://github.com/monkenWu/CodeIgniter4-Burner-Documentation.git --branch gh-pages --single-branch gh-pages
+          cp -r ./build/* gh-pages/
+          cd gh-pages
+          git config --local user.email "action@github.com"
+          git config --local user.name "${GITHUB_ACTOR}"
+          git add .
+          # Ignore failures due to lack of changes
+          git commit -m "Update User Guide" -a || true
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ secrets.ACCESS_TOKEN }}
