@@ -23,8 +23,8 @@ You can install anything you need in the Dockerfile according to your project re
 
 * Place your CodeIgniter4 project in the app folder
 * Use `docker-compose build` to build your local environment
-* Use `docker-compose up` -d to run the container in the background
-* Use `docker-compose exec` app bash to enter the container
+* Use `docker-compose up -d` to run the container in the background
+* Use `docker-compose exec app bash` to enter the container
 * By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need
 * Don't forget that `docker-compose down` or `docker-compose stop` can stop your container
 * The default port mapping of `docker-compose.yml` is `8080:8080`, you can adjust this setting according to your own needs.

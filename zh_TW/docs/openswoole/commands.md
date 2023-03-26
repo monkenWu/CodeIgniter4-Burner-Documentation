@@ -26,8 +26,6 @@ php spark burner:start --driver OpenSwoole
 
 讓 OpenSwoole 在背景工作。
 
-When you run the server with this option, Burner will ignore the Automatic reload setting.
-
 ```
 php spark burner:start --daemon
 ```

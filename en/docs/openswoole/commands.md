@@ -26,8 +26,6 @@ The `--driver OpenSwoole` parameter also applies to all the commands below.
 
 Run the server in the background.
 
-When you run the server with this option, Burner will ignore the Automatic reload setting.
-
 ```
 php spark burner:start --daemon
 ```
@@ -66,3 +64,4 @@ Whether your server is running in daemon mode or development mode, you can use t
 
 ```
 php spark burner:restart
+```
