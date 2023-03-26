@@ -213,7 +213,6 @@ Worker::pushAll(
 你可以在回呼函數中回傳一個陣列，來包含更多的設定。
 
 ```php
-
 use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
@@ -225,7 +224,7 @@ Worker::pushAll(
             // 要推送的訊息
             'message' => sprintf('hi! It\'s Burner Websocket! fd: %d', $fd),
             // 傳遞資料的類型
-            'opcode' => Server::WEBSOCKET_OPCODE_BINARY
+            'opcode' => Server::WEBSOCKET_OPCODE_TEXT
         ];
     },
     fds: [1, 2, 3]
@@ -239,7 +238,6 @@ Worker::pushAll(
 #### 使用範例
 
 ```php
-
 use Monken\CIBurner\OpenSwoole\Worker;
 
 $frame = Worker::getFrame();
@@ -256,14 +254,12 @@ $frame = Worker::getFrame();
 你可以透過以下的方式來註冊 `burnerAfterPushMessage` 事件：
 
 ```php
-
 Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
 {
     // $server 是 OpenSwoole 的 Server 實例
     // $fd 是目前正在推送的連線者的 fd
     // $pushResult 是推送訊息的結果
 });
-
 ```
 
 ### burnerAfterPushAllMessage
@@ -273,11 +269,9 @@ Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $se
 你可以透過以下的方式來註冊 `burnerAfterPushAllMessage` 事件：
 
 ```php
-
 Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
 {
     // $server 是 OpenSwoole 的 Server 實例
     // $fds 已推送的連線者的 fd 陣列
 });
-
 ```

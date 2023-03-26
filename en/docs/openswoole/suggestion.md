@@ -1,8 +1,8 @@
 ---
-title: OpenSwoole suggestions
+title: OpenSwoole Suggestion
 ---
 
-# OpenSwoole suggestions
+# OpenSwoole Suggestion
 
 ## Fast Cache
 

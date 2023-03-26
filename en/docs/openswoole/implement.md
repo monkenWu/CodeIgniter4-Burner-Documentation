@@ -221,7 +221,7 @@ Worker::pushAll(
             // The message to push
             'message' => sprintf('hi! It\'s Burner Websocket! fd: %d', $fd),
             // The type of data to pass
-            'opcode' => Server::WEBSOCKET_OPCODE_BINARY 
+            'opcode' => Server::WEBSOCKET_OPCODE_TEXT 
         ];
     },
     fds: [1, 2, 3]
