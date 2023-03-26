@@ -1,39 +1,36 @@
 ---
-title: Docker 環境
+title: Docker Environment
 ---
 
-# Docker 環境
+# Docker Environment
 
-使用 Docker 建構你的開發與正式環境有助於你減輕對環境建置的負擔，不論你使用何種驅動程式都需要預裝或開啟一些特別的擴充外掛。同時，使用 Docker 建構的環境將能夠幫助你在 Windows 環境下使用 Workerman 與 OpenSwoole 驅動程式。
+Using Docker to build your development and production environments can help you reduce the burden of environment setup, regardless of which driver you use. You need to pre-install or enable some special extensions. At the same time, the environment built with Docker can help you use the Workerman and OpenSwoole drivers under the Windows environment.
 
-你可以透過 [CodeIgniter4-Burner-Docker](https://github.com/monkenWu/CodeIgniter4-Burner-Docker) 儲存庫拉取到我們所推薦的 Docker 配置。
+You can pull the Docker configuration we recommend from the [CodeIgniter4-Burner-Docker](https://github.com/monkenWu/CodeIgniter4-Burner-Docker) repository.
 
-## 環境備註
+## Environment notes
+All recommended configurations are based on the [webdevops/Dockerfile](https://github.com/webdevops/Dockerfile) image, which includes common PHP extensions. You can adjust more details through [this document](https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html) to make your environment more suitable for your project.
 
-所有的推薦組態都基於 [webdevops/Dockerfile](https://github.com/webdevops/Dockerfile) 映像檔，這個映像檔囊括了常用的 PHP 擴充外掛，你可以透過[這份文件](https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html)來調整更多細節，使你的環境更符合你的專案。
+At the same time, the Dockerfile environment installation instructions of OpenSwoole refer to the [official Dockerfile of OpenSwoole](https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles). The Dockerfile of Workerman additionally installed php-event extension, which will make Workerman get better performance.
 
-同時 OpenSwoole 的 Dockerfile 環境安裝指令參考了 [OpenSwoole 官方 Dockerfile](https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles) 。 Workerman 的 Dockerfile 額外裝了 `php-event` 擴充外掛，這將使 Workerman 能夠獲得更好的執行效能。
+{% info Note %}
 
-{% info 備註 %}
-
-你可以依照你的專案需求在 Dockerfile 安裝你所需要的任何東西，你只需要記得它們都是基於 [alpine linux](https://www.alpinelinux.org/) 的映像檔。
-
-{% end %}
-
-## 開始使用
-
-* 將你的 CodeIgniter4 專案置於 `app` 資料夾中
-* 使用 `docker-compose build` 將建構你的本地環境
-* 使用 `docker-compose up -d` 使容器運行在背景
-* 使用 `docker-compose exec app bash` 進入容器之中
-* 在預設的情況下，你將被定位在專案根目錄中，你可以開始安裝 Burner 以及選擇你所需要的驅動程式
-* 別忘了 `docker-compose down` 或 `docker-compose stop` 可以停止你的容器
-
-`docker-compose.yml` 預設的連接埠映射為 `8080:8080` ，你可以依據自己的需求調整這個設定。
-
-{% info 備註 %}
-
-如果你的 CodeIgniter4 並不包含 `vendor` 資料夾，記得使用 `composer install` 拉取專案所需的程式庫。
+You can install anything you need in the Dockerfile according to your project requirements. You just need to remember that they are all based on the [alpine Linux](https://www.alpinelinux.org/)  image.
 
 {% end %}
 
+## Getting Started
+
+* Place your CodeIgniter4 project in the app folder
+* Use `docker-compose build` to build your local environment
+* Use `docker-compose up` -d to run the container in the background
+* Use `docker-compose exec` app bash to enter the container
+* By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need
+* Don't forget that `docker-compose down` or `docker-compose stop` can stop your container
+* The default port mapping of `docker-compose.yml` is `8080:8080`, you can adjust this setting according to your own needs.
+
+{% info Note %}
+
+If your CodeIgniter4 does not contain the vendor folder, remember to use `composer install` to pull the libraries required by the project.
+
+{% end %}

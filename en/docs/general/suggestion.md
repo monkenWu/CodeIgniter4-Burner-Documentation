@@ -1,20 +1,20 @@
 ---
-title: 開發建議
+title: Development Suggestion
 ---
 
-# 開發建議
+# Development Suggestion
 
-## Codeigniter4 Request 與 Response 物件
+## Using Codeigniter4 Request and Response object
 
-Codeigniter4 並沒有實作完整的 [HTTP message 介面](https://www.php-fig.org/psr/psr-7/)，所以這個程式庫著重於 `PSR-7 介面` 與 `Codeigniter4 HTTP 介面` 的同步。
+Codeigniter4 does not implement the complete [HTTP message interface](https://www.php-fig.org/psr/psr-7/), hence this library focuses on the synchronize of `PSR-7 interface` and `Codeigniter4 HTTP interface`.
 
-基於上述原因，在開發上，你應該使用 Codeigniter4 所提供的 `$this->request` 或是使用全域函數 `\Config\Services::('request')` 取得正確的 request 物件；使用 `$this->response` 或是 `\Config\Services::('response')` 取得正確的 response 物件。
+Base on the reasons above, You should use `$this->request`, provided by Codeigniter4, or the global function `/Config/Services::('request')` to fetch the correct request object; Use `$this->response` or `/Config/Services::('response')` to fetch the correct response object.
 
-請注意，在建構給予使用者的響應時，不論是 `header` 或 `set-cookies` 應該避免使用 PHP 內建的方法進行設定。而是使用 [Codeigniter4 響應物件](https://codeigniter.tw/user_guide/outgoing/response.html) 提供的 `setHeader()` 與 `setCookie()` 進行設定。 
+Please be noticed, while constructing response for the users during developing, you should prevent using PHP built-in methods to conduct `header` or `set-cookies` settings. Using the `setHeader()` and `setCookie()`, provided by the [Codeigniter4 Response Object](https://codeigniter.com/user_guide/outgoing/response.html), to conduct setting.
 
-## 以 return 結束控制器邏輯
+## Use return to stop controller logic
 
-在 Controller 中，盡量使用 return 結束程式邏輯，不論是視圖的響應或是 API 響應，減少使用 `echo` 輸出內容可以避免很多錯誤，就像這個樣子。
+Inside the Controller, try using return to stop the controller logic. No matter the response of view or API, reduce the `echo` output usage can avoid lets of errors, just like this:
 
 ```php
 <?php
@@ -46,14 +46,107 @@ class Home extends BaseController
 }
 ```
 
-## 使用內建 Session 程式庫
+## Use the built-in Session library
 
-我們只針對 Codeigniter4 內建 [Session 程式庫](https://codeigniter.tw/user_guide/libraries/sessions.html) 進行支援，並不保證使用 `session_start()` 與 `$_SESSION` 是否能照常運作。所以，你應該避免使用 PHP 內建的 Session 方法，而是以 Codeigniter4 框架內建的程式庫為主。
+We only focus on supporting the Codeigniter4 built-in [Session library](https://codeigniter.com/user_guide/libraries/sessions.html), and do not guarantee if using `session_start()` and `$_SEEEION` can work as normal. So, you should avoid using the PHP built-in Session method, change to the Codeigniter4 framework built-in library.
 
-## Worker 數量
+## External Connections
 
-因為 RoadRunner、OpenSwoole 與 Workerman 與其他伺服器軟體（Nginx、Apache）有著根本上的不同，每個 Codeigniter4 將會以 Worker 的形式持久化於記憶體中，HTTP 的請求會重複利用到這些 Worker 進行處裡。所以，我們最好在只有單個 Worker 的情況下開發軟體並測試是否穩定，以證明在多個 Woker 的實際環境中能正常運作。 
+No matter what driver you are using, we believe that you should manage the external connections in a singleton way, such as: DB, Cache or any other external systems that need long connections.
 
-## 處理變數拋出
+This is because each Worker will live in memory for a long time to repeatedly process HTTP requests, which makes us reduce the performance overhead of PHP repeated compilation and loading. If the external connection instance will reconnect at the beginning of each request, this will greatly slow down the execution performance.
 
-如果你在開發環境中碰到了一些需要確認的變數、或物件內容，無論在程式的何處，你都可以使用全域函數 `dump()` 來將錯誤拋出到終端機上。
+Burner will take over the life cycle of CodeIgniter4 after the server starts, and in the long connection management, we only directly support the Codeigniter4 built-in `Database` library and `Cache` library, and do not guarantee that the built-in PHP method will work as normal.
+
+For this, you should avoid using the built-in PHP method, and use the Codeigniter4 framework built-in library as the main.
+
+{% info Note %}
+
+Of course, if you are very familiar with the driver you choose and the target system you need to connect to, you can also handle the connection yourself to keep it in memory for a long time.
+
+{% end %}
+
+### Database and Cache Library
+
+In the default settings of Burner, the connection of the Worker's database and cache is persistent, and will automatically reconnect when the connection is invalid. All requests that enter the Worker will use the same connection instance.
+
+If you do not want this default setting, and want each request that enters the Worker to use a DB or Cache connection instance that reconnects. Please adjust the following settings in Config/Burner.php:
+
+```php
+public $dbAutoClose = true;
+public $cacheAutoClose = true;
+```
+
+## File Upload
+
+No matter which driver you are using, there is a defect that cannot correctly pass the contents of `$_FILES`. So the [File Upload Class](https://codeigniter.com/user_guide/libraries/uploaded_files.html) of Codeingiter4 will not work properly. For this, we provide a file upload class that meets the PSR-7 specification so that you can correctly handle file uploads in the heigh performance PHP server. Even if you switch your project to another server environment (spark serve, Apache, Nginx) to run, this class can still be used normally and does not require any code changes.
+
+You can use the following code snippet to get the files uploaded by the user in the controller (or anywhere).
+
+```php
+SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
+```
+
+This method will return an array of Uploaded File objects. The methods available on this object are the same as those specified in the [PSR-7 Uploaded File Interface](https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface).
+
+The following example will show the minimal way a standard CodeIgniter4 controller handles single file uploads as well as multiple file uploads.
+
+```php
+<?php
+
+namespace App\Controllers;
+
+use CodeIgniter\API\ResponseTrait;
+use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
+
+class FileUploadTest extends BaseController
+{
+    use ResponseTrait;
+
+    protected $format = "json";
+
+    /**
+     * form-data 
+     */
+    public function fileUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles();
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file->getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file->moveTo($newFilePath);
+            $data[$file->getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this->respondCreated($data);
+    }
+
+    /**
+     * form-data multiple upload
+     */
+    public function fileMultipleUpload()
+    {
+        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
+        $data = [];
+        foreach ($files as $file) {
+            $fileNameArr = explode('.', $file->getClientFilename());
+            $fileEx = array_pop($fileNameArr);
+            $newFileName = uniqid(rand()) . "." . $fileEx;
+            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+            $file->moveTo($newFilePath);
+            $data[$file->getClientFilename()] = md5_file($newFilePath);
+        }
+        return $this->respondCreated($data);
+    }
+}
+```
+
+## Worker-num
+
+Because RoadRunner, OpenSwoole and Workerman are fundamentally different from other server software (Nginx, Apache), each Codeigniter4 will be persisted in memory in the form of a Worker, and the HTTP request will be repeatedly reused to handle these Workers. So, we should develop and test software in a single Worker environment to prove that it can work properly in a real environment with multiple Wokers.
+
+## Handle variable dump
+
+If you encountered some variables or object content that needed to be confirmed in `-d` development mode, you can use the global function `dump()` to throw errors onto the terminal no matter where the program is.

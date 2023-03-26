@@ -1,66 +1,62 @@
 ---
-title: 快速開始
+title: Quickstart
 ---
 
-# 快速開始
+# Quickstart
 
-Burner 目前僅支援使用 Composer 安裝，這是因為 Burner 替不同驅動程式提供了一致的指令介面與自動載入方式，這使得 Burner 無法輕易地讓開發者自行部署。
+Burner currently only supports installation via Composer, this is because Burner provides a consistent interface and automatic loading for different drivers, which makes it difficult for developers to deploy Burner on their own.
 
-## 安裝 Burner
+## Install Burner
 
-首先，使用 Composer 將 Burner 安裝進你的 CodeIgniter4 專案中。
+First, install Burner into your CodeIgniter4 project using Composer.
 
-在專案根目錄下執行以下指令：
+In the project root directory, run the following command:
 
 ```
-composer require monken/codeigniter4-burner
+composer require monkenwu/codeigniter4-burner
 ```
 
-再來，選擇一款合宜的驅動程式進行安裝，目前 Burner 提供你三種選擇：
+Then, choose a suitable driver to install. Burner currently provides you with three options:
 
 1. 
     ```
-    composer require monken/codeigniter4-burner-openswoole
+    composer require monkenwu/codeigniter4-burner-openswoole
     ```
-
 2. 
     ```
-    composer require monken/codeigniter4-burner-workerman
+    composer require monkenwu/codeigniter4-burner-workerman
     ```
-
 3. 
     ```
-    composer require monken/codeigniter4-burner-roadrunner
+    composer require monkenwu/codeigniter4-burner-roadrunner
     ```
 
-在安裝之前，你得先確定目前的系統環境是否滿足了這些驅動程式的要求。你能夠先參考 [系統需求](/introduction) 提到的內容建構你的系統環境，同時我們也推薦你 [透過Docker建構](/general/docker) 你的開發環境。
+Before installation, you must first make sure that the current system environment meets the requirements of these drivers. You can refer to the content mentioned in [System Requirements](/introduction) to build your system environment, and we also recommend you to [build your development environment through Docker](/general/docker).
 
-## 初始化
+## Initialization
 
-依據你所選擇不同的驅動， `burner:init` 指令也需要傳入不同的參數。
+Depending on the driver you choose, the `burner:init` command also needs to pass different parameters.
 
 ```
 php spark burner:init [OpenSwoole, Workerman, RoadRunner]
 ```
 
-執行完成後，你會發現在 `app/Config` 目錄下多了兩個檔案，分別是 `Burner.php` 以及一個由驅動程式名稱命名的檔案，比如： `OpenSwoole.php` 。
+After execution, you will find that two files, `Burner.php` and a file named by the driver name, for example: `OpenSwoole.php`, are added to the `app/Config` directory.
 
-Burner 是一款開箱即用的程式庫，已預設了所有組態設定。你可以直接啟動伺服器，直到有需要時再去調整組態設定的內容即可。
+Burner is a library that is ready to use out of the box. All configuration settings are preconfigured. You can start the server directly until you need to adjust the content of the configuration settings.
 
-## 啟動伺服器
+## Start the server
 
-現在，你可以透過以下指令直接啟動你的伺服器。
+Now, you can start your server directly through the following command.
 
 ```
 php spark burner:start
 ```
 
-在預設的情況下 Burner 將伺服器監聽的 `port` 設定在 `8080` ，現在打開你的瀏覽器瀏覽 `localhost:8080` ，你將會看到目前專案的 Home 頁面。
+By default, Burner sets the `port` that the server listens to to `8080`. Now open your browser and browse `localhost:8080`, you will see the Home page of the current project.
 
-## 結語
+## Conclusion
 
-一言以蔽之， Burner 簡單且輕量。
-
-願它能成為你的 CodeIgnter4 專案的最佳燃料。
-
-在開發前，推薦你繼續閱讀 [開發建議](/general/suggestion.md)
+Burner is simple and lightweight.
+We hope it can become the best fuel for your CodeIgnter4 project.
+Before development, we recommend that you continue to read [Development Suggestions](/general/suggestion.md)

@@ -10,18 +10,12 @@ navigation:
     children:
       - path: docs/general/quickstart.md
       - path: docs/general/suggestion.md
-      - path: docs/general/fileuploading.md
-      - path: docs/general/connection.md
       - path: docs/general/docker.md
   - path: docs/openswoole
     children:
-      - path: docs/openswoole/http.md
-      - path: docs/openswoole/websocket.md
+      - path: docs/openswoole/implement.md
       - path: docs/openswoole/suggestion.md
       - path: docs/openswoole/commands.md
-      - path: docs/openswoole/autoreload.md
-      - path: docs/openswoole/fastcache.md
-      - path: docs/openswoole/deploy.md
 
   # - path: docs/OpenSwoole
   #   children: "*"

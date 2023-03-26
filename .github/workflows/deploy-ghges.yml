@@ -18,6 +18,8 @@ jobs:
           mkdir build
           wget https://github.com/Doctave/doctave/releases/download/0.4.2/doctave-0.4.2-x86_64-unknown-linux-musl.tar.gz
           tar xvf doctave-0.4.2-x86_64-unknown-linux-musl.tar.gz 
+          cp favicon.ico ./build/favicon.ico
+          cp index.html ./build/index.html
           cd zh_TW 
           ../doctave-0.4.2-x86_64-unknown-linux-musl/doctave build --release 
           mv site ../build/zh_TW

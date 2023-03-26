@@ -1,14 +1,11 @@
 ---
-title: 一般主題
+title: General
 ---
 
-# 一般主題
+# General
 
-以下條目包含一些通用的說明，不論你採用何種驅動程式 ，我們都強烈建議你先看一看這些說明。
+The following entries contain some general explanations, regardless of which driver you use, you may want to take a look at these explanations first.
 
-* [一般主題](/general)
-  * [快速開始](/general/quickstart)
-  * [開發建議](/general/suggestion)
-  * [檔案上傳處理](/general/fileuploading)
-  * [外部連線](/general/connection)
-  * [Docker 環境](/general/docker)
+* [Quickstart](/general/quickstart)
+* [Suggestion](/general/suggestion)
+* [Docker Environment](/general/docker)

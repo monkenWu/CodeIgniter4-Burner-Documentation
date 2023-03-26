@@ -8,6 +8,4 @@ title: 一般主題
 
 * [快速開始](/general/quickstart)
 * [開發建議](/general/suggestion)
-* [檔案上傳處理](/general/fileuploading)
-* [外部連線](/general/connection)
 * [Docker 環境](/general/docker)
