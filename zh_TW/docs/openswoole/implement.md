@@ -30,9 +30,10 @@ Burner 在 HTTP 中提供了以下事件給予開發者進行使用：
 這通常會用於在響應後的初始化，若你擁有某些需要在響應後清空的全域變數或某些通用的處理，都非常適合在這個事件中宣告。你可以透過宣告 `burnerAfterSendResponse` 事件，在每當 OpenSwoole 響應後將會執行你需要執行的邏輯：
 
 ```php
+// This code will be executed after sending the response to the client.
 Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
 {
-    //Your logic
+    // Your logic
 });
 ```
 事件的使用方式不單單只有回呼函數，請參考 [CodeIgniter4 使用手冊](https://codeigniter.tw/user_guide/extending/events.html#id3)提到的方法來選擇最適合你的宣告方式。
@@ -57,7 +58,7 @@ public function server(Server $server)
     $server->on('message', static function (Server $server, Frame $frame) {
         // Burner handles CodeIgniter4 entry points.
         Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
-            // Not Found Handling
+            // Frame Not Found Handling
         });
     });
 
@@ -131,8 +132,55 @@ $routes->get('burner/websocket', 'BurnerWebsocket::connect');
 
 當使用者透過 Websocket 與 `burner/websocket` 與 Burner 握手後，Burner 隨即會將這個連線給傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。在這裡，你可以盡情地使用 CodeIgniter4 的功能來處理你的業務邏輯。
 
-## 可用方法
+## 事件
 
+### burnerAfterPushMessage
+
+當 Burner 推送訊息給 WebSocket 連線者後，會觸發 `burnerAfterPushMessage` 事件，你可以在這個事件中進行一些後續處理。
+
+你可以透過以下的方式來註冊 `burnerAfterPushMessage` 事件：
+
+```php
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
+{
+    // $server 是 OpenSwoole 的 Server 實例
+    // $fd 是目前正在推送的連線者的 fd
+    // $pushResult 是推送訊息的結果
+});
+```
+
+### burnerAfterPushAllMessage
+
+當 Burner 推送訊息給所有 WebSocket 連線者後，會觸發 `burnerAfterPushAllMessage` 事件，你可以在這個事件中進行一些後續處理。
+
+你可以透過以下的方式來註冊 `burnerAfterPushAllMessage` 事件：
+
+```php
+Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
+{
+    // $server 是 OpenSwoole 的 Server 實例
+    // $fds 已推送的連線者的 fd 陣列
+});
+```
+
+# 可用方法
+
+## 通用方法
+
+### Worker::getServer
+
+取得 OpenSwoole 的 WebSocket 伺服器實例。
+
+#### 使用範例
+ 
+`getServer()` 的回傳值依據組態設定的不同，可能是 `OpenSwoole\Server` 或 `OpenSwoole\WebSocket\Server`。
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$server = Worker::getServer();
+```
+
+## WebSocket 相關方法
 
 ### Worker::push
 
@@ -140,16 +188,15 @@ $routes->get('burner/websocket', 'BurnerWebsocket::connect');
 
 #### 參數
 
-| 參數 | 型別 | 說明 |
-| --- | --- | --- |
-| data | string or binary | 要推送的訊息 |
-| fd | int | 要推送的連線者的 fd |
-| opcode | int | 傳遞資料的類型。OpenSwoole 的 `WEBSOCKET_OPCODE_TEXT` 、 `WEBSOCKET_OPCODE_BINARY` 或 `WEBSOCKET_OPCODE_PING` |
+| 參數 | 型別 | 必填/預設值 | 說明 |
+| --- | --- | --- | --- |
+| data | string or binary | 必填 | 要推送的訊息 |
+| fd | int | 目前連線者的fd | 要推送的連線者的 fd |
+| opcode | int | `WEBSOCKET_OPCODE_TEXT` | 傳遞資料的類型。OpenSwoole 的 `WEBSOCKET_OPCODE_TEXT` 、 `WEBSOCKET_OPCODE_BINARY` 或 `WEBSOCKET_OPCODE_PING` |
 
 #### 使用範例
 
 ```php
-
 use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
@@ -166,18 +213,17 @@ Worker::push(
 
 #### 參數
 
-| 參數 | 型別 | 說明 |
-| --- | --- | --- |
-| data | string or callable | 要推送的訊息，或是一個回呼函數 |
-| fds | array | 要推送的連線者的 fd ，若不傳入則為當前與伺服器建立起連線的所有客戶端 |
-| opcode | int | 傳遞資料的類型。OpenSwoole 的 `WEBSOCKET_OPCODE_TEXT` 、 `WEBSOCKET_OPCODE_BINARY` 或 `WEBSOCKET_OPCODE_PING` |
+| 參數 | 型別 | 必填/預設值 | 說明 |
+| --- | --- | --- | --- |
+| data | string or callable | 必填 | 要推送的訊息，或是一個回呼函數 |
+| fds | array | 與伺服器建立起連線的所有客戶端 | 要推送的連線者的 fd |
+| opcode | int | `Server::WEBSOCKET_OPCODE_TEXT` | 傳遞資料的類型。OpenSwoole 的 `WEBSOCKET_OPCODE_TEXT` 、 `WEBSOCKET_OPCODE_BINARY` 或 `WEBSOCKET_OPCODE_PING` |
 
 #### 以 String 推送
 
 將字串推送給所有或是指定的連線者。
 
 ```php
-
 use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
@@ -193,7 +239,6 @@ Worker::pushAll(
 透過 Callback 在推送訊息時包含更多的處理邏輯。
 
 ```php
-
 use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
@@ -244,34 +289,3 @@ $frame = Worker::getFrame();
 ```
 
 `$frame` 的型別為 `OpenSwoole\WebSocket\Frame`，你可以參考 [OpenSwoole 的文件](https://openswoole.com/docs/modules/swoole-websocket-frame) 來了解更多。
-
-## 事件
-
-### burnerAfterPushMessage
-
-當 Burner 推送訊息給 WebSocket 連線者後，會觸發 `burnerAfterPushMessage` 事件，你可以在這個事件中進行一些後續處理。
-
-你可以透過以下的方式來註冊 `burnerAfterPushMessage` 事件：
-
-```php
-Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
-{
-    // $server 是 OpenSwoole 的 Server 實例
-    // $fd 是目前正在推送的連線者的 fd
-    // $pushResult 是推送訊息的結果
-});
-```
-
-### burnerAfterPushAllMessage
-
-當 Burner 推送訊息給所有 WebSocket 連線者後，會觸發 `burnerAfterPushAllMessage` 事件，你可以在這個事件中進行一些後續處理。
-
-你可以透過以下的方式來註冊 `burnerAfterPushAllMessage` 事件：
-
-```php
-Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
-{
-    // $server 是 OpenSwoole 的 Server 實例
-    // $fds 已推送的連線者的 fd 陣列
-});
-```
