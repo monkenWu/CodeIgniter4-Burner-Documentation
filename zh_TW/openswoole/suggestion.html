@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679822342" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1680776935" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1680776935"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1679822342";
+        var DOCTAVE_TIMESTAMP = "1680776935";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -132,7 +132,7 @@
                 <h1 id="openswoole-開發建議">OpenSwoole 開發建議</h1>
 <h2 id="fast-cache">Fast Cache</h2>
 <p>OpenSwoole 提供了一個快速的 Cache 系統，可以在多個 Worker 間共享資料，並且可以在多個 Worker 間同步資料。我們支援 <a href="https://openswoole.com/docs/modules/swoole-table">Swoole-Table</a> 作為快取的儲存介面，你可以在你的專案中使用它，就像你熟悉的一樣！</p>
-<p>你可以在 <code>app/Config/OpenSwoole.php</code> 設定檔中，加入以下設定並重新啟動伺服器。</p>
+<p>你可以在 <code>app/Config/OpenSwoole.php</code> 設定檔中，加入以下設定打開 fast cache 功能：</p>
 <pre><code class="language-php">/**
  * Whether to open the Key/Value Cache provided by Burner.
  * Shared high-speed caching with Swoole-Table implementation.
@@ -155,7 +155,9 @@ public $fastCacheConfig = [
     'valueStringLength' =&gt; 1024
 ];
 </code></pre>
-<p>接著，你需要開啟 <code>app/Config/Cache</code> 並加入以下設定：</p>
+<h3 id="使用-codeigniter4-cache">使用 CodeIgniter4 Cache</h3>
+<p>CodeIgniter 提供了單例的 Cache 管理方式，無論你在程式的何處你都可以使用 <code>cache()</code> 函式來獲取 Cache 實體。Burner 也提供了一個 <code>Burner</code> 的 Cache Handler。 </p>
+<p>你需要開啟 <code>app/Config/Cache</code> 並加入以下設定：</p>
 <pre><code class="language-php">public $validHandlers = [
     //hide
     'burner' =&gt; \Monken\CIBurner\BurnerCacheHandler::class
@@ -165,6 +167,11 @@ public $fastCacheConfig = [
 <pre><code class="language-php">public $handler = 'burner';
 </code></pre>
 <p>現在你可以在 Burner 提供的 Swoole-Table Cache 中，以同樣的方式操作 <a href="https://www.codeigniter.com/user_guide/libraries/caching.html">Cache Library</a>。請注意，Swoole-Table 會因為伺服器重啟而失去所有資料，它只是一個資料在 Worker 之間共享的解決方案。</p>
+<h3 id="直接取得-cache-實體">直接取得 Cache 實體</h3>
+<p>如果你的專案已經有使用了類似 Redis 的 Cache 系統，並且已使用 CodeIgniter4 的 Cache 管理機制，你也可以直接使用 Burner 提供的全域方法來獲取 Cache 實體，這樣你就不需要糾結於 Cache 只能有一個 Handler 的問題。</p>
+<p>只需要將  <code>app/Config/OpenSwoole.php</code> 的 <code>fastCache</code> 設定為 <code>true</code>，然後在你的程式中使用以下方式來獲取 Cache 實體：</p>
+<pre><code class="language-php">$fastCache = \Monken\CIBurner\OpenSwoole\Worker::getFastCache();
+</code></pre>
 <h2 id="自動重新載入">自動重新載入</h2>
 <p>在預設的 OpenSwoole 狀況下，你必須在每次修改 PHP 檔案後，重新啟動伺服器，才能讓你的修改生效。這似乎不太友善。</p>
 <p>你可以修改 <code>app/Config/OpenSwoole.php</code> 設定檔，加入以下設定並重新啟動伺服器。</p>
@@ -213,6 +220,14 @@ public $config = [
                             <a href='#fast-cache'>Fast Cache</a>
                         </li>
                         
+                        <li class='page-nav-level-3'>
+                            <a href='#使用-codeigniter4-cache'>使用 CodeIgniter4 Cache</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#直接取得-cache-實體'>直接取得 Cache 實體</a>
+                        </li>
+                        
                         <li class='page-nav-level-2'>
                             <a href='#自動重新載入'>自動重新載入</a>
                         </li>
@@ -240,11 +255,11 @@ public $config = [
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1680776935"></script>
 
     
 </body>

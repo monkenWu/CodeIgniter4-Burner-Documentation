@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1679822342" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1680776935" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1680776935"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1679822342";
+        var DOCTAVE_TIMESTAMP = "1680776935";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -144,9 +144,10 @@
 <p>Burner 在 HTTP 中提供了以下事件給予開發者進行使用：</p>
 <h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
 <p>這通常會用於在響應後的初始化，若你擁有某些需要在響應後清空的全域變數或某些通用的處理，都非常適合在這個事件中宣告。你可以透過宣告 <code>burnerAfterSendResponse</code> 事件，在每當 OpenSwoole 響應後將會執行你需要執行的邏輯：</p>
-<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+<pre><code class="language-php">// This code will be executed after sending the response to the client.
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
 {
-    //Your logic
+    // Your logic
 });
 </code></pre>
 <p>事件的使用方式不單單只有回呼函數，請參考 <a href="https://codeigniter.tw/user_guide/extending/events.html#id3">CodeIgniter4 使用手冊</a>提到的方法來選擇最適合你的宣告方式。</p>
@@ -166,7 +167,7 @@
     $server-&gt;on('message', static function (Server $server, Frame $frame) {
         // Burner handles CodeIgniter4 entry points.
         Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
-            // Not Found Handling
+            // Frame Not Found Handling
         });
     });
 
@@ -223,18 +224,46 @@ class BurnerWebsocket extends BaseController
 <pre><code class="language-php">$routes-&gt;get('burner/websocket', 'BurnerWebsocket::connect');
 </code></pre>
 <p>當使用者透過 Websocket 與 <code>burner/websocket</code> 與 Burner 握手後，Burner 隨即會將這個連線給傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。在這裡，你可以盡情地使用 CodeIgniter4 的功能來處理你的業務邏輯。</p>
-<h2 id="可用方法">可用方法</h2>
+<h2 id="事件">事件</h2>
+<h3 id="burnerafterpushmessage">burnerAfterPushMessage</h3>
+<p>當 Burner 推送訊息給 WebSocket 連線者後，會觸發 <code>burnerAfterPushMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
+<p>你可以透過以下的方式來註冊 <code>burnerAfterPushMessage</code> 事件：</p>
+<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
+{
+    // $server 是 OpenSwoole 的 Server 實例
+    // $fd 是目前正在推送的連線者的 fd
+    // $pushResult 是推送訊息的結果
+});
+</code></pre>
+<h3 id="burnerafterpushallmessage">burnerAfterPushAllMessage</h3>
+<p>當 Burner 推送訊息給所有 WebSocket 連線者後，會觸發 <code>burnerAfterPushAllMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
+<p>你可以透過以下的方式來註冊 <code>burnerAfterPushAllMessage</code> 事件：</p>
+<pre><code class="language-php">Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
+{
+    // $server 是 OpenSwoole 的 Server 實例
+    // $fds 已推送的連線者的 fd 陣列
+});
+</code></pre>
+<h1 id="可用方法">可用方法</h1>
+<h2 id="通用方法">通用方法</h2>
+<h3 id="worker::getserver">Worker::getServer</h3>
+<p>取得 OpenSwoole 的 WebSocket 伺服器實例。</p>
+<h4 id="使用範例">使用範例</h4>
+<p><code>getServer()</code> 的回傳值依據組態設定的不同，可能是 <code>OpenSwoole\Server</code> 或 <code>OpenSwoole\WebSocket\Server</code>。</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$server = Worker::getServer();
+</code></pre>
+<h2 id="websocket-相關方法">WebSocket 相關方法</h2>
 <h3 id="worker::push">Worker::push</h3>
 <p>將訊息推送給 WebSocket 連線者。</p>
 <h4 id="參數">參數</h4>
-<table><thead><tr><th>參數</th><th>型別</th><th>說明</th></tr></thead><tbody>
-<tr><td>data</td><td>string or binary</td><td>要推送的訊息</td></tr>
-<tr><td>fd</td><td>int</td><td>要推送的連線者的 fd</td></tr>
-<tr><td>opcode</td><td>int</td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設值</th><th>說明</th></tr></thead><tbody>
+<tr><td>data</td><td>string or binary</td><td>必填</td><td>要推送的訊息</td></tr>
+<tr><td>fd</td><td>int</td><td>目前連線者的fd</td><td>要推送的連線者的 fd</td></tr>
+<tr><td>opcode</td><td>int</td><td><code>WEBSOCKET_OPCODE_TEXT</code></td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
 </tbody></table>
 <h4 id="使用範例">使用範例</h4>
-<pre><code class="language-php">
-use Monken\CIBurner\OpenSwoole\Worker;
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
 Worker::push(
@@ -246,15 +275,14 @@ Worker::push(
 <h3 id="worker::pushall">Worker::pushAll</h3>
 <p>將訊息推送給所有 WebSocket 連線者，或是列舉出一些連線者的 fd 來推送訊息。</p>
 <h4 id="參數">參數</h4>
-<table><thead><tr><th>參數</th><th>型別</th><th>說明</th></tr></thead><tbody>
-<tr><td>data</td><td>string or callable</td><td>要推送的訊息，或是一個回呼函數</td></tr>
-<tr><td>fds</td><td>array</td><td>要推送的連線者的 fd ，若不傳入則為當前與伺服器建立起連線的所有客戶端</td></tr>
-<tr><td>opcode</td><td>int</td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設值</th><th>說明</th></tr></thead><tbody>
+<tr><td>data</td><td>string or callable</td><td>必填</td><td>要推送的訊息，或是一個回呼函數</td></tr>
+<tr><td>fds</td><td>array</td><td>與伺服器建立起連線的所有客戶端</td><td>要推送的連線者的 fd</td></tr>
+<tr><td>opcode</td><td>int</td><td><code>Server::WEBSOCKET_OPCODE_TEXT</code></td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
 </tbody></table>
 <h4 id="以-string-推送">以 String 推送</h4>
 <p>將字串推送給所有或是指定的連線者。</p>
-<pre><code class="language-php">
-use Monken\CIBurner\OpenSwoole\Worker;
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
 Worker::pushAll(
@@ -265,8 +293,7 @@ Worker::pushAll(
 </code></pre>
 <h4 id="以-callback-推送">以 Callback 推送</h4>
 <p>透過 Callback 在推送訊息時包含更多的處理邏輯。</p>
-<pre><code class="language-php">
-use Monken\CIBurner\OpenSwoole\Worker;
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 use OpenSwoole\WebSocket\Server;
 
 Worker::pushAll(
@@ -306,26 +333,6 @@ Worker::pushAll(
 $frame = Worker::getFrame();
 </code></pre>
 <p><code>$frame</code> 的型別為 <code>OpenSwoole\WebSocket\Frame</code>，你可以參考 <a href="https://openswoole.com/docs/modules/swoole-websocket-frame">OpenSwoole 的文件</a> 來了解更多。</p>
-<h2 id="事件">事件</h2>
-<h3 id="burnerafterpushmessage">burnerAfterPushMessage</h3>
-<p>當 Burner 推送訊息給 WebSocket 連線者後，會觸發 <code>burnerAfterPushMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
-<p>你可以透過以下的方式來註冊 <code>burnerAfterPushMessage</code> 事件：</p>
-<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
-{
-    // $server 是 OpenSwoole 的 Server 實例
-    // $fd 是目前正在推送的連線者的 fd
-    // $pushResult 是推送訊息的結果
-});
-</code></pre>
-<h3 id="burnerafterpushallmessage">burnerAfterPushAllMessage</h3>
-<p>當 Burner 推送訊息給所有 WebSocket 連線者後，會觸發 <code>burnerAfterPushAllMessage</code> 事件，你可以在這個事件中進行一些後續處理。</p>
-<p>你可以透過以下的方式來註冊 <code>burnerAfterPushAllMessage</code> 事件：</p>
-<pre><code class="language-php">Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
-{
-    // $server 是 OpenSwoole 的 Server 實例
-    // $fds 已推送的連線者的 fd 陣列
-});
-</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -358,7 +365,35 @@ $frame = Worker::getFrame();
                         </li>
                         
                         <li class='page-nav-level-2'>
+                            <a href='#事件'>事件</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burnerafterpushmessage'>burnerAfterPushMessage</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burnerafterpushallmessage'>burnerAfterPushAllMessage</a>
+                        </li>
+                        
+                        <li class='page-nav-level-1'>
                             <a href='#可用方法'>可用方法</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#通用方法'>通用方法</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::getserver'>Worker::getServer</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#websocket-相關方法'>WebSocket 相關方法</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
@@ -401,18 +436,6 @@ $frame = Worker::getFrame();
                             <a href='#使用範例'>使用範例</a>
                         </li>
                         
-                        <li class='page-nav-level-2'>
-                            <a href='#事件'>事件</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#burnerafterpushmessage'>burnerAfterPushMessage</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#burnerafterpushallmessage'>burnerAfterPushAllMessage</a>
-                        </li>
-                        
                     </ul>
                 </div>
             </div>
@@ -432,11 +455,11 @@ $frame = Worker::getFrame();
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1679822342"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1679822342"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1680776935"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1680776935"></script>
 
     
 </body>

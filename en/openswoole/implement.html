@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1680776935"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1679822342" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1679822342"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1680776935" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1680776935"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1679822342";
+        var DOCTAVE_TIMESTAMP = "1680776935";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -184,8 +184,8 @@
     });
 }
 </code></pre>
-<p>In the above code snippet, you can see the <code>on('open')</code> event, which will be triggered when the WebSocket connection is established. You can perform some initialization actions in this event, such as verifying the identity of the connecting user or rejecting the user's connection. You can notice that the <code>Worker::setWebsocket</code> method in this event will store the request information of the connecting user to the Websocket Pool provided by Burner. This is a necessary action because Burner must use this request information to trigger the processing of CodeIgniter4.</p>
-<p>Next, you can see the <code>on('message')</code> event, which will be triggered when the WebSocket receives a message. You can notice that the <code>Worker::websocketProcesser</code> method in this event will pass the received message to CodeIgniter4 for processing, and then process the request after CodeIgniter4 is completed. If you have some special business logic that needs to be processed before CodeIgniter4 processes the request, you only need to remember to call <code>Worker::websocketProcesser</code> to process your request after everything is done.</p>
+<p>In the above code snippet, you can see the <code>on('open')</code> event, which will be triggered when the WebSocket connection is established. You can perform some initialization actions in this event, such as verifying the identity of the connecting user or rejecting the user's connection. You can notice that the <code>Worker::setWebsocket</code> method in this event will store the request information of the connecting user to the Websocket Pool provided by Burner. This is a necessary action because Burner must use this request information to trigger the processing of CodeIgniter4 for it and subsequent requests from the same frame.</p>
+<p>Next, you can see the <code>on('message')</code> event, which will be triggered when the WebSocket receives a message. You can notice that the <code>Worker::websocketProcesser</code> method in this event will pass the received message to CodeIgniter4 for processing, and then process the request after CodeIgniter4 is completed. If you have some special business logic that needs to be processed before CodeIgniter4 processes the request, remember to call <code>Worker::websocketProcesser</code> after your business logic.</p>
 <p>Finally, you can see the <code>on('close')</code> event, which will be triggered when the WebSocket connection is closed. You can notice that the <code>Worker::unsetWebsocket</code> method in this event will remove the request information of the connecting user from the Websocket Pool provided by Burner.</p>
 <p>In addition, WebSocket can also handle normal HTTP requests through the <code>on('request')</code> event. You can use the WebSocket server as a normal HTTP server.</p>
 <h2 id="push-message">Push Message</h2>
@@ -434,11 +434,11 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1679822342"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1679822342"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1679822342"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1679822342"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1679822342"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1680776935"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1680776935"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1680776935"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1680776935"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1680776935"></script>
 
     
 </body>
