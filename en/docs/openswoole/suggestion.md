@@ -6,9 +6,9 @@ title: OpenSwoole Suggestion
 
 ## Fast Cache
 
-OpenSwoole provides a fast cache system that can be shared between multiple workers and synchronized between multiple workers. We support [Swoole-Table](https://openswoole.com/docs/modules/swoole-table) as the storage interface for the cache, which you can use in your project just like you are familiar with!
+OpenSwoole provides a fast Cache system that can share data between multiple Workers and synchronize data between multiple Workers. We support [Swoole-Table](https://openswoole.com/docs/modules/swoole-table) as the storage interface for caching, and you can use it in your project, just like you are familiar with it!
 
-You can add the following settings in the `app/Config/OpenSwoole.php` configuration file and restart the server.
+You can add the following settings to the `app/Config/OpenSwoole.php` configuration file to turn on the fast cache function:
 
 ```php
 /**
@@ -34,7 +34,11 @@ public $fastCacheConfig = [
 ];
 ```
 
-Add the following settings to the `app/Config/Cache.php` configuration.
+### Using CodeIgniter4 Cache
+
+CodeIgniter provides a singleton Cache management method, and you can use the `cache()` function anywhere in the program to get the Cache instance. Burner also provides a `Burner` Cache Handler.
+
+You need to open `app/Config/Cache` and add the following settings:
 
 ```php
 public $validHandlers = [
@@ -49,7 +53,17 @@ Finally, you need to switch from `Primary Handler` to `Burner`.
 public $handler = 'burner';
 ```
 
-Now you can operate the [Cache Library](https://www.codeigniter.com/user_guide/libraries/caching.html) in the same way as the Burner provided Swoole-Table Cache. Please note that Swoole-Table will lose all data due to server restart, it is just a solution to share data between workers.
+Now you can operate the [Cache Library](https://www.codeigniter.com/user_guide/libraries/caching.html) in the same way as the Swoole-Table Cache provided by Burner. Please note that Swoole-Table will lose all data due to server restart, and it is only a solution for sharing data between Workers.
+
+### Get Cache instance directly
+
+If your project has already used a Cache system similar to Redis, and has used the CodeIgniter4 Cache management mechanism, you can also directly use the global method provided by Burner to get the Cache instance, so you don't have to worry about the problem that Cache can only have one Handler.
+
+Just set `fastCache` to `true` in `app/Config/OpenSwoole.php` and use the following in your program to get the Cache entity:
+
+```php
+$fastCache = \Monken\CIBurner\OpenSwoole\Worker::getFastCache();
+```
 
 ## Automatic reload
 
