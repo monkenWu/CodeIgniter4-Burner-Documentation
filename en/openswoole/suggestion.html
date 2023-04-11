@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1680776935"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681221006"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1680776935"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681221006"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1680776935" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1680776935"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681221006" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681221006"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1680776935";
+        var DOCTAVE_TIMESTAMP = "1681221006";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -131,8 +131,8 @@
             <div class='doctave-content'>
                 <h1 id="openswoole-suggestion">OpenSwoole Suggestion</h1>
 <h2 id="fast-cache">Fast Cache</h2>
-<p>OpenSwoole provides a fast cache system that can be shared between multiple workers and synchronized between multiple workers. We support <a href="https://openswoole.com/docs/modules/swoole-table">Swoole-Table</a> as the storage interface for the cache, which you can use in your project just like you are familiar with!</p>
-<p>You can add the following settings in the <code>app/Config/OpenSwoole.php</code> configuration file and restart the server.</p>
+<p>OpenSwoole provides a fast Cache system that can share data between multiple Workers and synchronize data between multiple Workers. We support <a href="https://openswoole.com/docs/modules/swoole-table">Swoole-Table</a> as the storage interface for caching, and you can use it in your project, just like you are familiar with it!</p>
+<p>You can add the following settings to the <code>app/Config/OpenSwoole.php</code> configuration file to turn on the fast cache function:</p>
 <pre><code class="language-php">/**
  * Whether to open the Key/Value Cache provided by Burner.
  * Shared high-speed caching with Swoole-Table implementation.
@@ -155,7 +155,9 @@ public $fastCacheConfig = [
     'valueStringLength' =&gt; 1024
 ];
 </code></pre>
-<p>Add the following settings to the <code>app/Config/Cache.php</code> configuration.</p>
+<h3 id="using-codeigniter4-cache">Using CodeIgniter4 Cache</h3>
+<p>CodeIgniter provides a singleton Cache management method, and you can use the <code>cache()</code> function anywhere in the program to get the Cache instance. Burner also provides a <code>Burner</code> Cache Handler.</p>
+<p>You need to open <code>app/Config/Cache</code> and add the following settings:</p>
 <pre><code class="language-php">public $validHandlers = [
     //hide
     'burner' =&gt; \Monken\CIBurner\BurnerCacheHandler::class
@@ -164,7 +166,12 @@ public $fastCacheConfig = [
 <p>Finally, you need to switch from <code>Primary Handler</code> to <code>Burner</code>.</p>
 <pre><code class="language-php">public $handler = 'burner';
 </code></pre>
-<p>Now you can operate the <a href="https://www.codeigniter.com/user_guide/libraries/caching.html">Cache Library</a> in the same way as the Burner provided Swoole-Table Cache. Please note that Swoole-Table will lose all data due to server restart, it is just a solution to share data between workers.</p>
+<p>Now you can operate the <a href="https://www.codeigniter.com/user_guide/libraries/caching.html">Cache Library</a> in the same way as the Swoole-Table Cache provided by Burner. Please note that Swoole-Table will lose all data due to server restart, and it is only a solution for sharing data between Workers.</p>
+<h3 id="get-cache-instance-directly">Get Cache instance directly</h3>
+<p>If your project has already used a Cache system similar to Redis, and has used the CodeIgniter4 Cache management mechanism, you can also directly use the global method provided by Burner to get the Cache instance, so you don't have to worry about the problem that Cache can only have one Handler.</p>
+<p>Just set <code>fastCache</code> to <code>true</code> in <code>app/Config/OpenSwoole.php</code> and use the following in your program to get the Cache entity:</p>
+<pre><code class="language-php">$fastCache = \Monken\CIBurner\OpenSwoole\Worker::getFastCache();
+</code></pre>
 <h2 id="automatic-reload">Automatic reload</h2>
 <p>By default, in the OpenSwoole state, you must restart the server after each modification to the PHP file to make your changes effective. This does not seem very friendly.</p>
 <p>You can modify the <code>app/Config/OpenSwoole.php</code> configuration file and add the following settings and restart the server.</p>
@@ -212,6 +219,14 @@ public $autoReloadMode = 'restart';
                             <a href='#fast-cache'>Fast Cache</a>
                         </li>
                         
+                        <li class='page-nav-level-3'>
+                            <a href='#using-codeigniter4-cache'>Using CodeIgniter4 Cache</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#get-cache-instance-directly'>Get Cache instance directly</a>
+                        </li>
+                        
                         <li class='page-nav-level-2'>
                             <a href='#automatic-reload'>Automatic reload</a>
                         </li>
@@ -239,11 +254,11 @@ public $autoReloadMode = 'restart';
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1680776935"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1680776935"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1680776935"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1680776935"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1680776935"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681221006"></script>
 
     
 </body>
