@@ -19,7 +19,7 @@ OpenSwoole 是從 Swoole 分叉出的新版本，它們有著相異的維護團�
 當處理好這些前置作業後，你可以在專案根目錄下執行以下指令取得 OpenSwoole 驅動程式：
 
 ```
-composer require monken/codeigniter4-burner-openswoole
+composer require monken/codeigniter4-burner-openswoole:1.0.0-beta.1
 ```
 
 {% info 備註 %}
