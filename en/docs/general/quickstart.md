@@ -14,7 +14,7 @@ Choose a suitable driver to install, and Burner currently provides you with thre
 
 1. 
     ```
-    composer require monkenwu/codeigniter4-burner-openswoole
+    composer require monkenwu/codeigniter4-burner-openswoole:1.0.0-beta.1
     ```
 2. 
     ```

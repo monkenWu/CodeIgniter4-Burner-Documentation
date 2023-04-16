@@ -14,7 +14,7 @@ Burner 目前僅支援使用 Composer 安裝，這是因為 Burner 替不同驅�
 
 1. 
     ```
-    composer require monken/codeigniter4-burner-openswoole
+    composer require monken/codeigniter4-burner-openswoole:1.0.0-beta.1
     ```
 
 2. 
