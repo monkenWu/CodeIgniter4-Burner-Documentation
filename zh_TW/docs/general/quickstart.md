@@ -64,4 +64,4 @@ php spark burner:start
 
 願它能成為你的 CodeIgnter4 專案的最佳燃料。
 
-在開發前，推薦你繼續閱讀 [開發建議](/general/suggestion.md)
+在開發前，推薦你繼續閱讀 [開發建議](/general/suggestion)

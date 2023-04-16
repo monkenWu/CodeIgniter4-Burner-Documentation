@@ -58,5 +58,7 @@ By default, Burner sets the `port` that the server listens to to `8080`. Now ope
 ## Conclusion
 
 Burner is simple and lightweight.
+
 We hope it can become the best fuel for your CodeIgnter4 project.
-Before development, we recommend that you continue to read [Development Suggestions](/general/suggestion.md)
+
+Before development, we recommend that you continue to read [Development Suggestions](/general/suggestion)
