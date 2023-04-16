@@ -30,6 +30,7 @@ Burner provides the following events for OpenSwoole HTTP:
 This is usually used to initialize after the response, if you have some global variables that need to be cleared or some common processing after the response, it is very suitable to declare it in this event. You can declare the `burnerAfterSendResponse` event, and when OpenSwoole responds, the logic you need to execute will be executed:
 
 ```php
+// This code will be executed after sending the response to the client.
 Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
 {
     //Your logic
@@ -58,7 +59,7 @@ public function server(Server $server)
     $server->on('message', static function (Server $server, Frame $frame) {
         // Burner handles CodeIgniter4 entry points.
         Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
-            // Not Found Handling
+            // Frame Not Found Handling
         });
     });
 
@@ -77,9 +78,9 @@ public function server(Server $server)
 }
 ```
 
-In the above code snippet, you can see the `on('open')` event, which will be triggered when the WebSocket connection is established. You can perform some initialization actions in this event, such as verifying the identity of the connecting user or rejecting the user's connection. You can notice that the `Worker::setWebsocket` method in this event will store the request information of the connecting user to the Websocket Pool provided by Burner. This is a necessary action because Burner must use this request information to trigger the processing of CodeIgniter4.
+In the above code snippet, you can see the `on('open')` event, which will be triggered when the WebSocket connection is established. You can perform some initialization actions in this event, such as verifying the identity of the connecting user or rejecting the user's connection. You can notice that the `Worker::setWebsocket` method in this event will store the request information of the connecting user to the Websocket Pool provided by Burner. This is a necessary action because Burner must use this request information to trigger the processing of CodeIgniter4 for it and subsequent requests from the same frame.
 
-Next, you can see the `on('message')` event, which will be triggered when the WebSocket receives a message. You can notice that the `Worker::websocketProcesser` method in this event will pass the received message to CodeIgniter4 for processing, and then process the request after CodeIgniter4 is completed. If you have some special business logic that needs to be processed before CodeIgniter4 processes the request, you only need to remember to call `Worker::websocketProcesser` to process your request after everything is done.
+Next, you can see the `on('message')` event, which will be triggered when the WebSocket receives a message. You can notice that the `Worker::websocketProcesser` method in this event will pass the received message to CodeIgniter4 for processing, and then process the request after CodeIgniter4 is completed. If you have some special business logic that needs to be processed before CodeIgniter4 processes the request, remember to call `Worker::websocketProcesser` after your business logic.
 
 Finally, you can see the `on('close')` event, which will be triggered when the WebSocket connection is closed. You can notice that the `Worker::unsetWebsocket` method in this event will remove the request information of the connecting user from the Websocket Pool provided by Burner.
 
@@ -132,7 +133,147 @@ $routes->get('burner/websocket', 'BurnerWebsocket::connect');
 
 After the user shakes hands with Burner via Websocket and `burner/websocket`, Burner then passes the connection to CodeIgniter4 so that you can work on it in CodeIgniter4. Here, you can use CodeIgniter4's features to your heart's content to work with your business logic.
 
-## Available Methods
+## Events
+
+### burnerAfterPushMessage
+
+When Burner pushes a message to a WebSocket connection, the `burnerAfterPushMessage` event will be triggered, and you can do some post-processing in this event.
+
+You can register the `burnerAfterPushMessage` event as follows:
+
+```php
+
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
+{
+    // $server is the OpenSwoole Server instance
+    // $fd is the fd of the current connection
+    // $pushResult is the result of pushing the message
+});
+
+```
+
+### burnerAfterPushAllMessage
+
+When Burner pushes a message to all WebSocket connections, the `burnerAfterPushAllMessage` event will be triggered, and you can do some post-processing in this event.
+
+You can register the `burnerAfterPushAllMessage` event as follows:
+
+```php
+
+Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
+{
+    // $server is the OpenSwoole Server instance
+    // $fds is the fd of the current connection array
+});
+
+```
+
+# Available Methods
+
+## General Methods
+
+### Worker::getServer
+
+Get the OpenSwoole Server instance.
+
+#### Example
+
+The return value of `getServer()` depends on the different configuration settings, and may be `OpenSwoole\Server` or `OpenSwoole\WebSocket\Server`.
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$server = Worker::getServer();
+```
+
+### Worker::getFastCache
+
+Get the shared FastCache instance.
+
+#### Example
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$fastCache = Worker::getFastCache();
+```
+
+Returns an object that implements `CodeIgniter\Cache\CacheInterface`.
+
+You can refer to [OpenSwoole Suggestion](/openswoole/suggestion) to learn more about FastCache.
+
+### Worker::httpProcesser
+
+Process HTTP requests.
+
+#### Parameters
+
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| request | \OpenSwoole\Http\Request | Required | OpenSwoole's Request instance |
+| response | \OpenSwoole\Http\Response | Required | OpenSwoole's Response instance |
+
+#### Example
+    
+This method is usually used in the `request` event of OpenSwoole. Burner will pass this request to CodeIgniter4 so that you can work on it in CodeIgniter4.
+    
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$server->on('request', static function (Request $swooleRequest, Response $swooleResponse) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::httpProcesser( $swooleRequest, $swooleResponse );
+});
+```
+
+## WebSocket Methods
+
+### Worker::setWebsocket
+
+Set the related settings of WebSocket connections.
+
+#### Parameters
+
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| request | \OpenSwoole\Http\Request | Required | OpenSwoole Request instance |
+
+#### Example
+
+This method is usually used in the OpenSwoole `open` event. After the WebSocket handshake is successful, Burner needs to store the Request when the WebSocket connection is established in the Websocket Client Pool for use in subsequent events.
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+
+$server->on('open', static function (Server $server, Request $request) {
+    Worker::setWebsocket($request);
+});
+```
+
+### Worker::websocketProcesser
+
+Process WebSocket requests.
+
+#### Parameters
+
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| frame | \OpenSwoole\WebSocket\Frame | Required | OpenSwoole Frame instance |
+| notFoundHandler | callable | Optional | This callback will be called when the Websocket Client Pool cannot find the corresponding Frame. |
+
+#### Example
+
+This method is usually used in the OpenSwoole `message` event. Burner will pass this request to CodeIgniter4 so that you can work on it in CodeIgniter4.
+
+This method relies on the Websocket Client Pool generated by `Worker::setWebsocket`, and you must pass all legitimate WebSocket connections to `Worker::setWebsocket` after the handoff. You can then use `Worker::websocketProcesser` in subsequent events.
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+
+$server->on('message', static function (Server $server, Frame $frame) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
+        // Client Not Found Handling
+    });
+});
+```
 
 ### Worker::push
 
@@ -140,11 +281,11 @@ Push messages to WebSocket connections.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| data | string or binary | The message to push |
-| fd | int | The fd of the connection to push |
-| opcode | int | The type of data to pass. OpenSwoole's `WEBSOCKET_OPCODE_TEXT`, `WEBSOCKET_OPCODE_BINARY` or `WEBSOCKET_OPCODE_PING` |
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| data | string or binary | Required | The message to push |
+| fd | int | Current connection fd | The fd of the connection to push |
+| opcode | int | `WEBSOCKET_OPCODE_TEXT` | The type of data to pass. OpenSwoole's `WEBSOCKET_OPCODE_TEXT`, `WEBSOCKET_OPCODE_BINARY` or `WEBSOCKET_OPCODE_PING` |
 
 #### Example
 
@@ -165,11 +306,11 @@ Push messages to all WebSocket connections, or enumerate some connection fd to p
 
 #### Parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| data | string or callable | The message to push, or a callback function |
-| fds | array | The fd of the connection to push, if not passed in, it will be all the current clients connected to the server |
-| opcode | int | The type of data to pass. OpenSwoole's `WEBSOCKET_OPCODE_TEXT`, `WEBSOCKET_OPCODE_BINARY` or `WEBSOCKET_OPCODE_PING` |
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| data | string or callable | Required | The message to push |
+| fds | array | All connections | The fd of the connection to push |
+| opcode | int | `WEBSOCKET_OPCODE_TEXT` | The type of data to pass. OpenSwoole's `WEBSOCKET_OPCODE_TEXT`, `WEBSOCKET_OPCODE_BINARY` or `WEBSOCKET_OPCODE_PING` |
 
 #### Push with String
 
@@ -243,37 +384,24 @@ $frame = Worker::getFrame();
 
 The type of `$frame` is `OpenSwoole\WebSocket\Frame`, you can refer to the [OpenSwoole documentation](https://openswoole.com/docs/modules/swoole-websocket-frame) to learn more.
 
-## Events
+### Worker::unsetWebsocket
 
-### burnerAfterPushMessage
+Remove Clint from Websocket Client Pool.
 
-When Burner pushes a message to a WebSocket connection, the `burnerAfterPushMessage` event will be triggered, and you can do some post-processing in this event.
+#### Parameters
 
-You can register the `burnerAfterPushMessage` event as follows:
+| Parameter | Type | Required/Default | Description |
+| --- | --- | --- | --- |
+| fd | int | Required | The fd of the connection to remove |
 
-```php
+#### Example
 
-Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
-{
-    // $server is the OpenSwoole Server instance
-    // $fd is the fd of the current connection
-    // $pushResult is the result of pushing the message
-});
-
-```
-
-### burnerAfterPushAllMessage
-
-When Burner pushes a message to all WebSocket connections, the `burnerAfterPushAllMessage` event will be triggered, and you can do some post-processing in this event.
-
-You can register the `burnerAfterPushAllMessage` event as follows:
+This method is usually used in the OpenSwoole `close` event. Remove the connection that has been interrupted from the Websocket Client Pool.
 
 ```php
+use Monken\CIBurner\OpenSwoole\Worker;
 
-Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
-{
-    // $server is the OpenSwoole Server instance
-    // $fds is the fd of the current connection array
+$server->on('close', static function (Server $server, int $fd) {
+    Worker::unsetWebsocket($fd);
 });
-
 ```

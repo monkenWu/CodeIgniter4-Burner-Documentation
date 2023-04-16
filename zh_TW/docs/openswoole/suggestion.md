@@ -8,7 +8,7 @@ title: OpenSwoole 開發建議
 
 OpenSwoole 提供了一個快速的 Cache 系統，可以在多個 Worker 間共享資料，並且可以在多個 Worker 間同步資料。我們支援 [Swoole-Table](https://openswoole.com/docs/modules/swoole-table) 作為快取的儲存介面，你可以在你的專案中使用它，就像你熟悉的一樣！
 
-你可以在 `app/Config/OpenSwoole.php` 設定檔中，加入以下設定並重新啟動伺服器。
+你可以在 `app/Config/OpenSwoole.php` 設定檔中，加入以下設定打開 fast cache 功能：
 
 ```php
 /**
@@ -34,7 +34,11 @@ public $fastCacheConfig = [
 ];
 ```
 
-接著，你需要開啟 `app/Config/Cache` 並加入以下設定：
+### 使用 CodeIgniter4 Cache
+
+CodeIgniter 提供了單例的 Cache 管理方式，無論你在程式的何處你都可以使用 `cache()` 函式來獲取 Cache 實體。Burner 也提供了一個 `Burner` 的 Cache Handler。 
+
+你需要開啟 `app/Config/Cache` 並加入以下設定：
 
 ```php
 public $validHandlers = [
@@ -50,6 +54,16 @@ public $handler = 'burner';
 ```
 
 現在你可以在 Burner 提供的 Swoole-Table Cache 中，以同樣的方式操作 [Cache Library](https://www.codeigniter.com/user_guide/libraries/caching.html)。請注意，Swoole-Table 會因為伺服器重啟而失去所有資料，它只是一個資料在 Worker 之間共享的解決方案。
+
+### 直接取得 Cache 實體
+
+如果你的專案已經有使用了類似 Redis 的 Cache 系統，並且已使用 CodeIgniter4 的 Cache 管理機制，你也可以直接使用 Burner 提供的全域方法來獲取 Cache 實體，這樣你就不需要糾結於 Cache 只能有一個 Handler 的問題。
+
+只需要將  `app/Config/OpenSwoole.php` 的 `fastCache` 設定為 `true`，然後在你的程式中使用以下方式來獲取 Cache 實體：
+
+```php
+$fastCache = \Monken\CIBurner\OpenSwoole\Worker::getFastCache();
+```
 
 ## 自動重新載入
 

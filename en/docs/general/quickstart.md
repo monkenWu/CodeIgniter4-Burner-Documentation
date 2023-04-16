@@ -10,13 +10,7 @@ Burner currently only supports installation via Composer, this is because Burner
 
 First, install Burner into your CodeIgniter4 project using Composer.
 
-In the project root directory, run the following command:
-
-```
-composer require monkenwu/codeigniter4-burner
-```
-
-Then, choose a suitable driver to install. Burner currently provides you with three options:
+Choose a suitable driver to install, and Burner currently provides you with three options:
 
 1. 
     ```
@@ -32,6 +26,12 @@ Then, choose a suitable driver to install. Burner currently provides you with th
     ```
 
 Before installation, you must first make sure that the current system environment meets the requirements of these drivers. You can refer to the content mentioned in [System Requirements](/introduction) to build your system environment, and we also recommend you to [build your development environment through Docker](/general/docker).
+
+{% info Note %}
+
+If you need, you can also install multiple drivers for your project, and choose the driver you want when you start. You can refer to the "Commands" entry of each driver to learn how to select the driver you want when you execute the server startup command.
+
+{% end %}
 
 ## Initialization
 

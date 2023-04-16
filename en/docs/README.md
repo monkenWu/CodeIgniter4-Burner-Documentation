@@ -1,8 +1,8 @@
 ---
-title: CodeIgniter4 Burner Manual
+title: CodeIgniter Burner Manual
 ---
 
-# CodeIgniter4 Burner Manual
+# CodeIgniter Burner Manual
 
 * [Introduction](/introduction)
 * [General](/general)

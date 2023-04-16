@@ -4,7 +4,7 @@ title: Welcome to Burner!
 
 # Welcome to Burner!
 
-Burner is a out-of-box  library for CodeIgniter4 that supports [RoadRunner](https://roadrunner.dev/) , [Workerman](https://github.com/walkor/workerman) ，and [OpenSwoole](https://openswoole.com/) . You only need to open some php extensions to greatly accelerate your CodeIgniter4 application, making it able to withstand higher loads and handle more connections at the same time.
+Burner is a out-of-box library for CodeIgniter that supports [RoadRunner](https://roadrunner.dev/) , [Workerman](https://github.com/walkor/workerman) ，and [OpenSwoole](https://openswoole.com/) . You only need to open some php extensions to greatly accelerate your CodeIgniter4 application, making it able to withstand higher loads and handle more connections at the same time.-
 
 ## System Requirements
 

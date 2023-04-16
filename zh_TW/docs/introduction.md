@@ -4,7 +4,7 @@ title: 歡迎使用 Burner！
 
 # 歡迎使用 Burner！
 
-Burner 是一款專屬於 CodeIgniter4 的開箱即用的程式庫，它支援 [RoadRunner](https://roadrunner.dev/)、 [Workerman](https://github.com/walkor/workerman) ，與 [OpenSwoole](https://openswoole.com/) 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。
+Burner 是一款專屬於 CodeIgniter 的開箱即用的程式庫，它支援 [RoadRunner](https://roadrunner.dev/)、 [Workerman](https://github.com/walkor/workerman) ，與 [OpenSwoole](https://openswoole.com/) 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。
 
 ## 系統需求
 
