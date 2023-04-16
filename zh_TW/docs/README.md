@@ -1,8 +1,8 @@
 ---
-title: CodeIgniter4 Burner 使用手冊
+title: CodeIgniter Burner 使用手冊
 ---
 
-# CodeIgniter4 Burner 使用手冊
+# CodeIgniter Burner 使用手冊
 
 * [歡迎使用 Burner](/introduction)
 * [一般主題](/general)

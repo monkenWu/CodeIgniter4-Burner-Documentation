@@ -10,13 +10,7 @@ Burner 目前僅支援使用 Composer 安裝，這是因為 Burner 替不同驅�
 
 首先，使用 Composer 將 Burner 安裝進你的 CodeIgniter4 專案中。
 
-在專案根目錄下執行以下指令：
-
-```
-composer require monken/codeigniter4-burner
-```
-
-再來，選擇一款合宜的驅動程式進行安裝，目前 Burner 提供你三種選擇：
+選擇一款合宜的驅動程式進行安裝，目前 Burner 提供你三種選擇：
 
 1. 
     ```
@@ -34,6 +28,13 @@ composer require monken/codeigniter4-burner
     ```
 
 在安裝之前，你得先確定目前的系統環境是否滿足了這些驅動程式的要求。你能夠先參考 [系統需求](/introduction) 提到的內容建構你的系統環境，同時我們也推薦你 [透過Docker建構](/general/docker) 你的開發環境。
+
+{% info 備註 %}
+
+若你需要，你也可以為你的專案安裝多個驅動程式，並在啟動時選擇你想要的驅動程式。你可以參考各驅動程式的「常用指令」條目，了解如何在執行伺服器啟動指令時選擇你想要的驅動程式。
+
+{% end %}
+
 
 ## 初始化
 

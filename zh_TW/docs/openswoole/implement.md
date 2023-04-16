@@ -169,7 +169,7 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
 
 ### Worker::getServer
 
-取得 OpenSwoole 的 WebSocket 伺服器實例。
+取得 OpenSwoole 的伺服器實例。
 
 #### 使用範例
  
@@ -180,7 +180,95 @@ use Monken\CIBurner\OpenSwoole\Worker;
 $server = Worker::getServer();
 ```
 
+### Worker::getFastCache
+
+取得共享的 FastCache 實例。
+
+#### 使用範例
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$fastCache = Worker::getFastCache();
+```
+
+將回傳實作 `CodeIgniter\Cache\CacheInterface` 的物件。
+
+你可以參考 [OpenSwoole 開發建議](/openswoole/suggestion) 來了解更多關於 FastCache 的資訊。
+
+### Worker::httpProcesser
+
+處理 Http 連線。
+
+#### 參數
+
+| 參數 | 型別 | 必填/預設 | 說明 |
+| --- | --- | --- | --- |
+| request | \OpenSwoole\Http\Request | 必填 | OpenSwoole 的 Request 實例 |
+| response | \OpenSwoole\Http\Response | 必填 | OpenSwoole 的 Response 實例 |
+
+#### 使用範例
+
+這個方法通常會在 OpenSwoole 的 `request` 事件中使用，Burner 會將這個請求傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+$server->on('request', static function (Request $swooleRequest, Response $swooleResponse) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::httpProcesser( $swooleRequest, $swooleResponse );
+});
+```
+
 ## WebSocket 相關方法
+
+### Worker::setWebsocket
+
+設定 WebSocket 連線的相關設定。
+
+#### 參數
+
+| 參數 | 型別 | 必填/預設 | 說明 |
+| --- | --- | --- | --- |
+| request | \OpenSwoole\Http\Request | 必填 | OpenSwoole 的 Request 實體 |
+
+#### 使用範例
+
+這個方法通常會在 OpenSwoole 的 `open` 事件中使用，在 WebSocket 交握成功後， Burner 需要將 WebSocket 連線時的 Request 儲存在 Websocket Client Pool 中，以便在後續的事件中使用。
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+
+$server->on('open', static function (Server $server, Request $request) {
+    Worker::setWebsocket($request);
+});
+```
+
+### Worker::websocketProcesser
+
+處理 WebSocket 連線。
+
+#### 參數
+
+| 參數 | 型別 | 必填/預設 | 說明 |
+| --- | --- | --- | --- |
+| frame | \OpenSwoole\WebSocket\Frame | 必填 | OpenSwoole 的 WebSocket Frame 實例 |
+| notFoundHandler | callable | 選填 | 在 Websocket Client Pool 尋找不到對應的 Frame 時，會呼叫這個 callback |
+
+#### 使用範例
+
+這個方法通常會在 OpenSwoole 的 `message` 事件中使用，Burner 會將這個請求傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。
+
+這個方法倚賴 `Worker::setWebsocket` 產生的 Websocket Client Pool ，你必須將所有交握後合法的 WebSocket 連線傳遞給 `Worker::setWebsocket`。你才可以再後續的事件中使用 `Worker::websocketProcesser`。
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+
+$server->on('message', static function (Server $server, Frame $frame) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
+        // Client Not Found Handling
+    });
+});
+```
 
 ### Worker::push
 
@@ -188,7 +276,7 @@ $server = Worker::getServer();
 
 #### 參數
 
-| 參數 | 型別 | 必填/預設值 | 說明 |
+| 參數 | 型別 | 必填/預設 | 說明 |
 | --- | --- | --- | --- |
 | data | string or binary | 必填 | 要推送的訊息 |
 | fd | int | 目前連線者的fd | 要推送的連線者的 fd |
@@ -213,7 +301,7 @@ Worker::push(
 
 #### 參數
 
-| 參數 | 型別 | 必填/預設值 | 說明 |
+| 參數 | 型別 | 必填/預設 | 說明 |
 | --- | --- | --- | --- |
 | data | string or callable | 必填 | 要推送的訊息，或是一個回呼函數 |
 | fds | array | 與伺服器建立起連線的所有客戶端 | 要推送的連線者的 fd |
@@ -289,3 +377,25 @@ $frame = Worker::getFrame();
 ```
 
 `$frame` 的型別為 `OpenSwoole\WebSocket\Frame`，你可以參考 [OpenSwoole 的文件](https://openswoole.com/docs/modules/swoole-websocket-frame) 來了解更多。
+
+### Worker::unsetWebsocket
+
+將 Clint 從 Websocket Client Pool 中移除。
+
+#### 參數
+
+| 參數 | 型別 | 必填/預設 | 說明 |
+| --- | --- | --- | --- |
+| fd | int | 必填 | 要移除的連線者的 fd |
+
+#### 使用範例
+
+這個方法通常在 OpenSwoole 的 close 事件中使用，將已經中段的連線者從 Websocket Client Pool 中移除。
+
+```php
+use Monken\CIBurner\OpenSwoole\Worker;
+
+$server->on('close', static function (Server $server, int $fd) {
+    Worker::unsetWebsocket($fd);
+});
+```
