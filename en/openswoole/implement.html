@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>OpenSwoole Implement</title>
-    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681221006" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681641454" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681641454"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1681221006";
+        var DOCTAVE_TIMESTAMP = "1681641454";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -38,7 +38,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
 <script>
-    document.title = 'CodeIgniter4 Burner - ' + document.title;
+    document.title = 'CodeIgniter Burner - ' + document.title;
 </script>
     
 </head>
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/en/">
-                    <img src="/en/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                    <img src="/en/logo.png" alt='CodeIgniter Burner Beta logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/en/">
-                        CodeIgniter4 Burner v1.0.0
+                        CodeIgniter Burner Beta
                     </a>
                 </h2>
             </div>
@@ -144,7 +144,8 @@
 <p>Burner provides the following events for OpenSwoole HTTP:</p>
 <h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
 <p>This is usually used to initialize after the response, if you have some global variables that need to be cleared or some common processing after the response, it is very suitable to declare it in this event. You can declare the <code>burnerAfterSendResponse</code> event, and when OpenSwoole responds, the logic you need to execute will be executed:</p>
-<pre><code class="language-php">Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+<pre><code class="language-php">// This code will be executed after sending the response to the client.
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
 {
     //Your logic
 });
@@ -166,7 +167,7 @@
     $server-&gt;on('message', static function (Server $server, Frame $frame) {
         // Burner handles CodeIgniter4 entry points.
         Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
-            // Not Found Handling
+            // Frame Not Found Handling
         });
     });
 
@@ -223,14 +224,103 @@ class BurnerWebsocket extends BaseController
 <pre><code class="language-php">$routes-&gt;get('burner/websocket', 'BurnerWebsocket::connect');
 </code></pre>
 <p>After the user shakes hands with Burner via Websocket and <code>burner/websocket</code>, Burner then passes the connection to CodeIgniter4 so that you can work on it in CodeIgniter4. Here, you can use CodeIgniter4's features to your heart's content to work with your business logic.</p>
-<h2 id="available-methods">Available Methods</h2>
+<h2 id="events">Events</h2>
+<h3 id="burnerafterpushmessage">burnerAfterPushMessage</h3>
+<p>When Burner pushes a message to a WebSocket connection, the <code>burnerAfterPushMessage</code> event will be triggered, and you can do some post-processing in this event.</p>
+<p>You can register the <code>burnerAfterPushMessage</code> event as follows:</p>
+<pre><code class="language-php">
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
+{
+    // $server is the OpenSwoole Server instance
+    // $fd is the fd of the current connection
+    // $pushResult is the result of pushing the message
+});
+
+</code></pre>
+<h3 id="burnerafterpushallmessage">burnerAfterPushAllMessage</h3>
+<p>When Burner pushes a message to all WebSocket connections, the <code>burnerAfterPushAllMessage</code> event will be triggered, and you can do some post-processing in this event.</p>
+<p>You can register the <code>burnerAfterPushAllMessage</code> event as follows:</p>
+<pre><code class="language-php">
+Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
+{
+    // $server is the OpenSwoole Server instance
+    // $fds is the fd of the current connection array
+});
+
+</code></pre>
+<h1 id="available-methods">Available Methods</h1>
+<h2 id="general-methods">General Methods</h2>
+<h3 id="worker::getserver">Worker::getServer</h3>
+<p>Get the OpenSwoole Server instance.</p>
+<h4 id="example">Example</h4>
+<p>The return value of <code>getServer()</code> depends on the different configuration settings, and may be <code>OpenSwoole\Server</code> or <code>OpenSwoole\WebSocket\Server</code>.</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$server = Worker::getServer();
+</code></pre>
+<h3 id="worker::getfastcache">Worker::getFastCache</h3>
+<p>Get the shared FastCache instance.</p>
+<h4 id="example">Example</h4>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$fastCache = Worker::getFastCache();
+</code></pre>
+<p>Returns an object that implements <code>CodeIgniter\Cache\CacheInterface</code>.</p>
+<p>You can refer to <a href="/en/openswoole/suggestion">OpenSwoole Suggestion</a> to learn more about FastCache.</p>
+<h3 id="worker::httpprocesser">Worker::httpProcesser</h3>
+<p>Process HTTP requests.</p>
+<h4 id="parameters">Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>request</td><td>\OpenSwoole\Http\Request</td><td>Required</td><td>OpenSwoole's Request instance</td></tr>
+<tr><td>response</td><td>\OpenSwoole\Http\Response</td><td>Required</td><td>OpenSwoole's Response instance</td></tr>
+</tbody></table>
+<h4 id="example">Example</h4>
+<p>This method is usually used in the <code>request</code> event of OpenSwoole. Burner will pass this request to CodeIgniter4 so that you can work on it in CodeIgniter4.</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$server-&gt;on('request', static function (Request $swooleRequest, Response $swooleResponse) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::httpProcesser( $swooleRequest, $swooleResponse );
+});
+</code></pre>
+<h2 id="websocket-methods">WebSocket Methods</h2>
+<h3 id="worker::setwebsocket">Worker::setWebsocket</h3>
+<p>Set the related settings of WebSocket connections.</p>
+<h4 id="parameters">Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>request</td><td>\OpenSwoole\Http\Request</td><td>Required</td><td>OpenSwoole Request instance</td></tr>
+</tbody></table>
+<h4 id="example">Example</h4>
+<p>This method is usually used in the OpenSwoole <code>open</code> event. After the WebSocket handshake is successful, Burner needs to store the Request when the WebSocket connection is established in the Websocket Client Pool for use in subsequent events.</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+
+$server-&gt;on('open', static function (Server $server, Request $request) {
+    Worker::setWebsocket($request);
+});
+</code></pre>
+<h3 id="worker::websocketprocesser">Worker::websocketProcesser</h3>
+<p>Process WebSocket requests.</p>
+<h4 id="parameters">Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>frame</td><td>\OpenSwoole\WebSocket\Frame</td><td>Required</td><td>OpenSwoole Frame instance</td></tr>
+<tr><td>notFoundHandler</td><td>callable</td><td>Optional</td><td>This callback will be called when the Websocket Client Pool cannot find the corresponding Frame.</td></tr>
+</tbody></table>
+<h4 id="example">Example</h4>
+<p>This method is usually used in the OpenSwoole <code>message</code> event. Burner will pass this request to CodeIgniter4 so that you can work on it in CodeIgniter4.</p>
+<p>This method relies on the Websocket Client Pool generated by <code>Worker::setWebsocket</code>, and you must pass all legitimate WebSocket connections to <code>Worker::setWebsocket</code> after the handoff. You can then use <code>Worker::websocketProcesser</code> in subsequent events.</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+
+$server-&gt;on('message', static function (Server $server, Frame $frame) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
+        // Client Not Found Handling
+    });
+});
+</code></pre>
 <h3 id="worker::push">Worker::push</h3>
 <p>Push messages to WebSocket connections.</p>
 <h4 id="parameters">Parameters</h4>
-<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>data</td><td>string or binary</td><td>The message to push</td></tr>
-<tr><td>fd</td><td>int</td><td>The fd of the connection to push</td></tr>
-<tr><td>opcode</td><td>int</td><td>The type of data to pass. OpenSwoole's <code>WEBSOCKET_OPCODE_TEXT</code>, <code>WEBSOCKET_OPCODE_BINARY</code> or <code>WEBSOCKET_OPCODE_PING</code></td></tr>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>data</td><td>string or binary</td><td>Required</td><td>The message to push</td></tr>
+<tr><td>fd</td><td>int</td><td>Current connection fd</td><td>The fd of the connection to push</td></tr>
+<tr><td>opcode</td><td>int</td><td><code>WEBSOCKET_OPCODE_TEXT</code></td><td>The type of data to pass. OpenSwoole's <code>WEBSOCKET_OPCODE_TEXT</code>, <code>WEBSOCKET_OPCODE_BINARY</code> or <code>WEBSOCKET_OPCODE_PING</code></td></tr>
 </tbody></table>
 <h4 id="example">Example</h4>
 <pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
@@ -245,10 +335,10 @@ Worker::push(
 <h3 id="worker::pushall">Worker::pushAll</h3>
 <p>Push messages to all WebSocket connections, or enumerate some connection fd to push messages.</p>
 <h4 id="parameters">Parameters</h4>
-<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>data</td><td>string or callable</td><td>The message to push, or a callback function</td></tr>
-<tr><td>fds</td><td>array</td><td>The fd of the connection to push, if not passed in, it will be all the current clients connected to the server</td></tr>
-<tr><td>opcode</td><td>int</td><td>The type of data to pass. OpenSwoole's <code>WEBSOCKET_OPCODE_TEXT</code>, <code>WEBSOCKET_OPCODE_BINARY</code> or <code>WEBSOCKET_OPCODE_PING</code></td></tr>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>data</td><td>string or callable</td><td>Required</td><td>The message to push</td></tr>
+<tr><td>fds</td><td>array</td><td>All connections</td><td>The fd of the connection to push</td></tr>
+<tr><td>opcode</td><td>int</td><td><code>WEBSOCKET_OPCODE_TEXT</code></td><td>The type of data to pass. OpenSwoole's <code>WEBSOCKET_OPCODE_TEXT</code>, <code>WEBSOCKET_OPCODE_BINARY</code> or <code>WEBSOCKET_OPCODE_PING</code></td></tr>
 </tbody></table>
 <h4 id="push-with-string">Push with String</h4>
 <p>Pushes the string to all connections.</p>
@@ -304,29 +394,19 @@ use Monken\CIBurner\OpenSwoole\Worker;
 $frame = Worker::getFrame();
 </code></pre>
 <p>The type of <code>$frame</code> is <code>OpenSwoole\WebSocket\Frame</code>, you can refer to the <a href="https://openswoole.com/docs/modules/swoole-websocket-frame">OpenSwoole documentation</a> to learn more.</p>
-<h2 id="events">Events</h2>
-<h3 id="burnerafterpushmessage">burnerAfterPushMessage</h3>
-<p>When Burner pushes a message to a WebSocket connection, the <code>burnerAfterPushMessage</code> event will be triggered, and you can do some post-processing in this event.</p>
-<p>You can register the <code>burnerAfterPushMessage</code> event as follows:</p>
-<pre><code class="language-php">
-Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server, int $fd, bool $pushResult)
-{
-    // $server is the OpenSwoole Server instance
-    // $fd is the fd of the current connection
-    // $pushResult is the result of pushing the message
-});
+<h3 id="worker::unsetwebsocket">Worker::unsetWebsocket</h3>
+<p>Remove Clint from Websocket Client Pool.</p>
+<h4 id="parameters">Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required/Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>fd</td><td>int</td><td>Required</td><td>The fd of the connection to remove</td></tr>
+</tbody></table>
+<h4 id="example">Example</h4>
+<p>This method is usually used in the OpenSwoole <code>close</code> event. Remove the connection that has been interrupted from the Websocket Client Pool.</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 
-</code></pre>
-<h3 id="burnerafterpushallmessage">burnerAfterPushAllMessage</h3>
-<p>When Burner pushes a message to all WebSocket connections, the <code>burnerAfterPushAllMessage</code> event will be triggered, and you can do some post-processing in this event.</p>
-<p>You can register the <code>burnerAfterPushAllMessage</code> event as follows:</p>
-<pre><code class="language-php">
-Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $server, array $fds)
-{
-    // $server is the OpenSwoole Server instance
-    // $fds is the fd of the current connection array
+$server-&gt;on('close', static function (Server $server, int $fd) {
+    Worker::unsetWebsocket($fd);
 });
-
 </code></pre>
 
             </div>
@@ -360,7 +440,79 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
                         </li>
                         
                         <li class='page-nav-level-2'>
+                            <a href='#events'>Events</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burnerafterpushmessage'>burnerAfterPushMessage</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burnerafterpushallmessage'>burnerAfterPushAllMessage</a>
+                        </li>
+                        
+                        <li class='page-nav-level-1'>
                             <a href='#available-methods'>Available Methods</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#general-methods'>General Methods</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::getserver'>Worker::getServer</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::getfastcache'>Worker::getFastCache</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::httpprocesser'>Worker::httpProcesser</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#parameters'>Parameters</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#websocket-methods'>WebSocket Methods</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::setwebsocket'>Worker::setWebsocket</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#parameters'>Parameters</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::websocketprocesser'>Worker::websocketProcesser</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#parameters'>Parameters</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
@@ -403,16 +555,16 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
                             <a href='#example'>Example</a>
                         </li>
                         
-                        <li class='page-nav-level-2'>
-                            <a href='#events'>Events</a>
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::unsetwebsocket'>Worker::unsetWebsocket</a>
                         </li>
                         
-                        <li class='page-nav-level-3'>
-                            <a href='#burnerafterpushmessage'>burnerAfterPushMessage</a>
+                        <li class='page-nav-level-4'>
+                            <a href='#parameters'>Parameters</a>
                         </li>
                         
-                        <li class='page-nav-level-3'>
-                            <a href='#burnerafterpushallmessage'>burnerAfterPushAllMessage</a>
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
                         </li>
                         
                     </ul>
@@ -434,11 +586,11 @@ Events::on('burnerAfterPushAllMessage',static function(\OpenSwoole\Http\Server $
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681641454"></script>
 
     
 </body>

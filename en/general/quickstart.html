@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>Quickstart</title>
-    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681221006" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681641454" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681641454"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1681221006";
+        var DOCTAVE_TIMESTAMP = "1681641454";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -38,7 +38,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
 <script>
-    document.title = 'CodeIgniter4 Burner - ' + document.title;
+    document.title = 'CodeIgniter Burner - ' + document.title;
 </script>
     
 </head>
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/en/">
-                    <img src="/en/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                    <img src="/en/logo.png" alt='CodeIgniter Burner Beta logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/en/">
-                        CodeIgniter4 Burner v1.0.0
+                        CodeIgniter Burner Beta
                     </a>
                 </h2>
             </div>
@@ -133,10 +133,7 @@
 <p>Burner currently only supports installation via Composer, this is because Burner provides a consistent interface and automatic loading for different drivers, which makes it difficult for developers to deploy Burner on their own.</p>
 <h2 id="install-burner">Install Burner</h2>
 <p>First, install Burner into your CodeIgniter4 project using Composer.</p>
-<p>In the project root directory, run the following command:</p>
-<pre><code>composer require monkenwu/codeigniter4-burner
-</code></pre>
-<p>Then, choose a suitable driver to install. Burner currently provides you with three options:</p>
+<p>Choose a suitable driver to install, and Burner currently provides you with three options:</p>
 <ol>
 <li>
 <pre><code>composer require monkenwu/codeigniter4-burner-openswoole
@@ -152,7 +149,9 @@
 </li>
 </ol>
 <p>Before installation, you must first make sure that the current system environment meets the requirements of these drivers. You can refer to the content mentioned in <a href="/en/introduction">System Requirements</a> to build your system environment, and we also recommend you to <a href="/en/general/docker">build your development environment through Docker</a>.</p>
-<h2 id="initialization">Initialization</h2>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you need, you can also install multiple drivers for your project, and choose the driver you want when you start. You can refer to the "Commands" entry of each driver to learn how to select the driver you want when you execute the server startup command.</p>
+</div><h2 id="initialization">Initialization</h2>
 <p>Depending on the driver you choose, the <code>burner:init</code> command also needs to pass different parameters.</p>
 <pre><code>php spark burner:init [OpenSwoole, Workerman, RoadRunner]
 </code></pre>
@@ -213,11 +212,11 @@ Before development, we recommend that you continue to read <a href="/en/general/
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1681221006"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681221006"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1681641454"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681641454"></script>
 
     
 </body>

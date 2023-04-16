@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>快速開始</title>
-    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1681221006" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1681641454" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1681641454"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1681221006";
+        var DOCTAVE_TIMESTAMP = "1681641454";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -38,7 +38,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
 <script>
-    document.title = 'CodeIgniter4 Burner - ' + document.title;
+    document.title = 'CodeIgniter Burner - ' + document.title;
 </script>
     
 </head>
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/zh_TW/">
-                    <img src="/zh_TW/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                    <img src="/zh_TW/logo.png" alt='CodeIgniter Burner Beta logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/zh_TW/">
-                        CodeIgniter4 Burner v1.0.0
+                        CodeIgniter Burner Beta
                     </a>
                 </h2>
             </div>
@@ -133,10 +133,7 @@
 <p>Burner 目前僅支援使用 Composer 安裝，這是因為 Burner 替不同驅動程式提供了一致的指令介面與自動載入方式，這使得 Burner 無法輕易地讓開發者自行部署。</p>
 <h2 id="安裝-burner">安裝 Burner</h2>
 <p>首先，使用 Composer 將 Burner 安裝進你的 CodeIgniter4 專案中。</p>
-<p>在專案根目錄下執行以下指令：</p>
-<pre><code>composer require monken/codeigniter4-burner
-</code></pre>
-<p>再來，選擇一款合宜的驅動程式進行安裝，目前 Burner 提供你三種選擇：</p>
+<p>選擇一款合宜的驅動程式進行安裝，目前 Burner 提供你三種選擇：</p>
 <ol>
 <li>
 <pre><code>composer require monken/codeigniter4-burner-openswoole
@@ -152,7 +149,9 @@
 </li>
 </ol>
 <p>在安裝之前，你得先確定目前的系統環境是否滿足了這些驅動程式的要求。你能夠先參考 <a href="/zh_TW/introduction">系統需求</a> 提到的內容建構你的系統環境，同時我們也推薦你 <a href="/zh_TW/general/docker">透過Docker建構</a> 你的開發環境。</p>
-<h2 id="初始化">初始化</h2>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>若你需要，你也可以為你的專案安裝多個驅動程式，並在啟動時選擇你想要的驅動程式。你可以參考各驅動程式的「常用指令」條目，了解如何在執行伺服器啟動指令時選擇你想要的驅動程式。</p>
+</div><h2 id="初始化">初始化</h2>
 <p>依據你所選擇不同的驅動， <code>burner:init</code> 指令也需要傳入不同的參數。</p>
 <pre><code>php spark burner:init [OpenSwoole, Workerman, RoadRunner]
 </code></pre>
@@ -213,11 +212,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1681221006"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1681641454"></script>
 
     
 </body>

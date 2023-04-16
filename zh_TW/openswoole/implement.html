@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>OpenSwoole 實踐</title>
-    <meta name="description" content="Documentation for CodeIgniter4 Burner v1.0.0">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1681641454"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1681221006" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1681221006"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1681641454" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1681641454"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1681221006";
+        var DOCTAVE_TIMESTAMP = "1681641454";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -38,7 +38,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
 <script>
-    document.title = 'CodeIgniter4 Burner - ' + document.title;
+    document.title = 'CodeIgniter Burner - ' + document.title;
 </script>
     
 </head>
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/zh_TW/">
-                    <img src="/zh_TW/logo.png" alt='CodeIgniter4 Burner v1.0.0 logo'></img>
+                    <img src="/zh_TW/logo.png" alt='CodeIgniter Burner Beta logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/zh_TW/">
-                        CodeIgniter4 Burner v1.0.0
+                        CodeIgniter Burner Beta
                     </a>
                 </h2>
             </div>
@@ -247,17 +247,73 @@ class BurnerWebsocket extends BaseController
 <h1 id="可用方法">可用方法</h1>
 <h2 id="通用方法">通用方法</h2>
 <h3 id="worker::getserver">Worker::getServer</h3>
-<p>取得 OpenSwoole 的 WebSocket 伺服器實例。</p>
+<p>取得 OpenSwoole 的伺服器實例。</p>
 <h4 id="使用範例">使用範例</h4>
 <p><code>getServer()</code> 的回傳值依據組態設定的不同，可能是 <code>OpenSwoole\Server</code> 或 <code>OpenSwoole\WebSocket\Server</code>。</p>
 <pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
 $server = Worker::getServer();
 </code></pre>
+<h3 id="worker::getfastcache">Worker::getFastCache</h3>
+<p>取得共享的 FastCache 實例。</p>
+<h4 id="使用範例">使用範例</h4>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$fastCache = Worker::getFastCache();
+</code></pre>
+<p>將回傳實作 <code>CodeIgniter\Cache\CacheInterface</code> 的物件。</p>
+<p>你可以參考 <a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a> 來了解更多關於 FastCache 的資訊。</p>
+<h3 id="worker::httpprocesser">Worker::httpProcesser</h3>
+<p>處理 Http 連線。</p>
+<h4 id="參數">參數</h4>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
+<tr><td>request</td><td>\OpenSwoole\Http\Request</td><td>必填</td><td>OpenSwoole 的 Request 實例</td></tr>
+<tr><td>response</td><td>\OpenSwoole\Http\Response</td><td>必填</td><td>OpenSwoole 的 Response 實例</td></tr>
+</tbody></table>
+<h4 id="使用範例">使用範例</h4>
+<p>這個方法通常會在 OpenSwoole 的 <code>request</code> 事件中使用，Burner 會將這個請求傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+$server-&gt;on('request', static function (Request $swooleRequest, Response $swooleResponse) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::httpProcesser( $swooleRequest, $swooleResponse );
+});
+</code></pre>
 <h2 id="websocket-相關方法">WebSocket 相關方法</h2>
+<h3 id="worker::setwebsocket">Worker::setWebsocket</h3>
+<p>設定 WebSocket 連線的相關設定。</p>
+<h4 id="參數">參數</h4>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
+<tr><td>request</td><td>\OpenSwoole\Http\Request</td><td>必填</td><td>OpenSwoole 的 Request 實體</td></tr>
+</tbody></table>
+<h4 id="使用範例">使用範例</h4>
+<p>這個方法通常會在 OpenSwoole 的 <code>open</code> 事件中使用，在 WebSocket 交握成功後， Burner 需要將 WebSocket 連線時的 Request 儲存在 Websocket Client Pool 中，以便在後續的事件中使用。</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+
+$server-&gt;on('open', static function (Server $server, Request $request) {
+    Worker::setWebsocket($request);
+});
+</code></pre>
+<h3 id="worker::websocketprocesser">Worker::websocketProcesser</h3>
+<p>處理 WebSocket 連線。</p>
+<h4 id="參數">參數</h4>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
+<tr><td>frame</td><td>\OpenSwoole\WebSocket\Frame</td><td>必填</td><td>OpenSwoole 的 WebSocket Frame 實例</td></tr>
+<tr><td>notFoundHandler</td><td>callable</td><td>選填</td><td>在 Websocket Client Pool 尋找不到對應的 Frame 時，會呼叫這個 callback</td></tr>
+</tbody></table>
+<h4 id="使用範例">使用範例</h4>
+<p>這個方法通常會在 OpenSwoole 的 <code>message</code> 事件中使用，Burner 會將這個請求傳遞給 CodeIgniter4，讓你可以在 CodeIgniter4 中進行處理。</p>
+<p>這個方法倚賴 <code>Worker::setWebsocket</code> 產生的 Websocket Client Pool ，你必須將所有交握後合法的 WebSocket 連線傳遞給 <code>Worker::setWebsocket</code>。你才可以再後續的事件中使用 <code>Worker::websocketProcesser</code>。</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+
+$server-&gt;on('message', static function (Server $server, Frame $frame) {
+    // Burner handles CodeIgniter4 entry points.
+    Worker::websocketProcesser($frame, static function (Server $server, Frame $frame) {
+        // Client Not Found Handling
+    });
+});
+</code></pre>
 <h3 id="worker::push">Worker::push</h3>
 <p>將訊息推送給 WebSocket 連線者。</p>
 <h4 id="參數">參數</h4>
-<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設值</th><th>說明</th></tr></thead><tbody>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
 <tr><td>data</td><td>string or binary</td><td>必填</td><td>要推送的訊息</td></tr>
 <tr><td>fd</td><td>int</td><td>目前連線者的fd</td><td>要推送的連線者的 fd</td></tr>
 <tr><td>opcode</td><td>int</td><td><code>WEBSOCKET_OPCODE_TEXT</code></td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
@@ -275,7 +331,7 @@ Worker::push(
 <h3 id="worker::pushall">Worker::pushAll</h3>
 <p>將訊息推送給所有 WebSocket 連線者，或是列舉出一些連線者的 fd 來推送訊息。</p>
 <h4 id="參數">參數</h4>
-<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設值</th><th>說明</th></tr></thead><tbody>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
 <tr><td>data</td><td>string or callable</td><td>必填</td><td>要推送的訊息，或是一個回呼函數</td></tr>
 <tr><td>fds</td><td>array</td><td>與伺服器建立起連線的所有客戶端</td><td>要推送的連線者的 fd</td></tr>
 <tr><td>opcode</td><td>int</td><td><code>Server::WEBSOCKET_OPCODE_TEXT</code></td><td>傳遞資料的類型。OpenSwoole 的 <code>WEBSOCKET_OPCODE_TEXT</code> 、 <code>WEBSOCKET_OPCODE_BINARY</code> 或 <code>WEBSOCKET_OPCODE_PING</code></td></tr>
@@ -333,6 +389,20 @@ Worker::pushAll(
 $frame = Worker::getFrame();
 </code></pre>
 <p><code>$frame</code> 的型別為 <code>OpenSwoole\WebSocket\Frame</code>，你可以參考 <a href="https://openswoole.com/docs/modules/swoole-websocket-frame">OpenSwoole 的文件</a> 來了解更多。</p>
+<h3 id="worker::unsetwebsocket">Worker::unsetWebsocket</h3>
+<p>將 Clint 從 Websocket Client Pool 中移除。</p>
+<h4 id="參數">參數</h4>
+<table><thead><tr><th>參數</th><th>型別</th><th>必填/預設</th><th>說明</th></tr></thead><tbody>
+<tr><td>fd</td><td>int</td><td>必填</td><td>要移除的連線者的 fd</td></tr>
+</tbody></table>
+<h4 id="使用範例">使用範例</h4>
+<p>這個方法通常在 OpenSwoole 的 close 事件中使用，將已經中段的連線者從 Websocket Client Pool 中移除。</p>
+<pre><code class="language-php">use Monken\CIBurner\OpenSwoole\Worker;
+
+$server-&gt;on('close', static function (Server $server, int $fd) {
+    Worker::unsetWebsocket($fd);
+});
+</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -392,8 +462,52 @@ $frame = Worker::getFrame();
                             <a href='#使用範例'>使用範例</a>
                         </li>
                         
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::getfastcache'>Worker::getFastCache</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::httpprocesser'>Worker::httpProcesser</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#參數'>參數</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
+                        </li>
+                        
                         <li class='page-nav-level-2'>
                             <a href='#websocket-相關方法'>WebSocket 相關方法</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::setwebsocket'>Worker::setWebsocket</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#參數'>參數</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::websocketprocesser'>Worker::websocketProcesser</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#參數'>參數</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
@@ -436,6 +550,18 @@ $frame = Worker::getFrame();
                             <a href='#使用範例'>使用範例</a>
                         </li>
                         
+                        <li class='page-nav-level-3'>
+                            <a href='#worker::unsetwebsocket'>Worker::unsetWebsocket</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#參數'>參數</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#使用範例'>使用範例</a>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -455,11 +581,11 @@ $frame = Worker::getFrame();
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1681221006"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1681221006"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1681641454"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1681641454"></script>
 
     
 </body>
