@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Docker Environment</title>
+    <title>RoadRunner Suggestion</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -91,7 +91,7 @@
         <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a class="active" href="/en/general/docker">Docker Environment</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -122,7 +122,7 @@
         <li><a href="/en/roadrunner/implement">RoadRunner Implement</a></li>
         
     
-        <li><a href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
+        <li><a class="active" href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
         
     
         <li><a href="/en/roadrunner/commands">RoadRunner Commands</a></li>
@@ -146,27 +146,35 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="docker-environment">Docker Environment</h1>
-<p>Using Docker to build your development and production environments can help you reduce the burden of environment setup, regardless of which driver you use. You need to pre-install or enable some special extensions. At the same time, the environment built with Docker can help you use the Workerman and OpenSwoole drivers under the Windows environment.</p>
-<p>You can pull the Docker configuration we recommend from the <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> repository.</p>
-<h2 id="environment-notes">Environment notes</h2>
-<p>All recommended configurations are based on the <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> image, which includes common PHP extensions. You can adjust more details through <a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">this document</a> to make your environment more suitable for your project.</p>
-<p>At the same time, the Dockerfile environment installation instructions of OpenSwoole refer to the <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">official Dockerfile of OpenSwoole</a>. The Dockerfile of Workerman additionally installed php-event extension, which will make Workerman get better performance.</p>
-<div class="callout info"><p class="callout-title">Note</p>
-<p>You can install anything you need in the Dockerfile according to your project requirements. You just need to remember that they are all based on the <a href="https://www.alpinelinux.org/">alpine Linux</a>  image.</p>
-</div><h2 id="getting-started">Getting Started</h2>
-<ul>
-<li>Place your CodeIgniter4 project in the app folder</li>
-<li>Use <code>docker-compose build</code> to build your local environment</li>
-<li>Use <code>docker-compose up -d</code> to run the container in the background</li>
-<li>Use <code>docker-compose exec app bash</code> to enter the container</li>
-<li>By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need</li>
-<li>Don't forget that <code>docker-compose down</code> or <code>docker-compose stop</code> can stop your container</li>
-<li>The default port mapping of <code>docker-compose.yml</code> is <code>8080:8080</code>, you can adjust this setting according to your own needs.</li>
-</ul>
-<div class="callout info"><p class="callout-title">Note</p>
-<p>If your CodeIgniter4 does not contain the vendor folder, remember to use <code>composer install</code> to pull the libraries required by the project.</p>
-</div>
+                <h1 id="roadrunner-suggestion">RoadRunner Suggestion</h1>
+<h3 id="automatic-reload">Automatic reload</h3>
+<p>In the default circumstance of RoadRunner, you must restart the server everytime after you revised any PHP files so that your revision will effective.
+It seems not that friendly during development.</p>
+<p>You can revise your <code>.rr.yaml</code> configuration file, add the settings below and start the development mode with <code>-d</code>. RoadRunner Server will detect if the PHP files were revised or not, automatically, and reload the Worker instantly.</p>
+<pre><code class="language-yaml">reload:
+  interval: 1s
+  patterns: [ ".php" ]
+  services:
+    http:
+      recursive: true
+      ignore: [ "vendor" ]
+      patterns: [ ".php", ".go", ".md" ]
+      dirs: [ "." ]
+</code></pre>
+<h2 id="debugging-with-only-one-worker">Debugging with only one Worker</h2>
+<p>Since the RoadRunner has fundamentally difference with other server software(i.e. Nginx, Apache), every Codeigniter4 will persist inside RAMs as the form of Worker, HTTP requests will reuse these Workers to process. Hence, we have better develop and test stability under the circumstance with only one Worker to prove it can also work properly under serveral Workers in the formal environment.</p>
+<p>You can reference the <code>.rr.yaml</code> settings below to lower the amount of Worker to the minimum:</p>
+<pre><code class="language-yaml">http:
+  address: "0.0.0.0:8080"
+  static:
+    dir: "./public"
+    forbid: [".htaccess", ".php"]
+  pool:
+    num_workers: 1
+    # max_jobs: 64
+    # debug: true
+</code></pre>
+
             </div>
             <div class='sidebar-right'>
                 <div class='page-nav' id='page-nav'>
@@ -174,15 +182,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#docker-environment'>Docker Environment</a>
+                            <a href='#roadrunner-suggestion'>RoadRunner Suggestion</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#automatic-reload'>Automatic reload</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#environment-notes'>Environment notes</a>
-                        </li>
-                        
-                        <li class='page-nav-level-2'>
-                            <a href='#getting-started'>Getting Started</a>
+                            <a href='#debugging-with-only-one-worker'>Debugging with only one Worker</a>
                         </li>
                         
                     </ul>

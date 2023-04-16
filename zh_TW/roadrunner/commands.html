@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>歡迎使用 Burner！</title>
+    <title>RoadRunner 常用指令</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -78,7 +78,7 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a class="active" href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
             
         
             <li><a href="/zh_TW/general">一般主題</a></li>
@@ -125,7 +125,7 @@
         <li><a href="/zh_TW/roadrunner/suggestion">RoadRunner 開發建議</a></li>
         
     
-        <li><a href="/zh_TW/roadrunner/commands">RoadRunner 常用指令</a></li>
+        <li><a class="active" href="/zh_TW/roadrunner/commands">RoadRunner 常用指令</a></li>
         
     
 </ul>
@@ -146,58 +146,69 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
-<p>Burner 是一款專屬於 CodeIgniter 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
-<h2 id="系統需求">系統需求</h2>
-<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
-<h3 id="基本需求">基本需求</h3>
-<ol>
-<li>CodeIgniter Framework 4.3.0 以上</li>
-<li>Composer</li>
-<li>PHP8^</li>
-</ol>
-<h3 id="openswoole">OpenSwoole</h3>
-<ol>
-<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
-</ol>
-<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
+                <h1 id="roadrunner-常用指令">RoadRunner 常用指令</h1>
+<h3 id="啟動伺服器">啟動伺服器</h3>
+<p>當你不傳任何參數時，預設會啟動伺服器。</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>預設 Burner 會讀取 <code>app/Burner.php</code> 中寫入的預設驅動。當然你也可以強制 Burner 使用 <code>RoadRunner</code> 驅動來執行指令，像這樣：</p>
+<pre><code>php spark burner:start --driver RoadRunner
+</code></pre>
 <div class="callout info"><p class="callout-title">備註</p>
-<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
-</div><h3 id="workerman">Workerman</h3>
-<ol>
-<li>開啟 <code>php-pcntl</code> 外掛</li>
-<li>開啟 <code>php-posix</code> 外掛</li>
-<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
-</ol>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
-</div><h3 id="roadrunner">RoadRunner</h3>
-<ol>
-<li>開啟 <code>php-curl</code> 外掛</li>
-<li>開啟 <code>php-zip</code> 外掛</li>
-<li>開啟 <code>php-sockets</code> 外掛</li>
-</ol>
-<h2 id="架構">架構</h2>
-<p>Burner 由數個程式庫組成，分別是：</p>
+<p><code>--driver RoadRunner</code> 這個參數也適用於下面提到的所有指令。</p>
+</div>
+<p>你也可以使用下面的參數來根據你的需求來構建你的指令。</p>
 <ul>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
+<li>-c: 路徑到設定檔。</li>
+<li>-w: 設定工作目錄。</li>
+<li>--dotenv: 將環境變數從 .dotenv 檔案填入到環境中。</li>
+<li>-d: 啟動 pprof 伺服器。注意，這不是 debug，要使用 debug log 等級，請使用 <a href="https://roadrunner.dev/docs/plugins-logger/2.x/en">logs</a></li>
+<li>-s: 靜音模式。</li>
+<li>-o: 用你的值來覆蓋設定檔的值，例如：
+<pre><code>-o=http.address=:8080
+</code></pre>
 </li>
 </ul>
-<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
-<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
-<p>準備好開始探索 Burner 了嗎？</p>
-<p><a href="/zh_TW/general/quickstart">快速開始</a> </p>
-
+<p>會覆蓋 .rr.yaml 中的 http.address。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>注意 Burner 已經使用了 <code>-c</code>, <code>-p</code> 和 <code>-w</code> 參數，你需要避免再次使用相同的參數。</p>
+</div><h4 id="長駐模式">長駐模式</h4>
+<p>讓 RoadRunner 在背景執行。</p>
+<pre><code>php spark burner:start --daemon
+</code></pre>
+<p>使用這個模式 Burner 會將輸出導向到 <code>/dev/null</code>，你必須在 <code>.rr.yaml</code> 中定義 <code>log_output</code> 來像這樣：</p>
+<pre><code class="language-yaml">logs:
+mode: development
+output: stdout
+file_logger_options:
+    log_output: "{{log_path}}"
+    max_size: 100
+    max_age: 1
+    max_backups : 5
+    compress: false
+</code></pre>
+<h3 id="停止伺服器">停止伺服器</h3>
+<p>這個指令只能在後台模式下執行。</p>
+<pre><code>php spark burner:stop
+</code></pre>
+<p>強制關閉伺服器。</p>
+<pre><code>php spark burner:stop -f
+</code></pre>
+<h3 id="workers-狀態">Workers 狀態</h3>
+<p>取得所有 Workers 目前的運行資訊。</p>
+<pre><code>php spark burner:rr workers
+</code></pre>
+<p>每秒更新一次的持續互動模式。</p>
+<pre><code>php spark burner:rr workers -i
+</code></pre>
+<h3 id="更多指令">更多指令</h3>
+<p>直接執行 RoadRunner 的 rr 指令。</p>
+<pre><code>php spark burner:rr [rr_comands]
+</code></pre>
+<p>你可以參考官方的 <a href="https://roadrunner.dev/docs/app-server-cli/2.x/en">RoadRunner 文件</a> 來構建你的指令。 </p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>注意 Burner 已經使用了 <code>-c</code>, <code>-p</code> 和 <code>-w</code> 參數，你需要避免再次使用相同的參數。</p>
+</div>
             </div>
             <div class='sidebar-right'>
                 <div class='page-nav' id='page-nav'>
@@ -205,31 +216,27 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
-                        </li>
-                        
-                        <li class='page-nav-level-2'>
-                            <a href='#系統需求'>系統需求</a>
+                            <a href='#roadrunner-常用指令'>RoadRunner 常用指令</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#基本需求'>基本需求</a>
+                            <a href='#啟動伺服器'>啟動伺服器</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#長駐模式'>長駐模式</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#openswoole'>OpenSwoole</a>
+                            <a href='#停止伺服器'>停止伺服器</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#workerman'>Workerman</a>
+                            <a href='#workers-狀態'>Workers 狀態</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#roadrunner'>RoadRunner</a>
-                        </li>
-                        
-                        <li class='page-nav-level-2'>
-                            <a href='#架構'>架構</a>
+                            <a href='#更多指令'>更多指令</a>
                         </li>
                         
                     </ul>

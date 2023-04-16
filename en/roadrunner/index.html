@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Docker Environment</title>
+    <title>RoadRunner</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -91,7 +91,7 @@
         <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a class="active" href="/en/general/docker">Docker Environment</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -115,7 +115,7 @@
 
             
         
-            <li><a href="/en/roadrunner">RoadRunner</a></li>
+            <li><a class="active" href="/en/roadrunner">RoadRunner</a></li>
             
                 <ul>
     
@@ -146,27 +146,34 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="docker-environment">Docker Environment</h1>
-<p>Using Docker to build your development and production environments can help you reduce the burden of environment setup, regardless of which driver you use. You need to pre-install or enable some special extensions. At the same time, the environment built with Docker can help you use the Workerman and OpenSwoole drivers under the Windows environment.</p>
-<p>You can pull the Docker configuration we recommend from the <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> repository.</p>
-<h2 id="environment-notes">Environment notes</h2>
-<p>All recommended configurations are based on the <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> image, which includes common PHP extensions. You can adjust more details through <a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">this document</a> to make your environment more suitable for your project.</p>
-<p>At the same time, the Dockerfile environment installation instructions of OpenSwoole refer to the <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">official Dockerfile of OpenSwoole</a>. The Dockerfile of Workerman additionally installed php-event extension, which will make Workerman get better performance.</p>
+                <h1 id="roadrunner">RoadRunner</h1>
+<p><a href="https://roadrunner.dev/">RoadRunner</a> is a high-performance PHP application server, written in Go. It allows to execute long-running PHP applications in a persistent memory, using a pool of preloaded workers. RoadRunner is also a full-featured HTTP server supporting PSR-7.</p>
+<h2 id="how-to-implement">How to implement</h2>
+<p>After receiving an HTTP connection, Burner will convert the PSR-7 request object to a CodeIgniter4 request object, and start executing the CodeIgniter4 application, and then convert the CodeIgniter4 response object to a PSR-7 response object, and then pass it to the RoadRunner server.</p>
+<p>Unlike other PHP drivers, RoadRnner natively supports PSR-7, so Burner does not need to convert it again (from other Request objects to PSR-7 Request objects).</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Before using RoadRunner, please make sure that your environment already has <code>PHP8^</code>, <code>php-curl</code>, <code>php-zip</code> and <code>php-sockets</code> extensions, or you can use our recommended <a href="/en/general/docker">Docker environment</a>.</p>
+<p>After completing these prerequisites, you can run the following command to get the RoadRunner driver in the project root directory:</p>
+<pre><code>composer require monken/codeigniter4-burner-roadrunner:1.0.0-beta.1
+</code></pre>
 <div class="callout info"><p class="callout-title">Note</p>
-<p>You can install anything you need in the Dockerfile according to your project requirements. You just need to remember that they are all based on the <a href="https://www.alpinelinux.org/">alpine Linux</a>  image.</p>
-</div><h2 id="getting-started">Getting Started</h2>
-<ul>
-<li>Place your CodeIgniter4 project in the app folder</li>
-<li>Use <code>docker-compose build</code> to build your local environment</li>
-<li>Use <code>docker-compose up -d</code> to run the container in the background</li>
-<li>Use <code>docker-compose exec app bash</code> to enter the container</li>
-<li>By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need</li>
-<li>Don't forget that <code>docker-compose down</code> or <code>docker-compose stop</code> can stop your container</li>
-<li>The default port mapping of <code>docker-compose.yml</code> is <code>8080:8080</code>, you can adjust this setting according to your own needs.</li>
-</ul>
-<div class="callout info"><p class="callout-title">Note</p>
-<p>If your CodeIgniter4 does not contain the vendor folder, remember to use <code>composer install</code> to pull the libraries required by the project.</p>
+<p>If you do not have CodeIgniter4-Burner installed when you run the above command, Composer will automatically pull the relevant dependencies.</p>
 </div>
+<p>Next, you need to use the following command to initialize Burner and the RoadRunner driver:</p>
+<pre><code>php spark burner:init RoadRunner
+</code></pre>
+<p>This command will first download the latest RoadRunner executable (i.e. rr or rr.exe), then move it to the <code>vendor/bin</code> directory of the project, and finally set the execution permission of <code>rr</code> or <code>rr.exe</code> to executable.</p>
+<p>When the command is executed successfully, you should be able to see the <code>Burner.php</code> file in the <code>project_root/app/Config</code> folder, and find the <code>project_root/.rr.yaml</code> in the project root directory. You can adjust these two files to finely control your server settings.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you run the <code>burner:init</code> command repeatedly, the existing configuration file will be renamed instead of being overwritten.</p>
+</div>
+<p>Bruner has already set up all the configuration settings for you, and you can modify your configuration files when needed.</p>
+<p>When everything is ready, you can run the following command to start your server:</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>By default, your server should run on the <code>8080</code> port, and you can immediately browse your project page through <code>localhost:8080</code>.</p>
+<p>If everything goes well, your CodeIgniter4 should be running on RoadRunner successfully.</p>
+
             </div>
             <div class='sidebar-right'>
                 <div class='page-nav' id='page-nav'>
@@ -174,15 +181,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#docker-environment'>Docker Environment</a>
+                            <a href='#roadrunner'>RoadRunner</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#environment-notes'>Environment notes</a>
+                            <a href='#how-to-implement'>How to implement</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#getting-started'>Getting Started</a>
+                            <a href='#getting-started'>Getting started</a>
                         </li>
                         
                     </ul>

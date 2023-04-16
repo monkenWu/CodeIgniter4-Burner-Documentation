@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Docker Environment</title>
+    <title>RoadRunner Commands</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -91,7 +91,7 @@
         <li><a href="/en/general/suggestion">Development Suggestion</a></li>
         
     
-        <li><a class="active" href="/en/general/docker">Docker Environment</a></li>
+        <li><a href="/en/general/docker">Docker Environment</a></li>
         
     
 </ul>
@@ -125,7 +125,7 @@
         <li><a href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
         
     
-        <li><a href="/en/roadrunner/commands">RoadRunner Commands</a></li>
+        <li><a class="active" href="/en/roadrunner/commands">RoadRunner Commands</a></li>
         
     
 </ul>
@@ -146,26 +146,68 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="docker-environment">Docker Environment</h1>
-<p>Using Docker to build your development and production environments can help you reduce the burden of environment setup, regardless of which driver you use. You need to pre-install or enable some special extensions. At the same time, the environment built with Docker can help you use the Workerman and OpenSwoole drivers under the Windows environment.</p>
-<p>You can pull the Docker configuration we recommend from the <a href="https://github.com/monkenWu/CodeIgniter4-Burner-Docker">CodeIgniter4-Burner-Docker</a> repository.</p>
-<h2 id="environment-notes">Environment notes</h2>
-<p>All recommended configurations are based on the <a href="https://github.com/webdevops/Dockerfile">webdevops/Dockerfile</a> image, which includes common PHP extensions. You can adjust more details through <a href="https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html">this document</a> to make your environment more suitable for your project.</p>
-<p>At the same time, the Dockerfile environment installation instructions of OpenSwoole refer to the <a href="https://github.com/openswoole/docker-openswoole/tree/master/dockerfiles">official Dockerfile of OpenSwoole</a>. The Dockerfile of Workerman additionally installed php-event extension, which will make Workerman get better performance.</p>
+                <h1 id="roadrunner-commands">RoadRunner Commands</h1>
+<h3 id="start-server">start server</h3>
+<p>When you do not pass any parameters, it will be preset to start the server.</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>By default, burner reads the default driver written in <code>app/Burner.php</code>. Of course, you can force Burner to execute commands with the <code>RoadRunner</code> driver by using a parameter like this：</p>
+<pre><code>php spark burner:start --driver RoadRunner
+</code></pre>
 <div class="callout info"><p class="callout-title">Note</p>
-<p>You can install anything you need in the Dockerfile according to your project requirements. You just need to remember that they are all based on the <a href="https://www.alpinelinux.org/">alpine Linux</a>  image.</p>
-</div><h2 id="getting-started">Getting Started</h2>
+<p><code>--driver RoadRunner</code> This parameter also applies to all the commands mentioned below.</p>
+</div>
+<p>You can also use the following parameters to construct your commands according to your needs.</p>
 <ul>
-<li>Place your CodeIgniter4 project in the app folder</li>
-<li>Use <code>docker-compose build</code> to build your local environment</li>
-<li>Use <code>docker-compose up -d</code> to run the container in the background</li>
-<li>Use <code>docker-compose exec app bash</code> to enter the container</li>
-<li>By default, you will be located in the project root directory, you can start installing Burner and choose the driver you need</li>
-<li>Don't forget that <code>docker-compose down</code> or <code>docker-compose stop</code> can stop your container</li>
-<li>The default port mapping of <code>docker-compose.yml</code> is <code>8080:8080</code>, you can adjust this setting according to your own needs.</li>
+<li>-c: path to the config file.</li>
+<li>-w: set the working directory.</li>
+<li>--dotenv: populate the process with env variables from the .dotenv file.</li>
+<li>-d: start a pprof server. Note, this is not debug, to use debug logs level, please, use logs: https://roadrunner.dev/docs/plugins-logger/2.x/en</li>
+<li>-s: silent mode.</li>
+<li>-o: to override configuration keys with your values, e.g.
+<pre><code>-o=http.address=:8080
+</code></pre>
+will override the http.address from the .rr.yaml.</li>
 </ul>
 <div class="callout info"><p class="callout-title">Note</p>
-<p>If your CodeIgniter4 does not contain the vendor folder, remember to use <code>composer install</code> to pull the libraries required by the project.</p>
+<p>Burner already uses the <code>-c</code>, <code>-p</code> and <code>-w</code> parameters and you need to avoid using the same parameters again.</p>
+</div>
+<p>Let RoadRunner work in the background.</p>
+<p>When you run the server with this option, Burner will ignore the Automatic reload setting.</p>
+<pre><code>php spark burner:start --daemon
+</code></pre>
+<p>Using this mode Burner will direct the output to <code>/dev/null</code> and you must define your <code>log_output</code> in <code>.rr.yaml</code> to look like this:</p>
+<pre><code class="language-yaml">logs:
+  mode: development
+  output: stdout
+  file_logger_options:
+    log_output: "{{log_path}}"
+    max_size: 100
+    max_age: 1
+    max_backups : 5
+    compress: false
+</code></pre>
+<h3 id="stop-server">stop server</h3>
+<p>This command runs in daemon mode only.</p>
+<pre><code>php spark burner:stop
+</code></pre>
+<p>Force the server to close.</p>
+<pre><code>php spark burner:stop -f
+</code></pre>
+<h3 id="workers-status">workers status</h3>
+<p>Get the current running information of all Workers.</p>
+<pre><code>php spark burner:rr workers
+</code></pre>
+<p>Continuously updated interaction mode every second.</p>
+<pre><code>php spark burner:rr workers -i
+</code></pre>
+<h3 id="more-command">more command</h3>
+<p>Run commands directly to RoadRunner's rr binary.</p>
+<pre><code>php spark burner:rr [rr_comands]
+</code></pre>
+<p>You can refer to the official <a href="https://roadrunner.dev/docs/app-server-cli/2.x/en">RoadRunner documentation</a> to construct your commands. </p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>Burner already uses the <code>-c</code>, <code>-p</code> and <code>-w</code> parameters and you need to avoid using the same parameters again.</p>
 </div>
             </div>
             <div class='sidebar-right'>
@@ -174,15 +216,23 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#docker-environment'>Docker Environment</a>
+                            <a href='#roadrunner-commands'>RoadRunner Commands</a>
                         </li>
                         
-                        <li class='page-nav-level-2'>
-                            <a href='#environment-notes'>Environment notes</a>
+                        <li class='page-nav-level-3'>
+                            <a href='#start-server'>start server</a>
                         </li>
                         
-                        <li class='page-nav-level-2'>
-                            <a href='#getting-started'>Getting Started</a>
+                        <li class='page-nav-level-3'>
+                            <a href='#stop-server'>stop server</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#workers-status'>workers status</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#more-command'>more command</a>
                         </li>
                         
                     </ul>

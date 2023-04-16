@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>歡迎使用 Burner！</title>
+    <title>RoadRunner 實踐</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -78,7 +78,7 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a class="active" href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
             
         
             <li><a href="/zh_TW/general">一般主題</a></li>
@@ -119,7 +119,7 @@
             
                 <ul>
     
-        <li><a href="/zh_TW/roadrunner/implement">RoadRunner 實踐</a></li>
+        <li><a class="active" href="/zh_TW/roadrunner/implement">RoadRunner 實踐</a></li>
         
     
         <li><a href="/zh_TW/roadrunner/suggestion">RoadRunner 開發建議</a></li>
@@ -146,57 +146,94 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
-<p>Burner 是一款專屬於 CodeIgniter 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
-<h2 id="系統需求">系統需求</h2>
-<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
-<h3 id="基本需求">基本需求</h3>
-<ol>
-<li>CodeIgniter Framework 4.3.0 以上</li>
-<li>Composer</li>
-<li>PHP8^</li>
-</ol>
-<h3 id="openswoole">OpenSwoole</h3>
-<ol>
-<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
-</ol>
-<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
-</div><h3 id="workerman">Workerman</h3>
-<ol>
-<li>開啟 <code>php-pcntl</code> 外掛</li>
-<li>開啟 <code>php-posix</code> 外掛</li>
-<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
-</ol>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
-</div><h3 id="roadrunner">RoadRunner</h3>
-<ol>
-<li>開啟 <code>php-curl</code> 外掛</li>
-<li>開啟 <code>php-zip</code> 外掛</li>
-<li>開啟 <code>php-sockets</code> 外掛</li>
-</ol>
-<h2 id="架構">架構</h2>
-<p>Burner 由數個程式庫組成，分別是：</p>
-<ul>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
-</li>
-</ul>
-<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
-<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
-<p>準備好開始探索 Burner 了嗎？</p>
-<p><a href="/zh_TW/general/quickstart">快速開始</a> </p>
+                <h1 id="roadrunner-http">RoadRunner HTTP</h1>
+<p>RoadRunner 是一個十分完整的 PHP 伺服器，我們幾乎不用特別的撰寫 Worker 的細部邏輯就能夠將它與 Burner-Core 整合起來。你若選用了 RoadRunner 作為你的伺服器解決方案，在開發上你應該很難察覺它的存在。</p>
+<p>在 Burner 所實作的 worker.php 中，關鍵的部份如下：</p>
+<pre><code class="language-php">while (true) {
+    // get psr7 request
+    try {
+        $request = $psr7-&gt;waitRequest();
+        if (! ($request instanceof RequestInterface)) { // Termination request received
+            break;
+        }
+    } catch (Exception $e) {
+        $psr7-&gt;respond(new Response(400)); // Bad Request
+
+        continue;
+    }
+
+    /** @var \Psr\Http\Message\ResponseInterface */
+    $response = \Monken\CIBurner\App::run($request);
+
+    // handle response object
+    try {
+        $psr7-&gt;respond($response);
+        Events::trigger('burnerAfterSendResponse', $psr7);
+        \Monken\CIBurner\App::clean();
+    } catch (Exception $e) {
+        $psr7-&gt;respond(new Response(500, [], 'Something Went Wrong!'));
+    }
+}
+</code></pre>
+<p>所有的 HTTP 請求從 <code>waitRequest</code> 開始，當這個方法獲取到最新的使用者請求後，就會立即執行 <code>App::run()</code> 方法，Burner 便會開始一系列的預處理，並通知 CodeIgniter4 處理你的連線。</p>
+<p>再接下來，就會進入 CodeIgniter4 的處理流程，當 CodeIgniter4 處理完成後， <code>run()</code> 方法就會回傳 PSR-7 的響應物件，轉交給 <code>respond</code> 方法來處理。</p>
+<p>了解了上述流程後，你會發現 RoadRunner 的實作邏輯並不複雜，如同你所熟知的那樣，一如往常地開發你的應用程式即可。</p>
+<h2 id="事件">事件</h2>
+<p>CodeIgniter4 提供了<a href="https://codeigniter.tw/user_guide/extending/events.html">事件</a>的功能，當 CodeIgniter 執行時，它會遵循著一定的執行順序，然而在某些情況下，你可能會想在執行過程的特定階段執行一些動作。</p>
+<p>Burner 在 HTTP 中提供了以下事件給予開發者進行使用：</p>
+<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
+<p>這通常會用於在響應後的初始化，若你擁有某些需要在響應後清空的全域變數或某些通用的處理，都非常適合在這個事件中宣告。你可以透過宣告 <code>burnerAfterSendResponse</code> 事件，在每當 RoadRunner 響應後將會執行你需要執行的邏輯：</p>
+<pre><code class="language-php">// This code will be executed after sending the response to the client.
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+{
+    // Your logic
+});
+</code></pre>
+<p>事件的使用方式不單單只有回呼函數，請參考 <a href="https://codeigniter.tw/user_guide/extending/events.html#id3">CodeIgniter4 使用手冊</a>提到的方法來選擇最適合你的宣告方式。</p>
+<h2 id="組態設定">組態設定</h2>
+<p>由 Burner 自動產生的組態設定檔案將位於專案根目錄下的 <code>rr.yml</code>，它的內容可能會如下：</p>
+<pre><code class="language-yml">version: "2.7"
+
+rpc:
+  listen: tcp://127.0.0.1:6001
+
+server:
+  command: "php Worker.php -f=/app/CodeIgniter4-Burner/src/FrontLoader.php -a=/app/CodeIgniter4-Burner/dev/app/"
+  # env:
+  #   XDEBUG_SESSION: 1
+
+http:
+  address: "0.0.0.0:8080"
+  static:
+    dir: "/app/CodeIgniter4-Burner/dev/public"
+    forbid: [".htaccess", ".php"]
+  pool:
+    num_workers: 1
+    # max_jobs: 64
+    # debug: true
+
+# reload:
+#   interval: 1s
+#   patterns: [ ".php" ]
+#   services:
+#     http:
+#       recursive: true
+#       ignore: [ "vendor" ]
+#       patterns: [ ".php", ".go", ".dmd" ]
+#       dirs: [ "/app/CodeIgniter4-Burner/dev" ]
+
+# logs:
+#   mode: development
+#   output: stdout
+#   file_logger_options:
+#     log_output: "/app/CodeIgniter4-Burner/dev/writable/logs/RoadRunner.log"
+#     max_size: 100
+#     max_age: 1
+#     max_backups : 5
+#     compress: false
+</code></pre>
+<p>你可能會發現在 <code>server.command</code> 的設定中，我們使用了 <code>php Worker.php -f -a</code> 來啟動 RoadRunner 的 Worker，這是因為我們需要在 Worker 中載入 CodeIgniter4 的核心，而這個核心需要 Burner 所提供的 <code>FrontLoader</code> 來處理。同時， <code>app</code> 資料夾的定位對於 CodeIgniter4 也是一件十分重要的事情，所以我們需要在啟動 Worker 時將這兩個參數傳入，而這兩個參數將會依賴 Burner 的初始化指令自動產生。</p>
+<p>你可以參考官方的<a href="https://github.com/roadrunner-server/roadrunner/blob/v2.12.3/.rr.yaml">完整版文件</a>，與<a href="https://roadrunner.dev/docs">官方使用手冊</a>依照自己的需求修改這個檔案。</p>
 
             </div>
             <div class='sidebar-right'>
@@ -205,31 +242,19 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
+                            <a href='#roadrunner-http'>RoadRunner HTTP</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#系統需求'>系統需求</a>
+                            <a href='#事件'>事件</a>
                         </li>
                         
                         <li class='page-nav-level-3'>
-                            <a href='#基本需求'>基本需求</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#openswoole'>OpenSwoole</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#workerman'>Workerman</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#roadrunner'>RoadRunner</a>
+                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#架構'>架構</a>
+                            <a href='#組態設定'>組態設定</a>
                         </li>
                         
                     </ul>
