@@ -19,7 +19,7 @@ Before using the OpenSwoole driver provided by Burner, you must ensure that your
 After completing these prerequisites, you can execute the following command to obtain the OpenSwoole driver in the project root directory:
 
 ```
-composer require monken/codeigniter4-burner-openswoole
+composer require monken/codeigniter4-burner-openswoole:1.0.0-beta.1
 ```
 
 {% info Note %}
