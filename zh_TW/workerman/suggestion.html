@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>歡迎使用 Burner！</title>
+    <title>Workerman 開發建議</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -78,7 +78,7 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a class="active" href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
             
         
             <li><a href="/zh_TW/general">一般主題</a></li>
@@ -139,7 +139,7 @@
         <li><a href="/zh_TW/workerman/implement">Workerman 實踐</a></li>
         
     
-        <li><a href="/zh_TW/workerman/suggestion">Workerman 開發建議</a></li>
+        <li><a class="active" href="/zh_TW/workerman/suggestion">Workerman 開發建議</a></li>
         
     
         <li><a href="/zh_TW/workerman/commands">Workerman 常用指令</a></li>
@@ -163,57 +163,34 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
-<p>Burner 是一款專屬於 CodeIgniter 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
-<h2 id="系統需求">系統需求</h2>
-<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
-<h3 id="基本需求">基本需求</h3>
-<ol>
-<li>CodeIgniter Framework 4.3.0 以上</li>
-<li>Composer</li>
-<li>PHP8^</li>
-</ol>
-<h3 id="openswoole">OpenSwoole</h3>
-<ol>
-<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
-</ol>
-<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
-</div><h3 id="workerman">Workerman</h3>
-<ol>
-<li>開啟 <code>php-pcntl</code> 外掛</li>
-<li>開啟 <code>php-posix</code> 外掛</li>
-<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
-</ol>
-<div class="callout info"><p class="callout-title">備註</p>
-<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
-</div><h3 id="roadrunner">RoadRunner</h3>
-<ol>
-<li>開啟 <code>php-curl</code> 外掛</li>
-<li>開啟 <code>php-zip</code> 外掛</li>
-<li>開啟 <code>php-sockets</code> 外掛</li>
-</ol>
-<h2 id="架構">架構</h2>
-<p>Burner 由數個程式庫組成，分別是：</p>
+                <h1 id="workerman-開發建議">Workerman 開發建議</h1>
+<h2 id="自動重新載入">自動重新載入</h2>
+<p>在預設的情況下，每次修改 PHP 檔案後，你必須透過重新啟動伺服器使你的更改生效但這在開發過程中，似乎不這麼友好。</p>
+<p>Burner 提供了一個自動重新載入的功能，只需要打開你的 <code>config/workerman.php</code> 檔案，將 <code>$serverWorkers</code> 的其中一個註解項目打開即可。</p>
+<pre><code class="language-php">public $serverWorkers= [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    //Open this line to enable auto reload
+    \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+];
+</code></pre>
+<p>你可以透過 <code>FileMonitor</code> 來監控你的檔案，當你的檔案有變動時，Burner 會自動重新啟動你的伺服器。</p>
+<p>你也可以自行修改 <code>FileMonitor</code> 的監控路徑，只需要在 <code>config/workerman.php</code> 中，修改 <code>$autoReloadDir</code> 即可。</p>
+<pre><code class="language-php">public $autoReloadDir = '/app/CodeIgniter4-Burner/dev';
+</code></pre>
+<p>Burner 提供了兩種重新載入的方式，你可以透過調整 <code>config/workerman.php</code> 中的 <code>autoReloadMode</code> 來切換。</p>
+<pre><code class="language-php">public $autoReloadMode = 'restart';
+</code></pre>
 <ul>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
-</li>
+<li><code>restart</code> 意味著每次檔案變更時，伺服器都會自動重新啟動。就好像你自己關閉了伺服器，然後又重新啟動了一樣，這樣可以確保所有的 php 檔案都重新載入。</li>
+<li><code>reload</code> 只會重新載入正在運行的 Worker，就像 <a href="https://www.workerman.net/doc/workerman/faq/reload-principle.html">文件</a> 所說的那樣。請注意，這種方式可能無法處理所有情況，例如，透過 <code>composer require/update</code> 產生的專案核心檔案變更。</li>
 </ul>
-<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
-<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
-<p>準備好開始探索 Burner 了嗎？</p>
-<p><a href="/zh_TW/general/quickstart">快速開始</a> </p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>自動重新載入非常耗費資源，請不要在正式環境中打開它。</p>
+</div><h2 id="在只有一個-worker-的環境中開發和除錯">在只有一個 Worker 的環境中開發和除錯</h2>
+<p>由於 Workerman 與其他伺服器軟體（如 Nginx、Apache）有根本上的差異，因此每個 Codeigniter 將作為 Worker 的形式存在於 RAM 中，HTTP 請求將重用這些 Worker 來處理。因此，我們在只有一個 Worker 的環境中開發和測試穩定性，以證明它也可以在正式環境中的多個 Worker 中正常運行。</p>
+<p>你可以參考 <code>app/Config/Workerman.php</code> 設定檔中以下的設定，將 CodeIgniter Worker 的數量降到最低：</p>
+<pre><code class="language-php">public $workerCount = 1;
+</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -222,31 +199,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
+                            <a href='#workerman-開發建議'>Workerman 開發建議</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#系統需求'>系統需求</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#基本需求'>基本需求</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#openswoole'>OpenSwoole</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#workerman'>Workerman</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#roadrunner'>RoadRunner</a>
+                            <a href='#自動重新載入'>自動重新載入</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#架構'>架構</a>
+                            <a href='#在只有一個-worker-的環境中開發和除錯'>在只有一個 Worker 的環境中開發和除錯</a>
                         </li>
                         
                     </ul>

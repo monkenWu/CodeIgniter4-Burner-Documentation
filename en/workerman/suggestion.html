@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>RoadRunner Implement</title>
+    <title>Workerman Suggestion</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -119,7 +119,7 @@
             
                 <ul>
     
-        <li><a class="active" href="/en/roadrunner/implement">RoadRunner Implement</a></li>
+        <li><a href="/en/roadrunner/implement">RoadRunner Implement</a></li>
         
     
         <li><a href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
@@ -139,7 +139,7 @@
         <li><a href="/en/workerman/implement">Workerman Implement</a></li>
         
     
-        <li><a href="/en/workerman/suggestion">Workerman Suggestion</a></li>
+        <li><a class="active" href="/en/workerman/suggestion">Workerman Suggestion</a></li>
         
     
         <li><a href="/en/workerman/commands">Workerman Commands</a></li>
@@ -163,95 +163,34 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="roadrunner-http">RoadRunner HTTP</h1>
-<p>RoadRunner is a complete PHP server, we can integrate it with Burner-Core without writing any special logic. If you choose RoadRunner as your server solution, you will hardly notice it in development.</p>
-<p>The key part of worker.php is as follows:</p>
-<pre><code class="language-php">while (true) {
-    // get psr7 request
-    try {
-        $request = $psr7-&gt;waitRequest();
-        if (! ($request instanceof RequestInterface)) { // Termination request received
-            break;
-        }
-    } catch (Exception $e) {
-        $psr7-&gt;respond(new Response(400)); // Bad Request
-
-        continue;
-    }
-
-    /** @var \Psr\Http\Message\ResponseInterface */
-    $response = \Monken\CIBurner\App::run($request);
-
-    // handle response object
-    try {
-        $psr7-&gt;respond($response);
-        Events::trigger('burnerAfterSendResponse', $psr7);
-        \Monken\CIBurner\App::clean();
-    } catch (Exception $e) {
-        $psr7-&gt;respond(new Response(500, [], 'Something Went Wrong!'));
-    }
-}
+                <h1 id="workerman-suggestion">Workerman Suggestion</h1>
+<h2 id="auto-reload">Auto Reload</h2>
+<p>By default, you must restart the server after each modification to the PHP file, but this doesn't seem very friendly in the development process.</p>
+<p>Burner provides a feature for automatic reloading. Just open the <code>config/workerman.php</code> file and uncomment one of the items in <code>$serverWorkers</code>.</p>
+<pre><code class="language-php">public $serverWorkers= [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    //Open this line to enable auto reload
+    \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+];
 </code></pre>
-<p>All HTTP requests start from the <code>waitRequest</code> method, when this method gets the latest user request, it will immediately execute the <code>App::run()</code> method, and Burner will start a series of preprocessing and notify CodeIgniter4 to handle your connection.</p>
-<p>Next, you will enter the CodeIgniter4 processing process, when CodeIgniter4 processing is complete, the <code>run()</code> method will return a PSR-7 response object, and transfer it to the <code>respond</code> method for processing.</p>
-<p>After understanding the above process, you will find that the implementation logic of RoadRunner is not complicated, just like you are familiar with, develop your application as usual.</p>
-<h2 id="events">Events</h2>
-<p>CodeIgniter4 provides <a href="https://codeigniter.com/user_guide/extending/events.html">events</a> that can be used to perform actions at specific points during execution. When CodeIgniter runs, it follows a certain execution order, but in some cases, you may want to perform some actions at a specific stage of execution.</p>
-<p>Burner provides the following events for OpenSwoole HTTP:</p>
-<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
-<p>This is usually used to initialize after the response, if you have some global variables that need to be cleared or some common processing after the response, it is very suitable to declare it in this event. You can declare the <code>burnerAfterSendResponse</code> event, and when OpenSwoole responds, the logic you need to execute will be executed:</p>
-<pre><code class="language-php">// This code will be executed after sending the response to the client.
-Events::on('burnerAfterSendResponse',static function(\Spiral\RoadRunner\Http\PSR7Worker $psr7Worker)
-{
-    //Your logic
-});
+<p>You can use <code>FileMonitor</code> to monitor your files, and when your files are modified, Burner will automatically restart your server.</p>
+<p>You can also modify the monitoring path of <code>FileMonitor</code> yourself. Just modify <code>$autoReloadDir</code> in <code>config/workerman.php</code>.</p>
+<pre><code class="language-php">public $autoReloadDir = '/app/CodeIgniter4-Burner/dev';
 </code></pre>
-<p>The way events are used is not limited to callback functions. Please refer to the methods mentioned in the <a href="https://codeigniter.com/user_guide/extending/events.html#defining-an-event">CodeIgniter4 User Guide</a> to choose the best way for you.</p>
-<h2 id="configuration">Configuration</h2>
-<p>The automatically generated configuration file of Burner will be located in the root directory of the project under <code>rr.yml</code>, and its content may be as follows:</p>
-<pre><code class="language-yml">version: "2.7"
-
-rpc:
-  listen: tcp://127.0.0.1:6001
-
-server:
-  command: "php Worker.php -f=/app/CodeIgniter4-Burner/src/FrontLoader.php -a=/app/CodeIgniter4-Burner/dev/app/"
-  # env:
-  #   XDEBUG_SESSION: 1
-
-http:
-  address: "0.0.0.0:8080"
-  static:
-    dir: "/app/CodeIgniter4-Burner/dev/public"
-    forbid: [".htaccess", ".php"]
-  pool:
-    num_workers: 1
-    # max_jobs: 64
-    # debug: true
-
-# reload:
-#   interval: 1s
-#   patterns: [ ".php" ]
-#   services:
-#     http:
-#       recursive: true
-#       ignore: [ "vendor" ]
-#       patterns: [ ".php", ".go", ".dmd" ]
-#       dirs: [ "/app/CodeIgniter4-Burner/dev" ]
-
-# logs:
-#   mode: development
-#   output: stdout
-#   file_logger_options:
-#     log_output: "/app/CodeIgniter4-Burner/dev/writable/logs/RoadRunner.log"
-#     max_size: 100
-#     max_age: 1
-#     max_backups : 5
-#     compress: false
+<p>Burner provides two ways to reload, you can switch by modifying the <code>autoReloadMode</code> in <code>config/workerman.php</code>.</p>
+<pre><code class="language-php">public $autoReloadMode = 'restart';
 </code></pre>
-<p>You may find that in the configuration of <code>server.command</code>, we use <code>php Worker.php -f -a</code> to start the RoadRunner Worker, this is because we need to load the CodeIgniter4 core in the Worker, and this core needs to be handled by the <code>FrontLoader</code> provided by Burner.</p>
-<p>At the same time, the location of the <code>app</code> folder is also very important for CodeIgniter4, so we need to pass these two parameters when starting the Worker, and these two parameters will be automatically generated by the Burner initialization command.</p>
-<p>You can refer to the <a href="https://github.com/roadrunner-server/roadrunner/blob/v2.12.3/.rr.yaml">official full version document</a> and <a href="https://roadrunner.dev/docs">official user manual</a> according to your own needs to modify this file.</p>
+<ul>
+<li><code>restart</code> means that the server will automatically restart each time the file is modified. It's like you shut down the server yourself and then restarted it, which can ensure that all php files are reloaded.</li>
+<li><code>reload</code> will only reload the running Worker, just like <a href="https://www.workerman.net/doc/workerman/faq/reload-principle.html">the document</a> says. Please note that this method may not work in all cases, for example, when the core files of the project generated by <code>composer require/update</code> change.</li>
+</ul>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>Automatic reloading is very resource-intensive, so please don't turn it on in the production environment.</p>
+</div><h2 id="debugging-with-only-one-worker">Debugging with only one Worker</h2>
+<p>Since Workerman has a fundamental difference with other server software (such as Nginx, Apache), each Codeigniter exists as a Worker in RAM, and HTTP requests will reuse these Workers to handle them. Therefore, we develop and test the stability in an environment with only one Worker to prove that it can also run normally in a formal environment with multiple Workers.</p>
+<p>You can refer to the following settings in the <code>app/Config/Workerman.php</code> configuration file to reduce the number of CodeIgniter Workers to the minimum:</p>
+<pre><code class="language-php">public $workerCount = 1;
+</code></pre>
 
             </div>
             <div class='sidebar-right'>
@@ -260,19 +199,15 @@ http:
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#roadrunner-http'>RoadRunner HTTP</a>
+                            <a href='#workerman-suggestion'>Workerman Suggestion</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#events'>Events</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
+                            <a href='#auto-reload'>Auto Reload</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#configuration'>Configuration</a>
+                            <a href='#debugging-with-only-one-worker'>Debugging with only one Worker</a>
                         </li>
                         
                     </ul>

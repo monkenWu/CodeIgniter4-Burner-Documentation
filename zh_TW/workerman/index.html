@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>歡迎使用 Burner！</title>
+    <title>Workerman</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -78,7 +78,7 @@
                 <nav class='site-nav'>
     <ul>
         
-            <li><a class="active" href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
             
         
             <li><a href="/zh_TW/general">一般主題</a></li>
@@ -132,7 +132,7 @@
 
             
         
-            <li><a href="/zh_TW/workerman">Workerman</a></li>
+            <li><a class="active" href="/zh_TW/workerman">Workerman</a></li>
             
                 <ul>
     
@@ -163,57 +163,32 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="歡迎使用-burner！">歡迎使用 Burner！</h1>
-<p>Burner 是一款專屬於 CodeIgniter 的開箱即用的程式庫，它支援 <a href="https://roadrunner.dev/">RoadRunner</a>、 <a href="https://github.com/walkor/workerman">Workerman</a> ，與 <a href="https://openswoole.com/">OpenSwoole</a> 等高效能網頁伺服器。你只需要開啟一些 php 擴充套件，即可大幅度地加速你的 CodeIgniter4 應用程式，使其能承受更高的負載並同時處理更多的連線。</p>
-<h2 id="系統需求">系統需求</h2>
-<p>依據使用的驅動程式的不同，對於系統環境的需求也會有所不同。</p>
-<h3 id="基本需求">基本需求</h3>
-<ol>
-<li>CodeIgniter Framework 4.3.0 以上</li>
-<li>Composer</li>
-<li>PHP8^</li>
-</ol>
-<h3 id="openswoole">OpenSwoole</h3>
-<ol>
-<li>OpenSwoole 22^ 以上版本，你可以參考官方文件 <a href="https://openswoole.com/docs/get-started/prerequisites">OpenSwoole 前置條件</a></li>
-</ol>
-<p>我們也推薦你閱讀：<a href="https://openswoole.com/docs/get-started/installation">如何安裝 OpenSwoole</a></p>
+                <h1 id="workerman">Workerman</h1>
+<p><a href="https://www.workerman.net/">Workerman</a> 是一款由原生 PHP 開發的高效能應用容器，它不像 OpenSwoole 需要倚賴特別的外部 PHP Extension，或是需要像 RoadRunner 一樣需要一個外部的 Go Server ，它是個完全以 PHP 實作的事件驅動高效能框架。</p>
+<h2 id="如何實現">如何實現</h2>
+<p>接收到 HTTP 連線後，Burner 會將 Workerman 的 Request 物件轉換成 PSR-7 請求物件，再透過 Burner-Core 轉換為 CodeIgniter4 請求物件，最後才開始執行 CodeIgniter4 應用程式。</p>
+<p>待 CodeIgniter4 處理完請求後，Burner-Core 會將 CodeIgniter4 Request 物件轉換成 PSR-7 回應物件，再傳遞給 Workerman 驅動程式進行處理，最後會以 Workerman Response 物件進行響應。</p>
+<h2 id="開始使用">開始使用</h2>
+<p>在使用 RoadRunner 之前，請先確認您的環境已經擁有 <code>PHP8^</code>、<code>php-pcntl</code>、<code>php-posix</code> 與非必要但推薦開啟的 <a href="https://www.php.net/manual/en/book.event.php"><code>php-sockets</code></a>等擴充外掛，也可以直接使用我們推薦的 <a href="/zh_TW/general/docker">Docker 環境</a>。</p>
+<p>當處理好這些前置作業後，你可以在專案根目錄下執行以下指令取得 Workerman 驅動程式：</p>
+<pre><code>composer require monken/codeigniter4-burner-workerman:1.0.0-beta.1
+</code></pre>
 <div class="callout info"><p class="callout-title">備註</p>
-<p>OpenSwoole 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 OpenSwoole。</p>
-</div><h3 id="workerman">Workerman</h3>
-<ol>
-<li>開啟 <code>php-pcntl</code> 外掛</li>
-<li>開啟 <code>php-posix</code> 外掛</li>
-<li>非必要，但我們推薦你安裝 <a href="https://www.php.net/manual/en/book.event.php">php-event</a> 外掛，以取得更佳的執行效能</li>
-</ol>
+<p>如果在執行上述指令的當下你尚未安裝 CodeIgniter4-Burner 程式庫，Composer 將會自動拉取相關的依賴項目。</p>
+</div>
+<p>緊接著，你需要使用以下指令初始化 Burner 與 Workerman 驅動程式：</p>
+<pre><code>php spark burner:init Workerman
+</code></pre>
+<p>當指令執行成功後，你應該可以在 <code>project_root/app/Config</code> 資料夾中看到兩個被新增的檔案，分別是：<code>Burner.php</code> 與 <code>Workerman.php</code>，你可以透過調整這兩個檔案來細緻地控制你的伺服器設定。</p>
 <div class="callout info"><p class="callout-title">備註</p>
-<p>Workerman 不支援在 Windows 環境下原生執行。不過，你可以透過 WSL 或是 Docker 的方式使用 Workerman。</p>
-</div><h3 id="roadrunner">RoadRunner</h3>
-<ol>
-<li>開啟 <code>php-curl</code> 外掛</li>
-<li>開啟 <code>php-zip</code> 外掛</li>
-<li>開啟 <code>php-sockets</code> 外掛</li>
-</ol>
-<h2 id="架構">架構</h2>
-<p>Burner 由數個程式庫組成，分別是：</p>
-<ul>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner"><code>burner-core</code></a> 是一個單純的 <code>PSR7</code> 與 <code>CodeIgniter4</code> 的轉換器，並且包含一些 CodeIgniter4 的指令整合；由於 Codeigniter4 並沒有實作完整的 <a href="https://www.php-fig.org/psr/psr-7/">HTTP message 介面</a> 介面，所以這個程式庫著重於 <code>PSR-7</code> 介面 與 Codeigniter4 HTTP 介面 的同步。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-OpenSwoole"><code>burner-OpenSwoole</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 OpenSwoole 執行。除了 HTTP 伺服器以外，Burner 還提供了 WebSocket 伺服器的支援。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-Workerman"><code>burner-Workerman</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 Workerman 執行，在一些<a href="https://www.techempower.com/benchmarks/#section=data-r21&amp;hw=ph&amp;test=query&amp;l=zik073-sf&amp;a=2">測試場景</a> 中，Workerman 表現出了絕佳的效能優勢。</p>
-</li>
-<li>
-<p><a href="https://github.com/monkenWu/CodeIgniter4-Burner-RoadRunner"><code>burner-RoadRunner</code></a> 使用了這個驅動程式，你的 CodeIngiter4 將能夠透過 RoadRunner 執行。與其他 Driver 不同，它具備一個由 <code>Go</code> 語言實作 PHP 伺服器，除了框架本身的支援外，官方也提供了許多便利的外掛。</p>
-</li>
-</ul>
-<p>你可以替你的專案選擇最適合的驅動程式，這些選擇沒有絕對的好壞，端看專案需求以及開發人員對於何種技術較為熟悉。</p>
-<p>有了 Burner 的支援，你的專案將可以輕易地在不同的高效能 PHP 伺服器中自由切換，或以不同的 port 同時執行在兩個不同的伺服器上。比如：透過 RoadRunner 處理一般的 HTTP 請求，同時使用 OpenSwoole 處理 WebSocket 請求。</p>
-<p>準備好開始探索 Burner 了嗎？</p>
-<p><a href="/zh_TW/general/quickstart">快速開始</a> </p>
+<p>如果你重複執行 <code>burner:init</code> 指令，已存在的組態設定檔案將會被重新命名而不是直接被覆蓋。</p>
+</div>
+<p>Bruner 已經為你預設了所有組態設定，你可以在需要時再去更動你的設定檔案。</p>
+<p>當一切準備就緒後，你可以直接執行以下指令開啟你的伺服器：</p>
+<pre><code>php spark burner:start
+</code></pre>
+<p>在預設的情況下，你的伺服器應該會執行在 <code>8080</code> 連接埠上頭，你可以立即透過 <code>localhost:8080</code> 來瀏覽你的專案頁面。</p>
+<p>順利的話，你的 CodeIgniter4 應該已經成功地運行在 Workerman 上。</p>
 
             </div>
             <div class='sidebar-right'>
@@ -222,31 +197,15 @@
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#歡迎使用-burner！'>歡迎使用 Burner！</a>
-                        </li>
-                        
-                        <li class='page-nav-level-2'>
-                            <a href='#系統需求'>系統需求</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#基本需求'>基本需求</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#openswoole'>OpenSwoole</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
                             <a href='#workerman'>Workerman</a>
                         </li>
                         
-                        <li class='page-nav-level-3'>
-                            <a href='#roadrunner'>RoadRunner</a>
+                        <li class='page-nav-level-2'>
+                            <a href='#如何實現'>如何實現</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#架構'>架構</a>
+                            <a href='#開始使用'>開始使用</a>
                         </li>
                         
                     </ul>

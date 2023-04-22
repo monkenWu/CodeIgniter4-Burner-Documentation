@@ -1,0 +1,419 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Workerman Implement</title>
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1682168970"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1682168970"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1682168970" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1682168970"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1682168970";
+        var BASE_PATH = "/en/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter Burner - ' + document.title;
+</script>
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <a href="/en/">
+                    <img src="/en/logo.png" alt='CodeIgniter Burner Beta logo'></img>
+                </a>
+                
+                <h2 class='project-name'>
+                    <a href="/en/">
+                        CodeIgniter Burner Beta
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a href="/en/introduction">Welcome to Burner!</a></li>
+            
+        
+            <li><a href="/en/general">General</a></li>
+            
+                <ul>
+    
+        <li><a href="/en/general/quickstart">Quickstart</a></li>
+        
+    
+        <li><a href="/en/general/suggestion">Development Suggestion</a></li>
+        
+    
+        <li><a href="/en/general/docker">Docker Environment</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/en/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/en/openswoole/implement">OpenSwoole Implement</a></li>
+        
+    
+        <li><a href="/en/openswoole/suggestion">OpenSwoole Suggestion</a></li>
+        
+    
+        <li><a href="/en/openswoole/commands">OpenSwoole Commands</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/en/roadrunner">RoadRunner</a></li>
+            
+                <ul>
+    
+        <li><a href="/en/roadrunner/implement">RoadRunner Implement</a></li>
+        
+    
+        <li><a href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
+        
+    
+        <li><a href="/en/roadrunner/commands">RoadRunner Commands</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/en/workerman">Workerman</a></li>
+            
+                <ul>
+    
+        <li><a class="active" href="/en/workerman/implement">Workerman Implement</a></li>
+        
+    
+        <li><a href="/en/workerman/suggestion">Workerman Suggestion</a></li>
+        
+    
+        <li><a href="/en/workerman/commands">Workerman Commands</a></li>
+        
+    
+</ul>
+
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="workerman-implement">Workerman Implement</h1>
+<p>Workerman provides a basic HTTP server, and the details of its operation need to be implemented by the developer.</p>
+<p>For the integration of Workerman and CodeIgniter, we provide a simple implementation that allows developers to get started quickly.</p>
+<h2 id="http-service">HTTP Service</h2>
+<p>For Workerman, CodeIniger is a Worker that has been implemented.</p>
+<p>It provides two main functions:</p>
+<ol>
+<li>As a static file server, respond to static files in the <code>public</code> folder.</li>
+<li>As an HTTP server, convert the request to PSR-7 format and process it with Burner Core.</li>
+</ol>
+<p>You can focus on the <code>src/Worker/CodeIgniter.php</code> that Burner implements, and the key content is as follows:</p>
+<pre><code class="language-php">$webWorker-&gt;onMessage = static function (TcpConnection $connection, Request $request) use ($workermanConfig) {
+    $workermanConfig-&gt;runtimeTcpConnection($connection);
+
+    // Static File
+    $response = \Monken\CIBurner\Workerman\StaticFile::withFile($request);
+    if ((null === $response) === false) {
+        $connection-&gt;send($response);
+
+        return;
+    }
+
+    // init psr7 request
+    $_SERVER['HTTP_USER_AGENT'] = $request-&gt;header('User-Agent');
+    $psrRequest                 = (new PsrRequest(
+        $request-&gt;method(),
+        $request-&gt;uri(),
+        $request-&gt;header(),
+        $request-&gt;rawBody(),
+        $request-&gt;protocolVersion(),
+        $_SERVER
+    ))-&gt;withQueryParams($request-&gt;get())
+        -&gt;withCookieParams($request-&gt;cookie())
+        -&gt;withParsedBody($request-&gt;post() ?? [])
+        -&gt;withUploadedFiles($request-&gt;file() ?? []);
+    unset($request);
+
+    // process response
+    if ($response === null) {
+        /** @var \Psr\Http\Message\ResponseInterface */
+        $response = \Monken\CIBurner\App::run($psrRequest);
+    }
+
+    $workermanResponse = new Response(
+        $response-&gt;getStatusCode(),
+        $response-&gt;getHeaders(),
+        $response-&gt;getBody()-&gt;getContents()
+    );
+
+    $connection-&gt;send($workermanResponse);
+    Events::trigger('burnerAfterSendResponse', $connection);
+    \Monken\CIBurner\App::clean();
+};
+</code></pre>
+<p>When an HTTP request comes in, Burner will first check whether it is a static file request. If so, it will respond directly. Otherwise, Burner will convert the request to PSR-7 format and pass it to Burner Core for processing. Finally, Burner will convert the processing result to Workerman format and respond to the client.</p>
+<h2 id="app-container">App Container</h2>
+<p>When a Workerman-based server is started, it can run more than one business logic Worker. You can start multiple Workers according to your needs to run different business logic.</p>
+<p>For example, in Burner, we implement two Workers, respectively:</p>
+<ol>
+<li><code>CodeIgniter</code>: Used to process HTTP requests.</li>
+<li><code>FileMonitor</code>: Used to monitor file changes.</li>
+</ol>
+<p>In <code>app/Config/Workerman.php</code>, we can see:</p>
+<pre><code class="language-php">public $serverWorkers = [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    // \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+];
+</code></pre>
+<p>These two Workers are both inherited from <code>Monken\CIBurner\Workerman\Worker\WorkerRegistrar</code>, both implement the <code>initWorker</code> method. When you run <code>php spark burner:start</code>, Burner will automatically start these two Workers together (according to whether you declare all of them in your configuration).</p>
+<p>Burner implements a Workerman-specific <code>AppContainer</code>, which contains all the Workerman Worker object instances and provides some methods to operate these instances.</p>
+<p>You can focus on Burner's <code>src/Worker.php</code>, the key content is as follows:</p>
+<pre><code class="language-php">//Burner Core And Worker Base Settings
+\Monken\CIBurner\App::setConfig(config('Burner'));
+/** @var \Config\Workerman */
+$workermanConfig = Factories::config('Workerman');
+Config::staticSetting($workermanConfig);
+
+AppContainer::registerWorkers($workermanConfig-&gt;serverWorkers);
+AppContainer::init();
+</code></pre>
+<p>We will load the Worker needed by the server into <code>AppContainer</code>, and initialize these Workers through <code>AppContainer</code>. This means that you can add your own Worker to <code>AppContainer</code>, and initialize these Workers through <code>AppContainer</code>.</p>
+<h3 id="create-your-worker">Create your Worker</h3>
+<p>You can create a file like this in the <code>app/Workers</code> folder and name it <code>MyWorker.php</code>:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App\Workers;
+
+use Monken\CIBurner\Workerman\Worker\WorkerRegistrar;
+use Workerman\Worker;
+
+class MyWorker extends WorkerRegistrar
+{
+    public function initWorker(): Worker
+    {
+        $worker = new Worker();
+        $worker-&gt;name = 'MyWorker';
+        $worker-&gt;count = 1;
+        $worker-&gt;onWorkerStart = function () {
+            print_r('MyWorker is running' . PHP_EOL );
+        };
+        return $worker;
+    }
+}
+</code></pre>
+<p>Then, you can add your Worker to <code>serverWorkers</code> in <code>app/Config/Workerman.php</code>:</p>
+<pre><code class="language-php">public $serverWorkers = [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    // \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+    \App\Workers\MyWorker::class,
+];
+</code></pre>
+<p>When you run <code>php spark burner:start</code>, your Worker will be automatically started by Burner.</p>
+<p>When writing a Worker, you can use any class that complies with the namespace rules. Burner has already taken care of these annoying namespace loads for you.</p>
+<p>If you need more notes on writing Workers, or more knowledge about Workerman, we recommend you to refer to the <a href="https://github.com/walkor/workerman-manual/tree/master/english/worker-development">official documentation</a>.</p>
+<h3 id="available-methods">Available Methods</h3>
+<h4 id="appcontainer::getworker">AppContainer::getWorker</h4>
+<p>Through the <code>AppContainer::getWorker</code> method, after passing in the class name, you can get the specified Workerman Worker instance.</p>
+<h4 id="parameters">Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>$workerClass</td><td>string</td><td>Worker class name</td></tr>
+</tbody></table>
+<h4 id="return-value">Return Value</h4>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>Workerman\Worker</td><td>The specified Workerman Worker instance</td></tr>
+<tr><td>null</td><td>No specified Worker instance was found</td></tr>
+</tbody></table>
+<h4 id="example">Example</h4>
+<p>For example, the CodeIgniter Worker:</p>
+<pre><code class="language-php">use Monken\CIBurner\Workerman\Worker\CodeIgniter;
+$worker = AppContainer::getWorker(CodeIgniter::class);
+</code></pre>
+<h2 id="burner-events">Burner Events</h2>
+<p>Burner provides some events during the operation of the server, allowing developers to execute their own logic at a specific stage.</p>
+<h3 id="config::initworker">Config::initWorker</h3>
+<p>This is usually used to initialize some of the things you need when the CodeIgniter Worker is initialized. You can define the logic you need to execute when the CodeIgniter Worker is initialized through the <code>initWorker</code> method in the configuration file <code>app/Config/Workerman.php</code>:</p>
+<pre><code class="language-php">use Workerman\Worker;
+public function initWorker(Worker &amp;$worker)
+{
+    //Your logic here
+}
+</code></pre>
+<h3 id="config::runtimetcpconnection">Config::runtimeTcpConnection</h3>
+<p>When a TCP connection occurs in each CodeIgniter Worker, this event will be triggered. You can define the logic you need to execute through the <code>runtimeTcpConnection</code> method in the configuration file <code>app/Config/Workerman.php</code>:</p>
+<pre><code class="language-php">use Workerman\Connection\TcpConnection;
+use Workerman\Protocols\Http\Request;
+public function runtimeTcpConnection(TcpConnection &amp;$tcpConnection, Request &amp;$request)
+{
+    //Your logic here
+}
+</code></pre>
+<h2 id="events">Events</h2>
+<p>CodeIgniter4 provides <a href="https://codeigniter.com/user_guide/extending/events.html">events</a> that can be used to perform actions at specific points during execution. When CodeIgniter runs, it follows a certain execution order, but in some cases, you may want to perform some actions at a specific stage of execution.</p>
+<p>Burner provides the following events for OpenSwoole HTTP:</p>
+<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
+<p>This is usually used to initialize after the response, if you have some global variables that need to be cleared or some common processing after the response, it is very suitable to declare it in this event. You can declare the <code>burnerAfterSendResponse</code> event, and when OpenSwoole responds, the logic you need to execute will be executed:</p>
+<pre><code class="language-php">// This code will be executed after sending the response to the client.
+Events::on('burnerAfterSendResponse',static function(\Workerman\Connection\TcpConnection $connection)
+{
+    //Your logic
+});
+</code></pre>
+<p>The way events are used is not limited to callback functions. Please refer to the methods mentioned in the <a href="https://codeigniter.com/user_guide/extending/events.html#defining-an-event">CodeIgniter4 User Guide</a> to choose the best way for you.</p>
+
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#workerman-implement'>Workerman Implement</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#http-service'>HTTP Service</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#app-container'>App Container</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#create-your-worker'>Create your Worker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#available-methods'>Available Methods</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#appcontainer::getworker'>AppContainer::getWorker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#parameters'>Parameters</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#return-value'>Return Value</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#example'>Example</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#burner-events'>Burner Events</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#config::initworker'>Config::initWorker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#config::runtimetcpconnection'>Config::runtimeTcpConnection</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#events'>Events</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1682168970"></script>
+
+    
+</body>
+
+</html>

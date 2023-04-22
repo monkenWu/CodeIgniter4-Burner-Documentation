@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>RoadRunner Implement</title>
+    <title>Workerman</title>
     <meta name="description" content="Documentation for CodeIgniter Burner Beta">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -119,7 +119,7 @@
             
                 <ul>
     
-        <li><a class="active" href="/en/roadrunner/implement">RoadRunner Implement</a></li>
+        <li><a href="/en/roadrunner/implement">RoadRunner Implement</a></li>
         
     
         <li><a href="/en/roadrunner/suggestion">RoadRunner Suggestion</a></li>
@@ -132,7 +132,7 @@
 
             
         
-            <li><a href="/en/workerman">Workerman</a></li>
+            <li><a class="active" href="/en/workerman">Workerman</a></li>
             
                 <ul>
     
@@ -163,95 +163,32 @@
 
             </div>
             <div class='doctave-content'>
-                <h1 id="roadrunner-http">RoadRunner HTTP</h1>
-<p>RoadRunner is a complete PHP server, we can integrate it with Burner-Core without writing any special logic. If you choose RoadRunner as your server solution, you will hardly notice it in development.</p>
-<p>The key part of worker.php is as follows:</p>
-<pre><code class="language-php">while (true) {
-    // get psr7 request
-    try {
-        $request = $psr7-&gt;waitRequest();
-        if (! ($request instanceof RequestInterface)) { // Termination request received
-            break;
-        }
-    } catch (Exception $e) {
-        $psr7-&gt;respond(new Response(400)); // Bad Request
-
-        continue;
-    }
-
-    /** @var \Psr\Http\Message\ResponseInterface */
-    $response = \Monken\CIBurner\App::run($request);
-
-    // handle response object
-    try {
-        $psr7-&gt;respond($response);
-        Events::trigger('burnerAfterSendResponse', $psr7);
-        \Monken\CIBurner\App::clean();
-    } catch (Exception $e) {
-        $psr7-&gt;respond(new Response(500, [], 'Something Went Wrong!'));
-    }
-}
+                <h1 id="workerman">Workerman</h1>
+<p><a href="https://github.com/walkor/workerman/">Workerman</a> is a high-performance application container developed by native PHP. Unlike OpenSwoole, which relies on special external PHP extensions, or needs an external Go Server like RoadRunner, it is a completely PHP-implemented event-driven high-performance framework.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>After receiving an HTTP connection, Burner will convert the Workerman Request object to a PSR-7 request object, then through Burner-Core to convert it to a CodeIgniter4 request object, and then start executing the CodeIgniter4 application.</p>
+<p>After CodeIgniter4 has processed the request, Burner-Core will convert the CodeIgniter4 Request object to a PSR-7 response object, and then pass it to the Workerman driver for processing, and finally respond with the Workerman Response object.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Before using Workerman, please make sure that your environment already has <code>PHP8^</code>, <code>php-pcntl</code>, <code>php-posix</code>, and non-essential but recommended <a href="https://www.php.net/manual/en/book.event.php"><code>php-sockets</code></a> extensions, or you can use our recommended <a href="/en/general/docker">Docker environment</a>.</p>
+<p>After completing these prerequisites, you can execute the following command in the project root directory to obtain the Workerman driver:</p>
+<pre><code>composer require monken/codeigniter4-burner-workerman:1.0.0-beta.1
 </code></pre>
-<p>All HTTP requests start from the <code>waitRequest</code> method, when this method gets the latest user request, it will immediately execute the <code>App::run()</code> method, and Burner will start a series of preprocessing and notify CodeIgniter4 to handle your connection.</p>
-<p>Next, you will enter the CodeIgniter4 processing process, when CodeIgniter4 processing is complete, the <code>run()</code> method will return a PSR-7 response object, and transfer it to the <code>respond</code> method for processing.</p>
-<p>After understanding the above process, you will find that the implementation logic of RoadRunner is not complicated, just like you are familiar with, develop your application as usual.</p>
-<h2 id="events">Events</h2>
-<p>CodeIgniter4 provides <a href="https://codeigniter.com/user_guide/extending/events.html">events</a> that can be used to perform actions at specific points during execution. When CodeIgniter runs, it follows a certain execution order, but in some cases, you may want to perform some actions at a specific stage of execution.</p>
-<p>Burner provides the following events for OpenSwoole HTTP:</p>
-<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
-<p>This is usually used to initialize after the response, if you have some global variables that need to be cleared or some common processing after the response, it is very suitable to declare it in this event. You can declare the <code>burnerAfterSendResponse</code> event, and when OpenSwoole responds, the logic you need to execute will be executed:</p>
-<pre><code class="language-php">// This code will be executed after sending the response to the client.
-Events::on('burnerAfterSendResponse',static function(\Spiral\RoadRunner\Http\PSR7Worker $psr7Worker)
-{
-    //Your logic
-});
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you do not have CodeIgniter4-Burner installed when you run the above command, Composer will automatically pull the relevant dependencies.</p>
+</div>
+<p>Next, you need to use the following command to initialize Burner and the Workerman driver:</p>
+<pre><code>php spark burner:init Workerman
 </code></pre>
-<p>The way events are used is not limited to callback functions. Please refer to the methods mentioned in the <a href="https://codeigniter.com/user_guide/extending/events.html#defining-an-event">CodeIgniter4 User Guide</a> to choose the best way for you.</p>
-<h2 id="configuration">Configuration</h2>
-<p>The automatically generated configuration file of Burner will be located in the root directory of the project under <code>rr.yml</code>, and its content may be as follows:</p>
-<pre><code class="language-yml">version: "2.7"
-
-rpc:
-  listen: tcp://127.0.0.1:6001
-
-server:
-  command: "php Worker.php -f=/app/CodeIgniter4-Burner/src/FrontLoader.php -a=/app/CodeIgniter4-Burner/dev/app/"
-  # env:
-  #   XDEBUG_SESSION: 1
-
-http:
-  address: "0.0.0.0:8080"
-  static:
-    dir: "/app/CodeIgniter4-Burner/dev/public"
-    forbid: [".htaccess", ".php"]
-  pool:
-    num_workers: 1
-    # max_jobs: 64
-    # debug: true
-
-# reload:
-#   interval: 1s
-#   patterns: [ ".php" ]
-#   services:
-#     http:
-#       recursive: true
-#       ignore: [ "vendor" ]
-#       patterns: [ ".php", ".go", ".dmd" ]
-#       dirs: [ "/app/CodeIgniter4-Burner/dev" ]
-
-# logs:
-#   mode: development
-#   output: stdout
-#   file_logger_options:
-#     log_output: "/app/CodeIgniter4-Burner/dev/writable/logs/RoadRunner.log"
-#     max_size: 100
-#     max_age: 1
-#     max_backups : 5
-#     compress: false
+<p>When the command is executed successfully, you should be able to see two files added to the <code>project_root/app/Config</code> folder, namely: <code>Burner.php</code> and <code>Workerman.php</code>, you can adjust these two files to finely control your server settings.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>If you run the <code>burner:init</code> command repeatedly, the existing configuration file will be renamed instead of being overwritten directly.</p>
+</div>
+<p>Bruner has already pre-configured all the settings for you, you can modify your configuration files when needed.</p>
+<p>When everything is ready, you can run the following command to start your server:</p>
+<pre><code>php spark burner:start
 </code></pre>
-<p>You may find that in the configuration of <code>server.command</code>, we use <code>php Worker.php -f -a</code> to start the RoadRunner Worker, this is because we need to load the CodeIgniter4 core in the Worker, and this core needs to be handled by the <code>FrontLoader</code> provided by Burner.</p>
-<p>At the same time, the location of the <code>app</code> folder is also very important for CodeIgniter4, so we need to pass these two parameters when starting the Worker, and these two parameters will be automatically generated by the Burner initialization command.</p>
-<p>You can refer to the <a href="https://github.com/roadrunner-server/roadrunner/blob/v2.12.3/.rr.yaml">official full version document</a> and <a href="https://roadrunner.dev/docs">official user manual</a> according to your own needs to modify this file.</p>
+<p>By default, your server should run on the <code>8080</code> port, you can immediately browse your project page through <code>localhost:8080</code>.</p>
+<p>If everything goes well, your CodeIgniter4 should be running on Workerman successfully.</p>
 
             </div>
             <div class='sidebar-right'>
@@ -260,19 +197,15 @@ http:
                     <ul>
                         
                         <li class='page-nav-level-1'>
-                            <a href='#roadrunner-http'>RoadRunner HTTP</a>
+                            <a href='#workerman'>Workerman</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#events'>Events</a>
-                        </li>
-                        
-                        <li class='page-nav-level-3'>
-                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
+                            <a href='#how-it-works'>How it works</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#configuration'>Configuration</a>
+                            <a href='#getting-started'>Getting started</a>
                         </li>
                         
                     </ul>

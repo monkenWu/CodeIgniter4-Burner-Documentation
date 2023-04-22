@@ -13,16 +13,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1681658050"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1682168970"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1681658050"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1682168970"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1681658050" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1681658050"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1682168970" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1682168970"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1681658050";
+        var DOCTAVE_TIMESTAMP = "1682168970";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -132,6 +132,23 @@
 
             
         
+            <li><a href="/en/workerman">Workerman</a></li>
+            
+                <ul>
+    
+        <li><a href="/en/workerman/implement">Workerman Implement</a></li>
+        
+    
+        <li><a href="/en/workerman/suggestion">Workerman Suggestion</a></li>
+        
+    
+        <li><a href="/en/workerman/commands">Workerman Commands</a></li>
+        
+    
+</ul>
+
+            
+        
     </ul>
     <span id='light-dark-mode-switch'>
         <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -148,7 +165,7 @@
             <div class='doctave-content'>
                 <h1 id="openswoole">OpenSwoole</h1>
 <p>OpenSwoole is a new version forked from Swoole, and they have different maintenance teams. When Burner was developed, OpenSwoole had already reached version <code>22.0.0</code>, and in this version the namespace has been migrated from <code>Swoole</code> to <code>OpenSwoole</code>, which means that Burner will not support running under <code>OpenSwoole</code> below version <code>22.0.0</code>, and it is not compatible with <code>Swoole</code>.</p>
-<h2 id="how-to-implement">How to implement</h2>
+<h2 id="how-it-works">How it works</h2>
 <p>When receiving an HTTP request, the OpenSwoole driver will convert the OpenSwoole request object to a request object that implements the <code>PSR-7</code> interface, and then pass the <code>PSR-7</code> request object to <code>burner-core</code> for processing. When <code>burner-core</code> receives the <code>PSR-7</code> request object, it will convert it to a request object that is exclusive to <code>CodeIgniter4</code>, and include some pre-processing required by the framework.</p>
 <p>When <code>CodeIgniter4</code> has finished processing the request, <code>burner-core</code> will convert the <code>CodeIgniter4</code> response object to a <code>PSR-7</code> response object, and then return it to the OpenSwoole driver.</p>
 <h2 id="getting-started">Getting started</h2>
@@ -185,7 +202,7 @@
                         </li>
                         
                         <li class='page-nav-level-2'>
-                            <a href='#how-to-implement'>How to implement</a>
+                            <a href='#how-it-works'>How it works</a>
                         </li>
                         
                         <li class='page-nav-level-2'>
@@ -211,11 +228,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1681658050"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1681658050"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1681658050"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1681658050"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1681658050"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1682168970"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1682168970"></script>
 
     
 </body>

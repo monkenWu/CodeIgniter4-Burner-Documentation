@@ -1,0 +1,419 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Workerman 實踐</title>
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1682168969"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1682168969"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1682168969" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1682168969"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1682168969";
+        var BASE_PATH = "/zh_TW/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+<script>
+    document.title = 'CodeIgniter Burner - ' + document.title;
+</script>
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <a href="/zh_TW/">
+                    <img src="/zh_TW/logo.png" alt='CodeIgniter Burner Beta logo'></img>
+                </a>
+                
+                <h2 class='project-name'>
+                    <a href="/zh_TW/">
+                        CodeIgniter Burner Beta
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a href="/zh_TW/introduction">歡迎使用 Burner！</a></li>
+            
+        
+            <li><a href="/zh_TW/general">一般主題</a></li>
+            
+                <ul>
+    
+        <li><a href="/zh_TW/general/quickstart">快速開始</a></li>
+        
+    
+        <li><a href="/zh_TW/general/suggestion">開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/general/docker">Docker 環境</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/zh_TW/openswoole">OpenSwoole</a></li>
+            
+                <ul>
+    
+        <li><a href="/zh_TW/openswoole/implement">OpenSwoole 實踐</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/suggestion">OpenSwoole 開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/openswoole/commands">OpenSwoole 常用指令</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/zh_TW/roadrunner">RoadRunner</a></li>
+            
+                <ul>
+    
+        <li><a href="/zh_TW/roadrunner/implement">RoadRunner 實踐</a></li>
+        
+    
+        <li><a href="/zh_TW/roadrunner/suggestion">RoadRunner 開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/roadrunner/commands">RoadRunner 常用指令</a></li>
+        
+    
+</ul>
+
+            
+        
+            <li><a href="/zh_TW/workerman">Workerman</a></li>
+            
+                <ul>
+    
+        <li><a class="active" href="/zh_TW/workerman/implement">Workerman 實踐</a></li>
+        
+    
+        <li><a href="/zh_TW/workerman/suggestion">Workerman 開發建議</a></li>
+        
+    
+        <li><a href="/zh_TW/workerman/commands">Workerman 常用指令</a></li>
+        
+    
+</ul>
+
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="workerman-實踐">Workerman 實踐</h1>
+<p>Workerman 提供了基礎的 HTTP 伺服器，其運作細節則需要開發者自行實作。</p>
+<p>針對 Workerman 與 CodeIgniter 的整合，我們提供了一套簡單的實作，讓開發者可以快速上手。</p>
+<h2 id="http-service">HTTP Service</h2>
+<p>對於 Workerman 來說 CodeIniger 是一個被實作出來的 Worker。</p>
+<p>它提供了兩個主要的功能：</p>
+<ol>
+<li>作為靜態檔案伺服器，響應在 <code>public</code> 資料夾下的靜態檔案。</li>
+<li>作為 HTTP 伺服器，將請求轉換為 PSR-7 格式，並交由 Burner Core 進行處理。</li>
+</ol>
+<p>你可以關注 Burner 所實作的 <code>src/Worker/CodeIgniter.php</code> ，關鍵內容如下：</p>
+<pre><code class="language-php">$webWorker-&gt;onMessage = static function (TcpConnection $connection, Request $request) use ($workermanConfig) {
+    $workermanConfig-&gt;runtimeTcpConnection($connection);
+
+    // Static File
+    $response = \Monken\CIBurner\Workerman\StaticFile::withFile($request);
+    if ((null === $response) === false) {
+        $connection-&gt;send($response);
+
+        return;
+    }
+
+    // init psr7 request
+    $_SERVER['HTTP_USER_AGENT'] = $request-&gt;header('User-Agent');
+    $psrRequest                 = (new PsrRequest(
+        $request-&gt;method(),
+        $request-&gt;uri(),
+        $request-&gt;header(),
+        $request-&gt;rawBody(),
+        $request-&gt;protocolVersion(),
+        $_SERVER
+    ))-&gt;withQueryParams($request-&gt;get())
+        -&gt;withCookieParams($request-&gt;cookie())
+        -&gt;withParsedBody($request-&gt;post() ?? [])
+        -&gt;withUploadedFiles($request-&gt;file() ?? []);
+    unset($request);
+
+    // process response
+    if ($response === null) {
+        /** @var \Psr\Http\Message\ResponseInterface */
+        $response = \Monken\CIBurner\App::run($psrRequest);
+    }
+
+    $workermanResponse = new Response(
+        $response-&gt;getStatusCode(),
+        $response-&gt;getHeaders(),
+        $response-&gt;getBody()-&gt;getContents()
+    );
+
+    $connection-&gt;send($workermanResponse);
+    Events::trigger('burnerAfterSendResponse', $connection);
+    \Monken\CIBurner\App::clean();
+};
+</code></pre>
+<p>當有 HTTP 請求進來時，Burner 會先檢查是否為靜態檔案請求，若是則直接回應。否則，Burner 會將請求轉換為 PSR-7 格式，並交由 Burner Core 進行處理。最後，Burner 會將處理結果轉換為 Workerman 格式，並回應給客戶端。</p>
+<h2 id="app-container">App Container</h2>
+<p>當一個基於 Workerman 的伺服器軟體被啟動時，它可以不只運行著單一業務邏輯的 Worker，你可以依據你的需求，啟動多個 Worker 來運行不同的業務邏輯。</p>
+<p>舉個例子，在 Burner 中我們實作了兩種 Worker，分別是：</p>
+<ol>
+<li><code>CodeIgniter</code>：用於處理 HTTP 請求。</li>
+<li><code>FileMonitor</code>：用於監聽檔案變更。</li>
+</ol>
+<p>在 <code>app/Config/Workerman.php</code> 中，我們可以看到：</p>
+<pre><code class="language-php">public $serverWorkers = [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    // \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+];
+</code></pre>
+<p>這兩個 Worker 都是繼承自 <code>Monken\CIBurner\Workerman\Worker\WorkerRegistrar</code>，皆實作了 <code>initWorker</code> 方法。在你執行 <code>php spark burner:start</code> 時， Burener 會自動將這兩個 Worker 一起啟動（依據你的組態設定是否全數宣告）。</p>
+<p>Burner 實作了一個 Workerman 專屬的 <code>AppContainer</code> ，這個類別中將保存著所有的 Workerman Worker 物件實體，並提供了一些方法來操作這些實體。</p>
+<p>你可以關注 Burner 的 <code>src/Worker.php</code> ，關鍵內容如下：</p>
+<pre><code class="language-php">//Burner Core And Worker Base Settings
+\Monken\CIBurner\App::setConfig(config('Burner'));
+/** @var \Config\Workerman */
+$workermanConfig = Factories::config('Workerman');
+Config::staticSetting($workermanConfig);
+
+AppContainer::registerWorkers($workermanConfig-&gt;serverWorkers);
+AppContainer::init();
+</code></pre>
+<p>我們會將伺服器所需要使用到的 Worker 裝載到 <code>AppContainer</code> 中，並且透過 <code>AppContainer</code> 來統一初始化這些 Worker。這意味著，你可以在 <code>AppContainer</code> 中加入你自己的 Worker，並且透過 <code>AppContainer</code> 來統一初始化這些 Worker。</p>
+<h3 id="製作自己的-worker">製作自己的 Worker</h3>
+<p>你可以在 <code>app/Workers</code> 資料夾下，建立一個像是這樣的檔案，並起名為 <code>MyWorker.php</code>：</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App\Workers;
+
+use Monken\CIBurner\Workerman\Worker\WorkerRegistrar;
+use Workerman\Worker;
+
+class MyWorker extends WorkerRegistrar
+{
+    public function initWorker(): Worker
+    {
+        $worker = new Worker();
+        $worker-&gt;name = 'MyWorker';
+        $worker-&gt;count = 1;
+        $worker-&gt;onWorkerStart = function () {
+            print_r('MyWorker is running' . PHP_EOL );
+        };
+        return $worker;
+    }
+}
+</code></pre>
+<p>接著，你可以在 <code>app/Config/Workerman.php</code> 中，將你的 Worker 加入到 <code>serverWorkers</code> 中：</p>
+<pre><code class="language-php">public $serverWorkers = [
+    \Monken\CIBurner\Workerman\Worker\CodeIgniter::class,
+    // \Monken\CIBurner\Workerman\Worker\FileMonitor::class,
+    \App\Workers\MyWorker::class,
+];
+</code></pre>
+<p>當你執行 <code>php spark burner:start</code> 時，你的 Worker 將會被 Burner 自動啟動。</p>
+<p>再撰寫 Worker 時你可以盡情地使用任何符合命名空間規則的類別，這些煩人的命名空間載入，Burner 已為你處理好了。</p>
+<p>若你需要更多 Worker 撰寫時的注意事項，或是更多關於 Workerman 的知識，我們推薦你參閱<a href="https://www.workerman.net/doc/workerman/worker.html">官方文件</a>。</p>
+<h3 id="可用方法">可用方法</h3>
+<h4 id="appcontainer::getworker">AppContainer::getWorker</h4>
+<p>透過 <code>AppContainer::getWorker</code> 方法，傳入類別名稱後，你就可以取得指定的 Workerman Worker 實體。</p>
+<h4 id="參數">參數</h4>
+<table><thead><tr><th>參數</th><th>型別</th><th>說明</th></tr></thead><tbody>
+<tr><td>$workerClass</td><td>string</td><td>Worker 類別名稱</td></tr>
+</tbody></table>
+<h4 id="回傳值">回傳值</h4>
+<table><thead><tr><th>型別</th><th>說明</th></tr></thead><tbody>
+<tr><td>Workerman\Worker</td><td>指定的 Workerman Worker 實體</td></tr>
+<tr><td>null</td><td>沒有找到指定的 Worker 實體</td></tr>
+</tbody></table>
+<h4 id="範例">範例</h4>
+<p>以 CodeIgniter Worker 為例：</p>
+<pre><code class="language-php">use Monken\CIBurner\Workerman\Worker\CodeIgniter;
+$worker = AppContainer::getWorker(CodeIgniter::class);
+</code></pre>
+<h2 id="burner-事件">Burner 事件</h2>
+<p>Burner 提供了一些伺服器運作中的事件，讓開發者能夠在特定階段執行自己的邏輯。</p>
+<h3 id="config::initworker">Config::initWorker</h3>
+<p>這通常會用於在 CodeIgniter Worker 初始化時，進行一些你所需要的初始化。你可以透過組態設定檔案 <code>app/Config/Workerman.php</code> 中的 <code>initWorker</code> 方法，定義每當 CodeIgniter Worker 初始化時你所需要執行的邏輯：</p>
+<pre><code class="language-php">use Workerman\Worker;
+public function initWorker(Worker &amp;$worker)
+{
+    //Your logic here
+}
+</code></pre>
+<h3 id="config::runtimetcpconnection">Config::runtimeTcpConnection</h3>
+<p>當每個 CodeIgniter Worker 發生 TCP 連線時，這個事件將會被觸發。你可以透過組態設定檔案 <code>app/Config/Workerman.php</code> 中的 <code>runtimeTcpConnection</code> 方法，定義每當 CodeIgniter Worker 發生 TCP 連線時將你所需要執行的邏輯：</p>
+<pre><code class="language-php">use Workerman\Connection\TcpConnection;
+use Workerman\Protocols\Http\Request;
+public function runtimeTcpConnection(TcpConnection &amp;$tcpConnection, Request &amp;$request)
+{
+    //Your logic here
+}
+</code></pre>
+<h2 id="codeigniter4-事件">CodeIgniter4 事件</h2>
+<p>CodeIgniter4 提供了<a href="https://codeigniter.tw/user_guide/extending/events.html">事件</a>的功能，當 CodeIgniter 執行時，它會遵循著一定的執行順序，然而在某些情況下，你可能會想在執行過程的特定階段執行一些動作。</p>
+<p>Burner 在 HTTP 中提供了以下事件給予開發者進行使用：</p>
+<h3 id="burneraftersendresponse">burnerAfterSendResponse</h3>
+<p>這通常會用於在響應後的初始化，若你擁有某些需要在響應後清空的全域變數或某些通用的處理，都非常適合在這個事件中宣告。你可以透過宣告 <code>burnerAfterSendResponse</code> 事件，在每當 RoadRunner 響應後將會執行你需要執行的邏輯：</p>
+<pre><code class="language-php">// This code will be executed after sending the response to the client.
+Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+{
+    // Your logic
+});
+</code></pre>
+<p>事件的使用方式不局限於回呼函數，請參考 <a href="https://codeigniter.tw/user_guide/extending/events.html#id3">CodeIgniter4 使用手冊</a>提到的方法來選擇最適合你的宣告方式。</p>
+
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#workerman-實踐'>Workerman 實踐</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#http-service'>HTTP Service</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#app-container'>App Container</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#製作自己的-worker'>製作自己的 Worker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#可用方法'>可用方法</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#appcontainer::getworker'>AppContainer::getWorker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#參數'>參數</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#回傳值'>回傳值</a>
+                        </li>
+                        
+                        <li class='page-nav-level-4'>
+                            <a href='#範例'>範例</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#burner-事件'>Burner 事件</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#config::initworker'>Config::initWorker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#config::runtimetcpconnection'>Config::runtimeTcpConnection</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#codeigniter4-事件'>CodeIgniter4 事件</a>
+                        </li>
+                        
+                        <li class='page-nav-level-3'>
+                            <a href='#burneraftersendresponse'>burnerAfterSendResponse</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1682168969"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1682168969"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1682168969"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1682168969"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1682168969"></script>
+
+    
+</body>
+
+</html>
