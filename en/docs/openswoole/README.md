@@ -6,7 +6,7 @@ title: OpenSwoole
 
 OpenSwoole is a new version forked from Swoole, and they have different maintenance teams. When Burner was developed, OpenSwoole had already reached version `22.0.0`, and in this version the namespace has been migrated from `Swoole` to `OpenSwoole`, which means that Burner will not support running under `OpenSwoole` below version `22.0.0`, and it is not compatible with `Swoole`.
 
-## How to implement
+## How it works
 
 When receiving an HTTP request, the OpenSwoole driver will convert the OpenSwoole request object to a request object that implements the `PSR-7` interface, and then pass the `PSR-7` request object to `burner-core` for processing. When `burner-core` receives the `PSR-7` request object, it will convert it to a request object that is exclusive to `CodeIgniter4`, and include some pre-processing required by the framework.
 

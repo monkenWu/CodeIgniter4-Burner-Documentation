@@ -18,11 +18,11 @@ Choose a suitable driver to install, and Burner currently provides you with thre
     ```
 2. 
     ```
-    composer require monkenwu/codeigniter4-burner-workerman
+    composer require monkenwu/codeigniter4-burner-workerman:1.0.0-beta.1
     ```
 3. 
     ```
-    composer require monkenwu/codeigniter4-burner-roadrunner
+    composer require monkenwu/codeigniter4-burner-roadrunner:1.0.0-beta.1
     ```
 
 Before installation, you must first make sure that the current system environment meets the requirements of these drivers. You can refer to the content mentioned in [System Requirements](/introduction) to build your system environment, and we also recommend you to [build your development environment through Docker](/general/docker).

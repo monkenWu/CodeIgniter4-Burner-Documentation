@@ -2,7 +2,7 @@ name: Deploy User Guide
 
 on:
   push:
-    branches: [ v1.0.0-doc ]
+    branches: [ main ]
 
 jobs:
   build:

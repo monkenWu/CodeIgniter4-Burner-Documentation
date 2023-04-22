@@ -16,10 +16,13 @@ navigation:
       - path: docs/openswoole/implement.md
       - path: docs/openswoole/suggestion.md
       - path: docs/openswoole/commands.md
-
-  # - path: docs/OpenSwoole
-  #   children: "*"
-  # - path: docs/RoadRunner
-  #   children: "*"
-  # - path: docs/Workerman
-  #   children: "*"
+  - path: docs/roadrunner
+    children:
+      - path: docs/roadrunner/implement.md
+      - path: docs/roadrunner/suggestion.md
+      - path: docs/roadrunner/commands.md
+  - path: docs/workerman
+    children:
+      - path: docs/workerman/implement.md
+      - path: docs/workerman/suggestion.md
+      - path: docs/workerman/commands.md
