@@ -54,7 +54,7 @@ This is usually used to initialize after the response, if you have some global v
 
 ```php
 // This code will be executed after sending the response to the client.
-Events::on('burnerAfterSendResponse',static function(\OpenSwoole\Http\Server $server)
+Events::on('burnerAfterSendResponse',static function(\Spiral\RoadRunner\Http\PSR7Worker $psr7Worker)
 {
     //Your logic
 });

@@ -35,7 +35,7 @@ php spark burner:start --driver RoadRunner
     ```
     -o=http.address=:8080
     ```
-會覆蓋 .rr.yaml 中的 http.address。
+    這會覆蓋 .rr.yaml 中的 http.address。
 
 {% info 備註 %}
 

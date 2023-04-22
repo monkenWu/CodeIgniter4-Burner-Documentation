@@ -6,7 +6,7 @@ title: RoadRunner
 
 [RoadRunner](https://roadrunner.dev/) is a high-performance PHP application server, written in Go. It allows to execute long-running PHP applications in a persistent memory, using a pool of preloaded workers. RoadRunner is also a full-featured HTTP server supporting PSR-7.
 
-## How to implement
+## How it works
 
 After receiving an HTTP connection, Burner will convert the PSR-7 request object to a CodeIgniter4 request object, and start executing the CodeIgniter4 application, and then convert the CodeIgniter4 response object to a PSR-7 response object, and then pass it to the RoadRunner server.
 

@@ -18,7 +18,7 @@ Choose a suitable driver to install, and Burner currently provides you with thre
     ```
 2. 
     ```
-    composer require monkenwu/codeigniter4-burner-workerman
+    composer require monkenwu/codeigniter4-burner-workerman:1.0.0-beta.1
     ```
 3. 
     ```
