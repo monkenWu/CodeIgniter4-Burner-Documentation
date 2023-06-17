@@ -19,7 +19,7 @@ title: Workerman
 當處理好這些前置作業後，你可以在專案根目錄下執行以下指令取得 Workerman 驅動程式：
 
 ```
-composer require monken/codeigniter4-burner-workerman:1.0.0-beta.1
+composer require monken/codeigniter4-burner-workerman:^1.0@beta
 ```
 
 {% info 備註 %}

@@ -14,17 +14,17 @@ Burner 目前僅支援使用 Composer 安裝，這是因為 Burner 替不同驅�
 
 1. 
     ```
-    composer require monken/codeigniter4-burner-openswoole:1.0.0-beta.1
+    composer require monken/codeigniter4-burner-openswoole:^1.0@beta
     ```
 
 2. 
     ```
-    composer require monken/codeigniter4-burner-workerman:1.0.0-beta.1
+    composer require monken/codeigniter4-burner-workerman:^1.0@beta
     ```
 
 3. 
     ```
-    composer require monken/codeigniter4-burner-roadrunner:1.0.0-beta.1
+    composer require monken/codeigniter4-burner-roadrunner:^1.0@beta
     ```
 
 在安裝之前，你得先確定目前的系統環境是否滿足了這些驅動程式的要求。你能夠先參考 [系統需求](/introduction) 提到的內容建構你的系統環境，同時我們也推薦你 [透過Docker建構](/general/docker) 你的開發環境。
