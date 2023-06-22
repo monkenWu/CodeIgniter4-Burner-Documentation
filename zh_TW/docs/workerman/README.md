@@ -14,12 +14,12 @@ title: Workerman
 
 ## 開始使用
 
-在使用 RoadRunner 之前，請先確認您的環境已經擁有 `PHP8^`、`php-pcntl`、`php-posix` 與非必要但推薦開啟的 [`php-sockets`](https://www.php.net/manual/en/book.event.php)等擴充外掛，也可以直接使用我們推薦的 [Docker 環境](/general/docker)。
+在使用 RoadRunner 之前，請先確認您的環境已經擁有 `PHP8^`、`php-pcntl`、`php-posix` 與非必要但推薦開啟的 [`php-event`](https://www.php.net/manual/en/book.event.php)等擴充外掛，也可以直接使用我們推薦的 [Docker 環境](/general/docker)。
 
 當處理好這些前置作業後，你可以在專案根目錄下執行以下指令取得 Workerman 驅動程式：
 
 ```
-composer require monken/codeigniter4-burner-workerman:1.0.0-beta.1
+composer require monken/codeigniter4-burner-workerman:^1.0@beta
 ```
 
 {% info 備註 %}

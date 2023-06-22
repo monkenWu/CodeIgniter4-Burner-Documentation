@@ -19,7 +19,7 @@ Before using RoadRunner, please make sure that your environment already has `PHP
 After completing these prerequisites, you can run the following command to get the RoadRunner driver in the project root directory:
 
 ```
-composer require monken/codeigniter4-burner-roadrunner:1.0.0-beta.1
+composer require monken/codeigniter4-burner-roadrunner:^1.0@beta
 ```
 
 {% info Note %}

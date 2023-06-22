@@ -79,69 +79,52 @@ public $cacheAutoClose = true;
 
 ## File Upload
 
-No matter which driver you are using, there is a defect that cannot correctly pass the contents of `$_FILES`. So the [File Upload Class](https://codeigniter.com/user_guide/libraries/uploaded_files.html) of Codeingiter4 will not work properly. For this, we provide a file upload class that meets the PSR-7 specification so that you can correctly handle file uploads in the heigh performance PHP server. Even if you switch your project to another server environment (spark serve, Apache, Nginx) to run, this class can still be used normally and does not require any code changes.
+Burner will reassign the uploaded file information in the request to `$_FILES`, so the [File Upload Class](https://codeigniter.com/user_guide/libraries/uploaded_files.html) of Codeingiter4 can work properly. However, the built-in PHP file upload processing methods, such as: `move_uploaded_file()` or `is_uploaded_file()`, these methods will not work properly in the persistent PHP server. Therefore, you will not be able to use CodeIgniter4's [`$file->move()`](https://codeigniter.com/user_guide/libraries/uploaded_files.html#moving-files) method to process the files uploaded by the user.
 
-You can use the following code snippet to get the files uploaded by the user in the controller (or anywhere).
+{% info Note %}
+If you are using the `OpenSwoole` driver, you can use all the file upload processing methods normally.
+{% end %}
 
-```php
-SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
-```
-
-This method will return an array of Uploaded File objects. The methods available on this object are the same as those specified in the [PSR-7 Uploaded File Interface](https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface).
-
-The following example will show the minimal way a standard CodeIgniter4 controller handles single file uploads as well as multiple file uploads.
+We recommend that you handle file uploads in the Controller in the following ways:
 
 ```php
-<?php
-
-namespace App\Controllers;
-
-use CodeIgniter\API\ResponseTrait;
-use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
-
-class FileUploadTest extends BaseController
+public function fileUpload()
 {
-    use ResponseTrait;
-
-    protected $format = "json";
-
     /**
-     * form-data 
+     * @var \CodeIgniter\HTTP\Files\UploadedFile[]
      */
-    public function fileUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles();
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file->getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file->moveTo($newFilePath);
-            $data[$file->getClientFilename()] = md5_file($newFilePath);
+    $files = $this->request->getFiles();    
+    foreach ($files as $file) {
+        $newFileName = $file->getRandomName();
+        $newFileNamePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+        if(BURNER_DRIVER == 'OpenSwoole'){
+            // if you use OpenSwoole driver, you can use move()
+            if ($file->isValid() && ! $file->hasMoved()) {
+                $file->move(WRITEPATH . 'uploads' , $newFileName);
+            }
+        }else{
+            // if you use RoadRunner or Workerman driver, you should use rename(or other method) to move file to new path.
+            if (!$file->hasMoved()) {
+                rename($file->getTempName(), $newFileNamePath);
+            }
         }
-        return $this->respondCreated($data);
     }
-
-    /**
-     * form-data multiple upload
-     */
-    public function fileMultipleUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file->getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file->moveTo($newFilePath);
-            $data[$file->getClientFilename()] = md5_file($newFilePath);
-        }
-        return $this->respondCreated($data);
-    }
-}
 ```
+
+## Service Management
+
+CodeIgniter4 provides [Services](https://codeigniter.com/user_guide/concepts/services.html) to allow us to share object instances throughout the project. Burner will take over the life cycle of the Service after the server starts. After each request is processed, Burner will automatically release the object instance of the Service and re-establish the object instance of the Service in the next request.
+
+If you have implemented your own Service object, or you think that some Service objects do not need to be re-established, you can set it in the `$skipInitServices` array in `app/Config/Burner.php`:
+
+```php
+public $skipInitServices = [
+    // type service name here
+    'validation',
+];
+```
+
+After you add the service name to the `$skipInitServices` array, Burner will not clear the object instance of the service on each request. At this time, you need to handle the life cycle of the Service object you set yourself.
 
 ## Worker-num
 

@@ -79,69 +79,53 @@ public $cacheAutoClose = true;
 
 ## 檔案上傳處理
 
-無論你使用哪種驅動程式，都有著無法正確傳遞 `$_FILES` 內容的缺陷。所以 Codeingiter4 的 [檔案上傳類別](https://codeigniter.tw/user_guide/libraries/uploaded_files.html) 將無法正確運作。對此，我們提供了符合 PSR-7 規範的檔案上傳類別，讓你可以正確地在 RoadRunner 中處理檔案上傳。就算你將專案切換到了其他伺服器環境（spark serve、Apache、Nginx）執行，這個類別依舊可以正常使用，並且不需要修改任何程式碼。
+Burner 將會把請求中被上傳的檔案資訊重新賦值給 `$_FILES` ，因此 Codeingiter4 的 [檔案上傳類別](https://codeigniter.tw/user_guide/libraries/uploaded_files.html) 可以正常運作。但是，PHP 內建的檔案上傳處理方法，比如：`move_uploaded_file()` 或是 `is_uploaded_file()`，這些方法在持久化的 PHP 伺服器中將無法正常運作。因此，你將無法正常使用 CodeIgniter4 的 [`$file->move()`](https://codeigniter.tw/user_guide/libraries/uploaded_files.html#moving-files) 方法來處理用者上傳的檔案。
 
-你可以在控制器（或任何地方），使用下述程式碼片段取得使用者上傳的檔案。
+{% info 備註 %}
+如果你使用的是 `OpenSwoole` 驅動程式，你可以正常使用所有上傳檔案的處理方法。
+{% end %}
 
-```php
-SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
-```
-
-這個方法將回傳以 Uploaded File 物件組成的陣列。此物件可用的方法與 [PSR-7 Uploaded File Interface](https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface) 中規範的一樣。
-
-以下範例將展示一個標準的 CodeIgniter4 控制器處理單一檔案上傳以及多重檔案上傳的最簡方式。
+我們推薦你以下列方式在 Controller 處理檔案上傳：
 
 ```php
-<?php
-
-namespace App\Controllers;
-
-use CodeIgniter\API\ResponseTrait;
-use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
-
-class FileUploadTest extends BaseController
+public function fileUpload()
 {
-    use ResponseTrait;
-
-    protected $format = "json";
-
     /**
-     * form-data 
+     * @var \CodeIgniter\HTTP\Files\UploadedFile[]
      */
-    public function fileUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles();
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file->getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file->moveTo($newFilePath);
-            $data[$file->getClientFilename()] = md5_file($newFilePath);
+    $files = $this->request->getFiles();    
+    foreach ($files as $file) {
+        $newFileName = $file->getRandomName();
+        $newFileNamePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+        if(BURNER_DRIVER == 'OpenSwoole'){
+            // if you use OpenSwoole driver, you can use move()
+            if ($file->isValid() && ! $file->hasMoved()) {
+                $file->move(WRITEPATH . 'uploads' , $newFileName);
+            }
+        }else{
+            // if you use RoadRunner or Workerman driver, you should use rename(or other method) to move file to new path.
+            if (!$file->hasMoved()) {
+                rename($file->getTempName(), $newFileNamePath);
+            }
         }
-        return $this->respondCreated($data);
-    }
-
-    /**
-     * form-data multiple upload
-     */
-    public function fileMultipleUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file->getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file->moveTo($newFilePath);
-            $data[$file->getClientFilename()] = md5_file($newFilePath);
-        }
-        return $this->respondCreated($data);
     }
 }
 ```
+
+## Service 管理
+
+CodeIgniter4 提供了 [Services](https://codeigniter.tw/user_guide/concepts/services.html) 功能使我們能夠在整個專案中共享物件實體，Burner 將會在伺服器啟動後接管 Service 的生命週期。在每次的請求處理完畢後，Burner 將會自動釋放 Service 的物件實體，並在下一次的請求中重新建立 Service 的物件實體。
+
+若你實作了自己的 Service 物件，或是你認為某些 Service 物件不需要重新建立，你可以在 `app/Config/Burner.php` 中的 `$skipInitServices` 陣列中設定：
+
+```php
+public $skipInitServices = [
+    // type service name here
+    'validation',
+];
+```
+
+當你將服務名稱加入 `$skipInitServices` 陣列中後，Burner 便不會在每次請求中清除該服務的物件實體。此時，你需要自行處理你所設定的 Service 物件的生命週期。
 
 ## Worker 數量
 
