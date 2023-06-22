@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>開發建議</title>
-    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta2">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/normalize.css?v=1687409263"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/doctave-style.css?v=1687409263"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1682176432" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/katex.css?v=1687409263" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/zh_TW/assets/prism-ghcolors.css?v=1687409263"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1682176432";
+        var DOCTAVE_TIMESTAMP = "1687409263";
         var BASE_PATH = "/zh_TW/";
         var color = localStorage.getItem('doctave-color')
 
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/zh_TW/">
-                    <img src="/zh_TW/logo.png" alt='CodeIgniter Burner Beta logo'></img>
+                    <img src="/zh_TW/logo.png" alt='CodeIgniter Burner Beta2 logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/zh_TW/">
-                        CodeIgniter Burner Beta
+                        CodeIgniter Burner Beta2
                     </a>
                 </h2>
             </div>
@@ -214,62 +214,45 @@ class Home extends BaseController
 public $cacheAutoClose = true;
 </code></pre>
 <h2 id="檔案上傳處理">檔案上傳處理</h2>
-<p>無論你使用哪種驅動程式，都有著無法正確傳遞 <code>$_FILES</code> 內容的缺陷。所以 Codeingiter4 的 <a href="https://codeigniter.tw/user_guide/libraries/uploaded_files.html">檔案上傳類別</a> 將無法正確運作。對此，我們提供了符合 PSR-7 規範的檔案上傳類別，讓你可以正確地在 RoadRunner 中處理檔案上傳。就算你將專案切換到了其他伺服器環境（spark serve、Apache、Nginx）執行，這個類別依舊可以正常使用，並且不需要修改任何程式碼。</p>
-<p>你可以在控制器（或任何地方），使用下述程式碼片段取得使用者上傳的檔案。</p>
-<pre><code class="language-php">SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
-</code></pre>
-<p>這個方法將回傳以 Uploaded File 物件組成的陣列。此物件可用的方法與 <a href="https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface">PSR-7 Uploaded File Interface</a> 中規範的一樣。</p>
-<p>以下範例將展示一個標準的 CodeIgniter4 控制器處理單一檔案上傳以及多重檔案上傳的最簡方式。</p>
-<pre><code class="language-php">&lt;?php
-
-namespace App\Controllers;
-
-use CodeIgniter\API\ResponseTrait;
-use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
-
-class FileUploadTest extends BaseController
+<p>Burner 將會把請求中被上傳的檔案資訊重新賦值給 <code>$_FILES</code> ，因此 Codeingiter4 的 <a href="https://codeigniter.tw/user_guide/libraries/uploaded_files.html">檔案上傳類別</a> 可以正常運作。但是，PHP 內建的檔案上傳處理方法，比如：<code>move_uploaded_file()</code> 或是 <code>is_uploaded_file()</code>，這些方法在持久化的 PHP 伺服器中將無法正常運作。因此，你將無法正常使用 CodeIgniter4 的 <a href="https://codeigniter.tw/user_guide/libraries/uploaded_files.html#moving-files"><code>$file-&gt;move()</code></a> 方法來處理用者上傳的檔案。</p>
+<div class="callout info"><p class="callout-title">備註</p>
+<p>
+如果你使用的是 <code>OpenSwoole</code> 驅動程式，你可以正常使用所有上傳檔案的處理方法。
+</p>
+</div>
+<p>我們推薦你以下列方式在 Controller 處理檔案上傳：</p>
+<pre><code class="language-php">public function fileUpload()
 {
-    use ResponseTrait;
-
-    protected $format = "json";
-
     /**
-     * form-data 
+     * @var \CodeIgniter\HTTP\Files\UploadedFile[]
      */
-    public function fileUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles();
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file-&gt;getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file-&gt;moveTo($newFilePath);
-            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+    $files = $this-&gt;request-&gt;getFiles();    
+    foreach ($files as $file) {
+        $newFileName = $file-&gt;getRandomName();
+        $newFileNamePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+        if(BURNER_DRIVER == 'OpenSwoole'){
+            // if you use OpenSwoole driver, you can use move()
+            if ($file-&gt;isValid() &amp;&amp; ! $file-&gt;hasMoved()) {
+                $file-&gt;move(WRITEPATH . 'uploads' , $newFileName);
+            }
+        }else{
+            // if you use RoadRunner or Workerman driver, you should use rename(or other method) to move file to new path.
+            if (!$file-&gt;hasMoved()) {
+                rename($file-&gt;getTempName(), $newFileNamePath);
+            }
         }
-        return $this-&gt;respondCreated($data);
-    }
-
-    /**
-     * form-data multiple upload
-     */
-    public function fileMultipleUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file-&gt;getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file-&gt;moveTo($newFilePath);
-            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
-        }
-        return $this-&gt;respondCreated($data);
     }
 }
 </code></pre>
+<h2 id="service-管理">Service 管理</h2>
+<p>CodeIgniter4 提供了 <a href="https://codeigniter.tw/user_guide/concepts/services.html">Services</a> 功能使我們能夠在整個專案中共享物件實體，Burner 將會在伺服器啟動後接管 Service 的生命週期。在每次的請求處理完畢後，Burner 將會自動釋放 Service 的物件實體，並在下一次的請求中重新建立 Service 的物件實體。</p>
+<p>若你實作了自己的 Service 物件，或是你認為某些 Service 物件不需要重新建立，你可以在 <code>app/Config/Burner.php</code> 中的 <code>$skipInitServices</code> 陣列中設定：</p>
+<pre><code class="language-php">public $skipInitServices = [
+    // type service name here
+    'validation',
+];
+</code></pre>
+<p>當你將服務名稱加入 <code>$skipInitServices</code> 陣列中後，Burner 便不會在每次請求中清除該服務的物件實體。此時，你需要自行處理你所設定的 Service 物件的生命週期。</p>
 <h2 id="worker-數量">Worker 數量</h2>
 <p>因為 RoadRunner、OpenSwoole 與 Workerman 與其他伺服器軟體（Nginx、Apache）有著根本上的不同，每個 Codeigniter4 將會以 Worker 的形式持久化於記憶體中，HTTP 的請求會重複利用到這些 Worker 進行處裡。所以，我們最好在只有單個 Worker 的情況下開發軟體並測試是否穩定，以證明在多個 Woker 的實際環境中能正常運作。 </p>
 <h2 id="處理變數拋出">處理變數拋出</h2>
@@ -310,6 +293,10 @@ class FileUploadTest extends BaseController
                         </li>
                         
                         <li class='page-nav-level-2'>
+                            <a href='#service-管理'>Service 管理</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
                             <a href='#worker-數量'>Worker 數量</a>
                         </li>
                         
@@ -336,11 +323,11 @@ class FileUploadTest extends BaseController
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1682176432"></script>
-    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1682176432"></script>
-    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1682176432"></script>
-    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1682176432"></script>
-    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1682176432"></script>
+    <script type="text/javascript" src="/zh_TW/assets/katex.js?v=1687409263"></script>
+    <script type="text/javascript" src="/zh_TW/assets/mermaid.js?v=1687409263"></script>
+    <script type="text/javascript" src="/zh_TW/assets/elasticlunr.js?v=1687409263"></script>
+    <script type="text/javascript" src="/zh_TW/assets/prism.js?v=1687409263"></script>
+    <script type="text/javascript" src="/zh_TW/assets/doctave-app.js?v=1687409263"></script>
 
     
 </body>

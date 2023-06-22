@@ -6,23 +6,23 @@
     <meta charset="utf-8">
 
     <title>Development Suggestion</title>
-    <meta name="description" content="Documentation for CodeIgniter Burner Beta">
+    <meta name="description" content="Documentation for CodeIgniter Burner Beta2">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/en/assets/normalize.css?v=1687409263"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/en/assets/doctave-style.css?v=1687409263"
         media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1682176432" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1682176432"
+    <link rel="stylesheet" type="text/css" href="/en/assets/katex.css?v=1687409263" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/en/assets/prism-ghcolors.css?v=1687409263"
         media="screen" />
 
     <script>
-        var DOCTAVE_TIMESTAMP = "1682176432";
+        var DOCTAVE_TIMESTAMP = "1687409263";
         var BASE_PATH = "/en/";
         var color = localStorage.getItem('doctave-color')
 
@@ -53,12 +53,12 @@
             <div class='logo'>
                 
                 <a href="/en/">
-                    <img src="/en/logo.png" alt='CodeIgniter Burner Beta logo'></img>
+                    <img src="/en/logo.png" alt='CodeIgniter Burner Beta2 logo'></img>
                 </a>
                 
                 <h2 class='project-name'>
                     <a href="/en/">
-                        CodeIgniter Burner Beta
+                        CodeIgniter Burner Beta2
                     </a>
                 </h2>
             </div>
@@ -214,62 +214,44 @@ class Home extends BaseController
 public $cacheAutoClose = true;
 </code></pre>
 <h2 id="file-upload">File Upload</h2>
-<p>No matter which driver you are using, there is a defect that cannot correctly pass the contents of <code>$_FILES</code>. So the <a href="https://codeigniter.com/user_guide/libraries/uploaded_files.html">File Upload Class</a> of Codeingiter4 will not work properly. For this, we provide a file upload class that meets the PSR-7 specification so that you can correctly handle file uploads in the heigh performance PHP server. Even if you switch your project to another server environment (spark serve, Apache, Nginx) to run, this class can still be used normally and does not require any code changes.</p>
-<p>You can use the following code snippet to get the files uploaded by the user in the controller (or anywhere).</p>
-<pre><code class="language-php">SDPMlab\Ci4Roadrunner\UploadedFileBridge::getPsr7UploadedFiles()
-</code></pre>
-<p>This method will return an array of Uploaded File objects. The methods available on this object are the same as those specified in the <a href="https://www.php-fig.org/psr/psr-7/#36-psrhttpmessageuploadedfileinterface">PSR-7 Uploaded File Interface</a>.</p>
-<p>The following example will show the minimal way a standard CodeIgniter4 controller handles single file uploads as well as multiple file uploads.</p>
-<pre><code class="language-php">&lt;?php
-
-namespace App\Controllers;
-
-use CodeIgniter\API\ResponseTrait;
-use SDPMlab\Ci4Roadrunner\UploadedFileBridge;
-
-class FileUploadTest extends BaseController
+<p>Burner will reassign the uploaded file information in the request to <code>$_FILES</code>, so the <a href="https://codeigniter.com/user_guide/libraries/uploaded_files.html">File Upload Class</a> of Codeingiter4 can work properly. However, the built-in PHP file upload processing methods, such as: <code>move_uploaded_file()</code> or <code>is_uploaded_file()</code>, these methods will not work properly in the persistent PHP server. Therefore, you will not be able to use CodeIgniter4's <a href="https://codeigniter.com/user_guide/libraries/uploaded_files.html#moving-files"><code>$file-&gt;move()</code></a> method to process the files uploaded by the user.</p>
+<div class="callout info"><p class="callout-title">Note</p>
+<p>
+If you are using the <code>OpenSwoole</code> driver, you can use all the file upload processing methods normally.
+</p>
+</div>
+<p>We recommend that you handle file uploads in the Controller in the following ways:</p>
+<pre><code class="language-php">public function fileUpload()
 {
-    use ResponseTrait;
-
-    protected $format = "json";
-
     /**
-     * form-data 
+     * @var \CodeIgniter\HTTP\Files\UploadedFile[]
      */
-    public function fileUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles();
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file-&gt;getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file-&gt;moveTo($newFilePath);
-            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
+    $files = $this-&gt;request-&gt;getFiles();    
+    foreach ($files as $file) {
+        $newFileName = $file-&gt;getRandomName();
+        $newFileNamePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
+        if(BURNER_DRIVER == 'OpenSwoole'){
+            // if you use OpenSwoole driver, you can use move()
+            if ($file-&gt;isValid() &amp;&amp; ! $file-&gt;hasMoved()) {
+                $file-&gt;move(WRITEPATH . 'uploads' , $newFileName);
+            }
+        }else{
+            // if you use RoadRunner or Workerman driver, you should use rename(or other method) to move file to new path.
+            if (!$file-&gt;hasMoved()) {
+                rename($file-&gt;getTempName(), $newFileNamePath);
+            }
         }
-        return $this-&gt;respondCreated($data);
     }
-
-    /**
-     * form-data multiple upload
-     */
-    public function fileMultipleUpload()
-    {
-        $files = UploadedFileBridge::getPsr7UploadedFiles()["data"];
-        $data = [];
-        foreach ($files as $file) {
-            $fileNameArr = explode('.', $file-&gt;getClientFilename());
-            $fileEx = array_pop($fileNameArr);
-            $newFileName = uniqid(rand()) . "." . $fileEx;
-            $newFilePath = WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . $newFileName;
-            $file-&gt;moveTo($newFilePath);
-            $data[$file-&gt;getClientFilename()] = md5_file($newFilePath);
-        }
-        return $this-&gt;respondCreated($data);
-    }
-}
 </code></pre>
+<h2 id="service-management">Service Management</h2>
+<p>CodeIgniter4 provides <a href="https://codeigniter.com/user_guide/concepts/services.html">Services</a> to allow us to share object instances throughout the project. Burner will take over the life cycle of the Service after the server starts. After each request is processed, Burner will automatically release the object instance of the Service and re-establish the object instance of the Service in the next request.</p>
+<p>If you have implemented your own Service object, or you think that some Service objects do not need to be re-established, you can set it in the <code>$skipInitServices</code> array in <code>app/Config/Burner.php</code>:</p>
+<pre><code class="language-php">public $skipInitServices = [
+    // type service name here
+    'validation',
+];
+</code></pre>
+<p>After you add the service name to the <code>$skipInitServices</code> array, Burner will not clear the object instance of the service on each request. At this time, you need to handle the life cycle of the Service object you set yourself.</p>
 <h2 id="worker-num">Worker-num</h2>
 <p>Because RoadRunner, OpenSwoole and Workerman are fundamentally different from other server software (Nginx, Apache), each Codeigniter4 will be persisted in memory in the form of a Worker, and the HTTP request will be repeatedly reused to handle these Workers. So, we should develop and test software in a single Worker environment to prove that it can work properly in a real environment with multiple Wokers.</p>
 <h2 id="handle-variable-dump">Handle variable dump</h2>
@@ -310,6 +292,10 @@ class FileUploadTest extends BaseController
                         </li>
                         
                         <li class='page-nav-level-2'>
+                            <a href='#service-management'>Service Management</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
                             <a href='#worker-num'>Worker-num</a>
                         </li>
                         
@@ -336,11 +322,11 @@ class FileUploadTest extends BaseController
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/en/assets/katex.js?v=1682176432"></script>
-    <script type="text/javascript" src="/en/assets/mermaid.js?v=1682176432"></script>
-    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1682176432"></script>
-    <script type="text/javascript" src="/en/assets/prism.js?v=1682176432"></script>
-    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1682176432"></script>
+    <script type="text/javascript" src="/en/assets/katex.js?v=1687409263"></script>
+    <script type="text/javascript" src="/en/assets/mermaid.js?v=1687409263"></script>
+    <script type="text/javascript" src="/en/assets/elasticlunr.js?v=1687409263"></script>
+    <script type="text/javascript" src="/en/assets/prism.js?v=1687409263"></script>
+    <script type="text/javascript" src="/en/assets/doctave-app.js?v=1687409263"></script>
 
     
 </body>
