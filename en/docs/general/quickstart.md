@@ -10,6 +10,15 @@ Burner currently only supports installation via Composer, this is because Burner
 
 First, install Burner into your CodeIgniter4 project using Composer.
 
+Because the current version is a Beta version, you need to add the following settings in `composer.json`:
+
+```json
+{
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
+```
+
 Choose a suitable driver to install, and Burner currently provides you with three options:
 
 1. 

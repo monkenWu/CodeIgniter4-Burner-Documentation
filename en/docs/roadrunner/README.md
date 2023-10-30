@@ -16,6 +16,15 @@ Unlike other PHP drivers, RoadRnner natively supports PSR-7, so Burner does not 
 
 Before using RoadRunner, please make sure that your environment already has `PHP8^`, `php-curl`, `php-zip` and `php-sockets` extensions, or you can use our recommended [Docker environment](/general/docker).
 
+Because the current version is a Beta version, you need to add the following settings in `composer.json`:
+
+```json
+{
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
+```
+
 After completing these prerequisites, you can run the following command to get the RoadRunner driver in the project root directory:
 
 ```

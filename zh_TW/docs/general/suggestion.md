@@ -12,6 +12,36 @@ Codeigniter4 並沒有實作完整的 [HTTP message 介面](https://www.php-fig.
 
 請注意，在建構給予使用者的響應時，不論是 `header` 或 `set-cookies` 應該避免使用 PHP 內建的方法進行設定。而是使用 [Codeigniter4 響應物件](https://codeigniter.tw/user_guide/outgoing/response.html) 提供的 `setHeader()` 與 `setCookie()` 進行設定。 
 
+## 覆寫 Codeigniter4 Response 物件
+
+在開發的過程中你可能會於 CodeIgniter4 的控制器中使用到 `response()->send()` 這個方法，你可以於 [說明手冊](https://codeigniter.com/user_guide/outgoing/response.html#CodeIgniter\HTTP\Response::send) 中了解到這個方法的用處。透過這個方法，CodeIgniter 會迅速地輸出 Body 內容、Headers 與 Cookies，並結束程式的執行。顯然，這在 Burner 中是不可行的，Burner 的 PHP 程序必須一直在記憶體中執行以保持最高效能，使用這個方法會導致你的程式出現錯誤。
+
+因此，我們建議你在開發時避免使用這個方法，在控制器中明確地使用 `return` 來結束程式的執行。若是在你原有的專案中已使用了大量的 `response()->send()` 也不用擔心，你可以透過使用 Burner 提供的覆寫方法來解決這個問題。
+
+Burner 採用 CodeIgniter4 官方推薦的[核心擴充方法](https://codeigniter.com/user_guide/extending/core_classes.html#extending-core-classes)，覆寫了 `Response` 類別底下的 `send()`，刪除了所有可能導致伺服器錯誤的程式碼。
+
+請移動至你的專案底下的 `{Project_Root}/app/Config/Services.php` ，並加入以下程式碼：
+
+```php
+use Monken\CIBurner\Bridge\Override\Response;
+
+/**
+ * Override Response
+ *
+ * @return ResponseInterface
+ */
+public static function response(?App $config = null, bool $getShared = true)
+{
+    if ($getShared) {
+        return static::getSharedInstance('response', $config);
+    }
+
+    $config ??= config('App');
+
+    return new Response($config);
+}
+```
+
 ## 以 return 結束控制器邏輯
 
 在 Controller 中，盡量使用 return 結束程式邏輯，不論是視圖的響應或是 API 響應，減少使用 `echo` 輸出內容可以避免很多錯誤，就像這個樣子。

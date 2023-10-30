@@ -12,6 +12,36 @@ Base on the reasons above, You should use `$this->request`, provided by Codeigni
 
 Please be noticed, while constructing response for the users during developing, you should prevent using PHP built-in methods to conduct `header` or `set-cookies` settings. Using the `setHeader()` and `setCookie()`, provided by the [Codeigniter4 Response Object](https://codeigniter.com/user_guide/outgoing/response.html), to conduct setting.
 
+## Override Codeigniter4 Response object
+
+During the development, you may use `response()->send()` in CodeIgniter4's Controller, you can learn about this method in the [documentation](https://codeigniter.com/user_guide/outgoing/response.html#CodeIgniter\HTTP\Response::send). Through this method, CodeIgniter will quickly output the Body content, Headers and Cookies, and end the execution of the program. Obviously, this is not feasible in Burner, the PHP program of Burner must be executed in memory to maintain the highest efficiency. Using this method will cause your program to fail.
+
+Therefore, we recommend that you avoid using this method during development, and use `return` to end the execution of the program in the Controller. If you have used a lot of `response()->send()` in your original project, don't worry, you can use the override method provided by Burner to solve this problem.
+
+Burner uses the [Extension Core Method](https://codeigniter.com/user_guide/extending/core_classes.html#extending-core-classes) recommended by CodeIgniter4, and overrides `send()` under the `Response` class, deleting all code that may cause server errors.
+
+Please move to `{Project_Root}/app/Config/Services.php` under your project, and add the following code:
+
+```php
+use Monken\CIBurner\Bridge\Override\Response;
+
+/**
+ * Override Response
+ *
+ * @return ResponseInterface
+ */
+public static function response(?App $config = null, bool $getShared = true)
+{
+    if ($getShared) {
+        return static::getSharedInstance('response', $config);
+    }
+
+    $config ??= config('App');
+
+    return new Response($config);
+}
+```
+
 ## Use return to stop controller logic
 
 Inside the Controller, try using return to stop the controller logic. No matter the response of view or API, reduce the `echo` output usage can avoid lets of errors, just like this:
