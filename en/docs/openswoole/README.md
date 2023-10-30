@@ -16,6 +16,15 @@ When `CodeIgniter4` has finished processing the request, `burner-core` will conv
 
 Before using the OpenSwoole driver provided by Burner, you must ensure that your current system environment already has `PHP8^` and the `OpenSwoole` extension. You can refer to [How to install OpenSwoole](https://openswoole.com/docs/get-started/installation), or use our recommended [Docker environment](/general/docker).
 
+Because the current version is a Beta version, you need to add the following settings in `composer.json`:
+
+```json
+{
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
+```
+
 After completing these prerequisites, you can execute the following command to obtain the OpenSwoole driver in the project root directory:
 
 ```

@@ -12,7 +12,7 @@ The system requirements for Burner are different depending on the driver you cho
 
 ### Basic Requirements
 
-1. CodeIgniter Framework 4.3.0 or later
+1. CodeIgniter Framework 4.4.0 or later
 2. Composer
 3. PHP8^
 

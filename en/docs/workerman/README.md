@@ -16,6 +16,15 @@ After CodeIgniter4 has processed the request, Burner-Core will convert the CodeI
 
 Before using Workerman, please make sure that your environment already has `PHP8^`, `php-pcntl`, `php-posix`, and non-essential but recommended [`php-event`](https://www.php.net/manual/en/book.event.php) extensions, or you can use our recommended [Docker environment](/general/docker).
 
+Because the current version is a Beta version, you need to add the following settings in `composer.json`:
+
+```json
+{
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
+```
+
 After completing these prerequisites, you can execute the following command in the project root directory to obtain the Workerman driver:
 
 ```
